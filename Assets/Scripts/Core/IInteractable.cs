@@ -6,5 +6,5 @@ public interface IInteractable
 {
     string DisplayName { get; }
     Transform InteractPoint { get; }
-    UniTask InteractAsync(CancellationToken ct);
+    UniTask InteractAsync(CharacterBase character, CancellationToken ct);
 }

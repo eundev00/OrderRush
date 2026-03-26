@@ -1,60 +1,37 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Services.UpdateService;
+using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using VContainer;
-using UnityEngine.AI;
+using VContainer.Unity;
+using MessagePipe;
 
-public class PlayerInputHandler : MonoBehaviour, IUpdatable
+public class PlayerInputHandler : ITickable
 {
-    [SerializeField] NavMeshMover _mover;
-    [SerializeField] LayerMask _groundLayer;
-
-    ICharacterStateMachine _stateMachine;
-    MoveState _moveState;
-    WorkState _workState;
-    IdleState _idleState;
+    readonly IPublisher<MoveEvent> _movePublisher;
+    readonly IPublisher<InteractEvent> _interactPublisher;
+    readonly int _groundLayer;
 
     Camera _mainCamera;
-    IUpdateSubscriptionService _updateService;
 
     [Inject]
-    public void Construct(
-        IUpdateSubscriptionService updateService,
-        ICharacterStateMachine stateMachine,
-        MoveState moveState,
-        WorkState workState,
-        IdleState idleState)
+    public PlayerInputHandler(
+        IPublisher<MoveEvent> movePublisher,
+        IPublisher<InteractEvent> interactPublisher)
     {
-        _updateService = updateService;
-        _stateMachine = stateMachine;
-        _moveState = moveState;
-        _workState = workState;
-        _idleState = idleState;
+        _movePublisher = movePublisher;
+        _interactPublisher = interactPublisher;
+        _groundLayer = LayerMask.GetMask("Ground");
     }
 
-    private void Awake()
+    public void Tick()
     {
-        _mainCamera = Camera.main;
-    }
+        if (_mainCamera == null)
+            _mainCamera = Camera.main;
 
-    void Start()
-    {
-        _moveState.SetMover(_mover);
-    }
+        if (_mainCamera == null)
+            return;
 
-    void OnEnable()
-    {
-        _updateService?.RegisterUpdatable(this);
-    }
-
-    void OnDisable()
-    {
-        _updateService?.UnregisterUpdatable(this);
-    }
-
-    public void ManagedUpdate()
-    {
 #if UNITY_EDITOR
         HandleMouseInput();
 #else
@@ -67,26 +44,24 @@ public class PlayerInputHandler : MonoBehaviour, IUpdatable
         var mouse = Mouse.current;
         if (mouse == null) return;
         if (!mouse.leftButton.wasPressedThisFrame) return;
-        if (EventSystem.current.IsPointerOverGameObject()) return;
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
 
         var ray = _mainCamera.ScreenPointToRay(mouse.position.ReadValue());
 
-        // IInteractable 먼저 체크
         if (Physics.Raycast(ray, out var hit, 100f))
         {
             var interactable = hit.collider.GetComponentInParent<IInteractable>();
             if (interactable != null)
             {
-                InteractWith(interactable);
+                _interactPublisher.Publish(new InteractEvent(interactable));
                 return;
             }
         }
 
-        // 바닥 이동
         if (Physics.Raycast(ray, out var groundHit, 100f, _groundLayer))
         {
             if (NavMesh.SamplePosition(groundHit.point, out var navHit, 1f, NavMesh.AllAreas))
-                MoveToPosition(navHit.position);
+                _movePublisher.Publish(new MoveEvent(navHit.position));
         }
     }
 
@@ -105,7 +80,7 @@ public class PlayerInputHandler : MonoBehaviour, IUpdatable
             var interactable = hit.collider.GetComponentInParent<IInteractable>();
             if (interactable != null)
             {
-                InteractWith(interactable);
+                _interactPublisher.Publish(new InteractEvent(interactable));
                 return;
             }
         }
@@ -113,28 +88,7 @@ public class PlayerInputHandler : MonoBehaviour, IUpdatable
         if (Physics.Raycast(ray, out var groundHit, 100f, _groundLayer))
         {
             if (NavMesh.SamplePosition(groundHit.point, out var navHit, 1f, NavMesh.AllAreas))
-                MoveToPosition(navHit.position);
+                _movePublisher.Publish(new MoveEvent(navHit.position));
         }
-    }
-
-    void InteractWith(IInteractable interactable)
-    {
-        var interactPoint = interactable.InteractPoint;
-
-        if (!NavMesh.SamplePosition(interactPoint.position, out var navHit, 0.5f, NavMesh.AllAreas))
-        {
-            Debug.Log("이동 불가");
-            return;
-        }
-
-        _workState.SetTarget(interactable);
-        _moveState.SetDestination(navHit.position, _workState);
-        _stateMachine.ChangeState(_moveState);
-    }
-
-    void MoveToPosition(Vector3 position)
-    {
-        _moveState.SetDestination(position);
-        _stateMachine.ChangeState(_moveState);
     }
 }

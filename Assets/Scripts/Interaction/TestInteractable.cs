@@ -8,17 +8,10 @@ public class TestInteractable : MonoBehaviour, IInteractable
     public string DisplayName => gameObject.name;
     public Transform InteractPoint => _interactPoint;
 
-    public async UniTask InteractAsync(CancellationToken ct)
+    public async UniTask InteractAsync(CharacterBase character, CancellationToken ct)
     {
-        Debug.Log($"[{DisplayName}] Interaction started");
+        Debug.Log($"[{DisplayName}] {character.name} interaction started");
         await UniTask.Delay(1000, cancellationToken: ct);
-        Debug.Log($"[{DisplayName}] Interaction completed");
-    }
-
-    void OnDrawGizmos()
-    {
-        if (_interactPoint == null) return;
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(_interactPoint.position, 0.2f);
+        Debug.Log($"[{DisplayName}] {character.name} interaction completed");
     }
 }

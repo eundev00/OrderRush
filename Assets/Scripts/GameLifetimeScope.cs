@@ -8,12 +8,12 @@ public class GameLifetimeScope : LifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
-        // Character State Machine
-        builder.RegisterEntryPoint<CharacterStateMachine>(Lifetime.Scoped)
-               .AsImplementedInterfaces();
-        builder.Register<IdleState>(Lifetime.Scoped);
-        builder.Register<MoveState>(Lifetime.Scoped);
-        builder.Register<WorkState>(Lifetime.Scoped);
+        // Services
+        builder.Register<ICookingService, CookingService>(Lifetime.Singleton);
+        builder.Register<IOrderService, OrderService>(Lifetime.Singleton);
+
+        // Input Handler
+        builder.RegisterEntryPoint<PlayerInputHandler>();
 
         builder.RegisterBuildCallback(container =>
         {

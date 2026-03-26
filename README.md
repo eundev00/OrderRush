@@ -32,3 +32,16 @@ ProjectLifetimeScope
 
 - `LobbyLifetimeScope`와 `GameLifetimeScope`는 형제 관계 (동시에 존재하지 않음)
 - 자식 Scope는 부모 Scope의 의존성을 주입받을 수 있음
+
+## 핵심 시스템
+
+### 재료 상태
+- `Raw` — 손질 안 된 상태
+- `Processed` — 손질된 상태
+- `Cooked` — 조리 완료
+- `Burnt` — 탄 상태
+
+### 데이터 구조
+- `RecipeData` — 레시피 이름, 필요 재료, 조리 단계
+- `Ingredient` — 재료 이름, 상태, 아이콘
+- `CookingStep` — 단계 이름, 필요 도구, 소요 시간, 결과 상태
