@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 501cb56e822d9473bac981136d0aefa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Plate
-  _interactPoint: {fileID: 0}
   _ingredientSlot: {fileID: 160648451389310045}
 --- !u!1 &4149031659496752808
 GameObject:
@@ -76,7 +75,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.02, z: 0}
-  m_LocalScale: {x: 0.8000001, y: 0.05, z: 0.8000001}
+  m_LocalScale: {x: 0.8000001, y: 0.1, z: 0.8000001}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8199843591775101528}
@@ -164,7 +163,7 @@ Transform:
   m_GameObject: {fileID: 7426574343366233938}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.03999996, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.8000001, y: 0.05, z: 0.8000001}
   m_ConstrainProportionsScale: 0
   m_Children: []

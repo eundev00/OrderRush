@@ -253,7 +253,6 @@ MonoBehaviour:
   _normalColor: {r: 0, g: 1, b: 0, a: 1}
   _selectedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _radius: 0.3
-  _drawWireOnNormal: 1
 --- !u!1 &9123607777838088661
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,7 @@ public class Plate : MonoBehaviour, ICarriable
         transform.SetParent(slot);
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
+        transform.localScale = Vector3.one;
     }
 
     public void OnPickedUp(Transform slot)
@@ -27,6 +28,7 @@ public class Plate : MonoBehaviour, ICarriable
         transform.SetParent(slot);
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
+        transform.localScale = Vector3.one;
     }
 
     public bool CanReceive(ICarriable item) => item is IngredientObject;

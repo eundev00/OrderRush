@@ -18,6 +18,8 @@ public class StageLifetimeScope : LifetimeScope
         // Input Handler
         builder.RegisterEntryPoint<PlayerInputHandler>();
 
+        builder.RegisterComponentInHierarchy<GridSystem>();
+
         // Inject IInjectable components in hierarchy
         builder.RegisterBuildCallback(container =>
         {

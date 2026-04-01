@@ -8,7 +8,7 @@ public class PlateRack : MonoBehaviour, IInteractable, IInjectable
     [SerializeField] Transform _interactPoint;
     [SerializeField] int _quantity = 5;
     [SerializeField] Transform _plateVisual;
-    [SerializeField] float _heightPerPlate = 0.05f;
+    [SerializeField] float _heightPerPlate = 0.2f;
 
     private GameObjectFactory _factory;
 
@@ -49,7 +49,7 @@ public class PlateRack : MonoBehaviour, IInteractable, IInjectable
 
 
         // 접시 생성
-        var plate = await _factory.CreateAsync<Plate>(PrefabKeys.Plate);
+        var plate = await _factory.CreateAsync<Plate>(PrefabKeys.GetPrefabPath(PrefabKeys.Plate));
         if (plate != null)
         {
             character.PickUp(plate);

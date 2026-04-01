@@ -2,54 +2,59 @@ Shader "OrderRush/GridFloor"
 {
     Properties
     {
-        _LineWidth ("Line Width", Float)  = 0.02
-        _LineColor ("Line Color", Color)  = (1,1,1,1)
-        _BaseColor ("Base Color", Color)  = (0.15,0.15,0.15,1)
+        _CellSize  ("Cell Size",  Float) = 1.0
+        _LineWidth ("Line Width", Float) = 0.03
+        _LineColor ("Line Color", Color) = (1,1,1,1)
+        _BaseColor ("Base Color", Color) = (0.15,0.15,0.15,1)
     }
 
     SubShader
     {
-        Tags { "RenderType"="Opaque" "Queue"="Geometry" }
+        Tags { "RenderType"="Opaque" "Queue"="Geometry" "RenderPipeline"="UniversalPipeline" }
 
         Pass
         {
-            CGPROGRAM
-            #pragma vertex   vert
+            Name "GridFloor"
+            Tags { "LightMode"="UniversalForward" }
+
+            HLSLPROGRAM
+            #pragma vertex vert
             #pragma fragment frag
-            #include "UnityCG.cginc"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
+            float  _CellSize;
             float  _LineWidth;
-            fixed4 _LineColor;
-            fixed4 _BaseColor;
+            float4 _LineColor;
+            float4 _BaseColor;
 
-            struct appdata
+            struct Attributes
             {
-                float4 vertex : POSITION;
+                float4 positionOS : POSITION;
             };
 
-            struct v2f
+            struct Varyings
             {
-                float4 pos      : SV_POSITION;
-                float3 worldPos : TEXCOORD0;
+                float4 positionCS : SV_POSITION;
+                float3 positionWS : TEXCOORD0;
             };
 
-            v2f vert(appdata v)
+            Varyings vert(Attributes v)
             {
-                v2f o;
-                o.pos      = UnityObjectToClipPos(v.vertex);
-                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+                Varyings o;
+                o.positionCS = TransformObjectToHClip(v.positionOS.xyz);
+                o.positionWS = TransformObjectToWorld(v.positionOS.xyz);
                 return o;
             }
 
-            fixed4 frag(v2f i) : SV_Target
+            half4 frag(Varyings i) : SV_Target
             {
-                float2 grid   = frac(float2(i.worldPos.x, i.worldPos.z));
-                float  lineX  = step(1.0 - _LineWidth, grid.x);
-                float  lineY  = step(1.0 - _LineWidth, grid.y);
+                float2 grid  = frac(float2(i.positionWS.x, i.positionWS.z) / _CellSize + 0.5);
+                float  lineX = step(1.0 - _LineWidth, grid.x);
+                float  lineY = step(1.0 - _LineWidth, grid.y);
                 float  isLine = saturate(lineX + lineY);
                 return lerp(_BaseColor, _LineColor, isLine);
             }
-            ENDCG
+            ENDHLSL
         }
     }
 }
