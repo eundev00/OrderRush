@@ -1,35 +1,14 @@
-using System.Threading;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-/// <summary>
-/// 월드에 존재하는 재료 오브젝트
-/// IngredientData ScriptableObject 데이터를 참조하고 런타임 상태를 관리
-/// </summary>
 public class IngredientObject : MonoBehaviour, ICarriable
 {
-    [SerializeField] MeshRenderer _meshRenderer;
+    [SerializeField] Renderer _renderer;
+    public IngredientData Data { get; private set; }
+    public bool IsRuined { get; private set; }
 
-    public IngredientContext Context { get; private set; }
-
-    public void Initialize(IngredientData ingredient)
+    public void SetData(IngredientData ingredient)
     {
-        Context = new IngredientContext(ingredient);
-        Context.OnStateChanged += OnStateChanged;  // 상태 변경 구독
-        OnStateChanged(Context.State);
-    }
-
-    void OnDestroy()
-    {
-        if (Context != null)
-            Context.OnStateChanged -= OnStateChanged;
-    }
-
-    public void OnPlaced(Transform slot)
-    {
-        transform.SetParent(slot);
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
+        Data = ingredient;
     }
 
     public void OnPickedUp(Transform slot)
@@ -39,19 +18,19 @@ public class IngredientObject : MonoBehaviour, ICarriable
         transform.localRotation = Quaternion.identity;
     }
 
-    public bool CanReceive(ICarriable item) => false;
-
-    public async UniTask Receive(ICarriable item, CharacterBase character, CancellationToken ct)
+    public void OnPutDown(Transform slot)
     {
-        await UniTask.CompletedTask;
+        transform.SetParent(slot);
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
     }
 
-    void OnStateChanged(IngredientState state)
+    public void SetRuined()
     {
-        Debug.Log($" OnStateChanged state :   {state}");
-        var material = Context.Data.GetMaterial(state);
-        Debug.Log($" OnStateChanged material :  {material}");
-        if (material != null)
-            _meshRenderer.material = material;
+        IsRuined = true;
+        var mpb = new MaterialPropertyBlock();
+        _renderer.GetPropertyBlock(mpb);
+        mpb.SetColor("_Color", new Color(0.3f, 0.2f, 0.1f));
+        _renderer.SetPropertyBlock(mpb);
     }
 }

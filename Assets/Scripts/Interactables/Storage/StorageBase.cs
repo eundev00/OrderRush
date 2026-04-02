@@ -48,7 +48,7 @@ public class StorageBase : MonoBehaviour, IInteractable
         // IngredientObject 생성
         var ingredientObj = Instantiate(_ingredient.Prefab, character.ItemSlot);
         var ingredientObject = ingredientObj.GetComponent<IngredientObject>();
-        ingredientObject.Initialize(_ingredient);
+        ingredientObject.SetData(_ingredient);
 
         // 캐릭터에게 전달
         character.PickUp(ingredientObject);

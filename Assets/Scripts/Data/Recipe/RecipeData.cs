@@ -5,6 +5,18 @@ using UnityEngine;
 public class RecipeData : ScriptableObject
 {
     public string RecipeName;
-    public List<RecipeIngredient> Ingredients = new();
-    public IngredientData ResultItem;  // 추가
+    public Sprite Icon;
+    public List<IngredientData> RequiredIngredients;
+
+    public bool IsComplete(List<IngredientData> placedIngredients)
+    {
+        if (placedIngredients.Count != RequiredIngredients.Count)
+            return false;
+
+        foreach (var required in RequiredIngredients)
+            if (!placedIngredients.Contains(required))
+                return false;
+
+        return true;
+    }
 }

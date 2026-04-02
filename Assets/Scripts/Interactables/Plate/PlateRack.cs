@@ -75,6 +75,7 @@ public class PlateRack : MonoBehaviour, IInteractable, IInjectable
 
         // 수량에 따라 높이 조정
         _plateVisual.gameObject.SetActive(true);
-        _plateVisual.localPosition = _basePosition - Vector3.up * (_quantity * _heightPerPlate);
+        _plateVisual.localPosition = _basePosition + Vector3.up * (_quantity * _heightPerPlate);
+        Debug.Log($"[PlateRack] UpdatePlateHeight - Quantity: {_quantity}, Position: {_plateVisual.localPosition}");
     }
 }

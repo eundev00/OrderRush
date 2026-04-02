@@ -1,0 +1,38 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class CookingProgressView : MonoBehaviour
+{
+    [SerializeField] Image _fill;
+    [SerializeField] GameObject _view;
+
+    void Awake()
+    {
+        SetVisible(false);
+    }
+
+    public void SetProgress(float value)
+    {
+        _fill.fillAmount = value;
+    }
+
+    public void SetCookingStyle()
+    {
+        SetVisible(true);
+        SetProgress(1);
+        _fill.color = Color.green;
+    }
+
+    public void SetOverdoneStyle()
+    {
+        SetVisible(true);
+        SetProgress(1);
+        _fill.color = Color.softYellow;
+    }
+
+    public void SetVisible(bool visible)
+    {
+
+        _view.SetActive(visible);
+    }
+}

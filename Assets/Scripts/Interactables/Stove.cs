@@ -14,13 +14,10 @@ public class Stove : CookingToolBase
         if (!character.IsHolding && IsOccupied)
         {
             var ingredientObject = _ingredientSlot.GetComponentInChildren<IngredientObject>();
-            if (_currentIngredient != null)
-            {
-                RemoveIngredient();
-                ingredientObject.OnPickedUp(character.ItemSlot);
-                character.PickUp(ingredientObject);
-                Debug.Log($"[Stove] 재료 집음: {ingredientObject.Context}");
-            }
+            RemoveIngredient();
+            ingredientObject.OnPickedUp(character.ItemSlot);
+            character.PickUp(ingredientObject);
+            Debug.Log($"[Stove] 재료 집음: {ingredientObject.Data.IngredientName}");
             return;
         }
 
@@ -33,7 +30,7 @@ public class Stove : CookingToolBase
             {
                 ingredientObject.transform.SetParent(_ingredientSlot);
                 ingredientObject.transform.localPosition = Vector3.zero;
-                PlaceIngredient(ingredientObject.Context.Data);
+                PlaceIngredient(ingredientObject.Data, ingredientObject);
             }
         }
 
@@ -53,16 +50,16 @@ public class Stove : CookingToolBase
             return;
         }
 
-        // CookableAbility 체크
-        var cookable = _currentIngredient.Data.GetAbility<CookableAbility>();
-        if (cookable == null)
+        // Cook 전환 가능 여부 체크
+        var transition = CurrentIngredient.Transitions.Find(t => t.Type == TransitionType.Cook);
+        if (transition == null)
         {
             Debug.Log($"[{DisplayName}] 조리할 수 없는 재료입니다.");
             return;
         }
 
-        Debug.Log($"[Stove] 조리 시작: {cookable.CookDuration}초");
-        StartCookingTimer(cookable);
+        Debug.Log($"[Stove] 조리 시작: {transition.Duration}초");
+        StartCookingTimer(transition);
         await UniTask.CompletedTask;
     }
 }

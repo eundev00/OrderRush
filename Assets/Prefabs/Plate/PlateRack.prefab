@@ -292,7 +292,7 @@ MonoBehaviour:
   _interactPoint: {fileID: 5746450774001251669}
   _quantity: 5
   _plateVisual: {fileID: 3173110239707013684}
-  _heightPerPlate: 0.05
+  _heightPerPlate: 0.2
 --- !u!1 &5529784192524110577
 GameObject:
   m_ObjectHideFlags: 0
