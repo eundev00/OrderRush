@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1073494878870338680}
   - component: {fileID: 2745852917220225698}
   m_Layer: 0
-  m_Name: KithenTalbe
+  m_Name: KithenTable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

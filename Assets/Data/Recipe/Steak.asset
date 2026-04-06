@@ -16,3 +16,4 @@ MonoBehaviour:
   Icon: {fileID: 0}
   RequiredIngredients:
   - {fileID: 11400000, guid: 012b81213826c4069b678dfdef7a021b, type: 2}
+  Price: 10

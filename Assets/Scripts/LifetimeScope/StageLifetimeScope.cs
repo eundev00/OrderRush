@@ -11,13 +11,16 @@ public class StageLifetimeScope : LifetimeScope
     {
         // Services
         builder.Register<IOrderService, OrderService>(Lifetime.Singleton);
+        builder.Register<ILevelsDataService, LevelsDataService>(Lifetime.Singleton);
 
         // Factories
         builder.Register<GameObjectFactory>(Lifetime.Singleton);
 
-        // Input Handler
+        // Initiators
+        builder.RegisterEntryPoint<GameInitiator>();
         builder.RegisterEntryPoint<PlayerInputHandler>();
 
+        // Grid
         builder.RegisterComponentInHierarchy<GridSystem>();
 
         // Inject IInjectable components in hierarchy

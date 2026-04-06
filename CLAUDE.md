@@ -43,138 +43,41 @@ ProjectLifetimeScope          ← VContainerSettings Root로 등록, 앱 전체 
 
 ---
 
-## 씬 구조
+## 핵심 시스템
 
-```
-Scenes/
-└── Gameplay     ← 메인 게임 씬 (Build Settings 인덱스 0)
-```
+### 행동 큐 시스템 (ActionExecutor)
+- 캐릭터의 모든 행동을 큐로 관리하여 순차 실행
+- IGameAction 기반 행동 시스템 (MoveAction, InteractAction)
+- 재클릭 시 현재 큐 취소 후 새 행동 시작
 
-Bootstrap 씬 없음. VContainerSettings가 ProjectLifetimeScope 자동 초기화.
+### 재료 & 레시피 데이터 구조
 
-### Gameplay 씬 오브젝트 계층
+**재료 변환 시스템**
 ```
-Gameplay
-├── Main Camera
-├── Directional Light
-├── Stage
-│   ├── Floor         ← NavMesh Bake 대상
-│   └── NavMeshSurface
-├── Characters
-│   └── Player
-│       ├── Model     ← 3D 메시 (시각 전용)
-│       └── (NavMeshAgent, NavMeshMover, PlayerInputHandler 컴포넌트)
-├── StageLifetimeScope
-└── EventSystem
+IngredientData (재료)
+├── IngredientName
+├── Icon, PrefabName
+└── List<IngredientTransition>  ← 이 재료가 변할 수 있는 모든 경로
+    ├── TransitionType (Cook/Overcook/Slice)
+    ├── Result (IngredientData)  ← 변환 후 결과 재료
+    ├── Duration                  ← 변환 소요 시간
+    └── OverDuration              ← 과도 시간 (타는 시간)
 ```
 
----
+**관계 예시**
+- 생고기 IngredientData
+  - Cook → 익은 고기 IngredientData (Duration: 5초)
+  - Overcook → 탄 고기 IngredientData (OverDuration: 3초)
+- 양파 IngredientData
+  - Slice → 썬 양파 IngredientData
 
-## 구현된 시스템
-
-### 이동 시스템
-- `NavMeshMover` — NavMeshAgent 래퍼, MoveToAsync(UniTask) / MoveDirect / Stop
-- `PlayerInputHandler` — MonoBehaviour + IUpdatable, 터치/마우스 입력 처리
-  - 에디터: 마우스 클릭 이동
-  - 모바일: 터치 이동
-  - IInteractable 클릭 → InteractWith()
-  - 바닥 클릭 → MoveToPosition()
-- 동적 장애물: `NavMeshObstacle + Carve` 방식
-
-### 인터랙션 시스템
-```csharp
-public interface IInteractable
-{
-    string DisplayName { get; }
-    Transform InteractPoint { get; }  // 캐릭터가 설 위치
-    UniTask InteractAsync(CancellationToken ct);
-}
+**레시피 시스템**
 ```
-- InteractPoint: 오브젝트마다 상호작용 위치 지정 (PlateUp 방식)
-- NavMesh.SamplePosition으로 막힌 경우 이동 불가 처리
-- Gizmo로 에디터에서만 시각화
-
-### 캐릭터 상태 머신
-```
-ICharacterState
-├── Enter()
-├── Exit()
-└── Update()
-
-CharacterStateMachine (IStartable, ITickable)
-├── 시작 시 IdleState로 초기화
-└── ChangeState(ICharacterState)
-
-상태
-├── IdleState  ← 대기
-├── MoveState  ← 이동 중, 도착 시 nextState로 전환
-└── WorkState  ← 상호작용 중, 완료 시 IdleState로 전환
-```
-
-**상태 전환 흐름**
-```
-바닥 클릭 → MoveState(nextState: IdleState)
-오브젝트 클릭 → MoveState(nextState: WorkState) → WorkState → IdleState
-이동 중 재클릭 → 기존 CancellationToken 취소 → 새 이동 시작
+RecipeData
+├── RecipeName
+├── Icon
+└── List<IngredientData> RequiredIngredients  ← 완성에 필요한 재료들
 ```
 
 ---
 
-## 데이터 설계 (ScriptableObject)
-
-### IngredientState (enum)
-- Raw / Processed / Cooked / Burnt
-
-### 구조
-```
-RecipeData (ScriptableObject)
-├── recipeName
-├── List<Ingredient> ingredients
-└── List<CookingStep> steps
-
-Ingredient (ScriptableObject)
-├── ingredientName
-├── IngredientState initialState
-└── Sprite icon
-
-CookingStep (Serializable 클래스)
-├── stepName
-├── requiredTool
-├── float duration  (0이면 시간 없음)
-└── IngredientState resultState
-```
-
----
-
-## 폴더 구조
-
-```
-Assets/
-├── _Core/          ← 공통 인터페이스 (IInteractable 등)
-├── Characters/
-├── Data/           ← ScriptableObject 에셋
-├── Interaction/
-├── Materials/
-├── Prefabs/
-├── Resources/
-├── Scenes/
-├── Scripts/
-│   ├── Character/      ← NavMeshMover, PlayerInputHandler, StateMachine
-│   ├── Core/           ← IInjectable, GameObjectFactory
-│   ├── LifetimeScope/  ← ProjectLifetimeScope, StageLifetimeScope, LobbyLifetimeScope
-│   ├── Data/           ← RecipeData, Ingredient, CookingStep, IngredientState
-│   └── Interaction/    ← IInteractable, TestInteractable
-└── Plugins/        ← DOTween, UniRx
-```
-
----
-
-## 개발 진행 상황
-
-- ✅ Phase 1 — NavMesh 이동
-- ✅ Phase 2 — 터치/마우스 입력
-- ✅ Phase 3 — IInteractable 인터랙션
-- 🔲 Phase 4 — 단일 레시피 구현 (스테이크 굽기)
-- 🔲 Phase 5 — 행동 큐 시스템
-- 🔲 Phase 6 — Grid 기반 가구 배치
-- 🔲 Phase 7 — UI 및 전체 흐름

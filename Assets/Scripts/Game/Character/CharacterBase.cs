@@ -2,7 +2,9 @@ using UnityEngine;
 
 public abstract class CharacterBase : MonoBehaviour
 {
-    [SerializeField] Transform _itemSlot;
+    [SerializeField] protected Transform _itemSlot;
+    [SerializeField] protected ActionExecutor _actionExecutor;
+    [SerializeField] protected NavMeshMover _mover;
 
     public bool IsHolding => CurrentCarriable != null;
     public ICarriable CurrentCarriable { get; protected set; }
@@ -40,5 +42,15 @@ public abstract class CharacterBase : MonoBehaviour
         CurrentCarriable = null;
         Debug.Log($"[{gameObject.name}] Put down: {item}");
         return item;
+    }
+
+    public void EnqueueAction(IGameAction action)
+    {
+        _actionExecutor.Enqueue(action);
+    }
+
+    public void ClearActions()
+    {
+        _actionExecutor.Clear();
     }
 }

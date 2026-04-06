@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RecipeData
   RecipeName: OnionRingSteak
   Icon: {fileID: 0}
+  Price: 15
   RequiredIngredients:
   - {fileID: 11400000, guid: 012b81213826c4069b678dfdef7a021b, type: 2}
   - {fileID: 11400000, guid: 1e0c28e7381704579bea3ade829e1533, type: 2}

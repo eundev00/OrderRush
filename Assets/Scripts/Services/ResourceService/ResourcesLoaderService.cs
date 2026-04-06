@@ -29,9 +29,13 @@ public class ResourcesLoaderService : IResourcesLoaderService
         return asset;
     }
 
-    public void Release<T>(T asset) where T : Object
+    public void Release(string key)
     {
-        Addressables.Release(asset);
+        if (_cache.TryGetValue(key, out var handle))
+        {
+            Addressables.Release(handle);
+            _cache.Remove(key);
+        }
     }
 
     public void ReleaseAll()

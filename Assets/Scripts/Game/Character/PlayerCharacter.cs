@@ -5,8 +5,6 @@ using System;
 
 public class PlayerCharacter : CharacterBase, IInjectable
 {
-    [SerializeField] NavMeshMover _mover;
-    [SerializeField] ActionExecutor _actionExecutor;
 
     IDisposable _subscription;
 

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RecipeData
   RecipeName: MushroomSteak
   Icon: {fileID: 0}
+  Price: 15
   RequiredIngredients:
   - {fileID: 11400000, guid: 012b81213826c4069b678dfdef7a021b, type: 2}
   - {fileID: 11400000, guid: a6ad074c8ab2f41619f765b408cbce13, type: 2}

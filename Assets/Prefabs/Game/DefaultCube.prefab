@@ -124,8 +124,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6749681879862263236}
-  - component: {fileID: 121371145802852355}
-  - component: {fileID: 9177083653191693383}
   m_Layer: 5
   m_Name: Gauge
   m_TagString: Untagged
@@ -153,34 +151,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 17.5}
   m_SizeDelta: {x: 10, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &121371145802852355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1851701306469555227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f6a35329c006421b8edbbe8175fcf36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CookingProgressView
-  _fill: {fileID: 1029291408820583810}
-  _root: {fileID: 1851701306469555227}
---- !u!114 &9177083653191693383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1851701306469555227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16c5a5a996a9440f1be5f881864d5601, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CookingProgressPresenter
-  _tool: {fileID: 4170590727711404227}
-  _view: {fileID: 121371145802852355}
 --- !u!1 &2501366780624797422
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,7 +458,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1221676538270937658}
-  - component: {fileID: 4170590727711404227}
   m_Layer: 0
   m_Name: DefaultCube
   m_TagString: Untagged
@@ -516,21 +485,6 @@ Transform:
   - {fileID: 6363104134622537894}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &4170590727711404227
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6826095470556155530}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 874b8f989c2cf4299a5cbdef12e4dfc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Stove
-  _interactPoint: {fileID: 797269147316210546}
-  _ingredientSlot: {fileID: 9131943504375930658}
-  _canvas: {fileID: 1596793587559052963}
 --- !u!1 &8970114752797252081
 GameObject:
   m_ObjectHideFlags: 0

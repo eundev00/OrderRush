@@ -6,7 +6,10 @@ public class RecipeData : ScriptableObject
 {
     public string RecipeName;
     public Sprite Icon;
+    public int Price;
     public List<IngredientData> RequiredIngredients;
+
+
 
     public bool IsComplete(List<IngredientData> placedIngredients)
     {
