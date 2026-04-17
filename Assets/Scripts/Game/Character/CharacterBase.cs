@@ -53,4 +53,28 @@ public abstract class CharacterBase : MonoBehaviour
     {
         _actionExecutor.Clear();
     }
+
+    public void EnableNavMeshAgent()
+    {
+        if (_mover != null)
+        {
+            _mover.EnableAgent();
+        }
+    }
+
+    public void DisableNavMeshAgent()
+    {
+        if (_mover != null)
+        {
+            _mover.DisableAgent();
+        }
+    }
+
+    public void WarpTo(Vector3 position)
+    {
+        if (_mover != null)
+        {
+            _mover.Warp(position);
+        }
+    }
 }

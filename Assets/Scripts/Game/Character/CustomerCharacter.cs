@@ -1,29 +1,25 @@
 using UnityEngine;
-using VContainer;
 
 public class CustomerCharacter : CharacterBase
 {
     public Order Order { get; private set; }
     public DiningSeat AssignedSeat { get; private set; }
 
-    private IOrderService _orderService;
-
-    [Inject]
-    public void Construct(IOrderService orderService)
-    {
-        _orderService = orderService;
-    }
+    private const float DEFAULT_TIME_LIMIT = 60f;
 
     public void GoToSeat(DiningSeat targetSeat, RecipeData recipe)
     {
         AssignedSeat = targetSeat;
-        EnqueueAction(new MoveAction(_mover, targetSeat.InteractPoint.position));
+
+        // 이동 → 착석 → 주문 생성
+        EnqueueAction(new MoveAction(_mover, targetSeat.SitPoint.position));
         EnqueueAction(new SitAction(this, targetSeat));
-        EnqueueAction(new OrderAction(this, recipe, _orderService));
+        EnqueueAction(new OrderAction(this, recipe));
     }
 
-    public void AssignOrder(Order order)
+    public void CreateOrder(RecipeData recipe)
     {
-        Order = order;
+        Order = new Order(recipe, DEFAULT_TIME_LIMIT);
+        Debug.Log($"[CustomerCharacter] Order created: {recipe.RecipeName} (Time limit: {DEFAULT_TIME_LIMIT}s)");
     }
 }

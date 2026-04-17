@@ -16,7 +16,8 @@ MonoBehaviour:
   _levelName: Day1
   _availableRecipes:
   - {fileID: 11400000, guid: 79109821db70a47ee8723d3b0da86470, type: 2}
-  _customerSpawnInterval: 10
+  _customerSpawnInterval: 5
   _maxCustomers: 1
+  _groupCustomers: 1
   _targetMoney: 50
   _timeLimit: 0

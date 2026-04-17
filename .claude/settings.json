@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/jeong-eunhwa/Library/Logs/Unity/**)"
+    ]
+  }
+}

@@ -13,7 +13,7 @@ public class CustomerService : ICustomerService, ITickable
     private readonly SpawnFactory _spawnFactory;
     private readonly ILevelProgressService _levelProgressService;
     private float _timer;
-    private bool _hasSpawned;
+    private int _spawnCount;
 
     public CustomerService(IOrderService orderService, SpawnFactory spawnFactory, ILevelProgressService levelProgressService)
     {
@@ -26,20 +26,21 @@ public class CustomerService : ICustomerService, ITickable
     {
         _levelContext = levelContext;
         _availableRecipes = levelData.AvailableRecipes;
-        _spawnInterval = 10f;
-        _hasSpawned = false;
+        _spawnInterval = levelData.CustomerSpawnInterval;
+        _spawnCount = levelData.MaxCustomers;
     }
 
     public void Tick()
     {
+        if (_spawnCount == 0) return;
         if (_levelContext == null) return;
-        if (_hasSpawned) return;
 
         _timer += Time.deltaTime;
 
         if (_timer >= _spawnInterval)
         {
-            _hasSpawned = true;
+            _spawnCount--;
+            _timer = 0;
             TrySpawn();
         }
     }
@@ -56,10 +57,10 @@ public class CustomerService : ICustomerService, ITickable
         var randomRecipe = _availableRecipes[Random.Range(0, _availableRecipes.Count)];
 
         var customer = await _spawnFactory.Create<CustomerCharacter>(PrefabKeys.GetPrefabPath(PrefabKeys.CustomerCharacter1));
-        customer.transform.position = _levelContext.SpawnTransform.position;
-        customer.transform.SetParent(_levelContext.transform, worldPositionStays: true);
-        customer.transform.localScale = Vector3.one;
 
+        customer.transform.SetParent(_levelContext.transform);
+        customer.transform.localScale = Vector3.one;
+        customer.WarpTo(_levelContext.SpawnPoint.position);
         customer.GoToSeat(availableSeat, randomRecipe);
     }
 

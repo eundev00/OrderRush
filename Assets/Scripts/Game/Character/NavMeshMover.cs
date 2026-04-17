@@ -23,6 +23,21 @@ public class NavMeshMover : MonoBehaviour
         _agent.ResetPath();
     }
 
+    public void EnableAgent()
+    {
+        _agent.enabled = true;
+    }
+
+    public void DisableAgent()
+    {
+        _agent.enabled = false;
+    }
+
+    public void Warp(Vector3 position)
+    {
+        _agent.Warp(position);
+    }
+
     bool IsArrived()
     {
         if (_agent.pathPending) return false;

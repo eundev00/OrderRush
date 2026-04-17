@@ -5,7 +5,6 @@ using System;
 
 public class PlayerCharacter : CharacterBase
 {
-
     IDisposable _subscription;
 
     [Inject]

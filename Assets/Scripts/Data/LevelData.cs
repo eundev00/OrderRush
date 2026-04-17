@@ -13,7 +13,8 @@ public class LevelData : ScriptableObject
 
     [Header("Customer Settings")]
     [SerializeField] private float _customerSpawnInterval = 5f;  // 손님 스폰 간격 (초)
-    [SerializeField] private int _maxCustomers = 2;  // 최대 동시 손님 수
+    [SerializeField] private int _maxCustomers = 3;  // 최대  손님 수
+    [SerializeField] private int _groupCustomers = 1;
 
     [Header("Goal")]
     [SerializeField] private int _targetMoney;  // 목표 금액

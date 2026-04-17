@@ -1,23 +1,26 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 public class OrderAction : IGameAction
 {
     private readonly CustomerCharacter _customer;
     private readonly RecipeData _recipe;
-    private readonly IOrderService _orderService;
 
-    public OrderAction(CustomerCharacter customer, RecipeData recipe, IOrderService orderService)
+    public OrderAction(CustomerCharacter customer, RecipeData recipe)
     {
         _customer = customer;
         _recipe = recipe;
-        _orderService = orderService;
     }
 
     public async UniTask ExecuteAsync(CancellationToken ct)
     {
-        var order = _orderService.AddOrder(_recipe);
-        _customer.AssignOrder(order);
+        // Order 생성 (착석 완료 후 실행됨)
+        _customer.CreateOrder(_recipe);
+
+        // TODO: 여기서 머리 위 UI 표시
+        // ShowOrderUI();
+
         await UniTask.CompletedTask;
     }
 }
