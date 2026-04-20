@@ -60,6 +60,7 @@ public class CustomerService : ICustomerService, ITickable
 
         customer.transform.SetParent(_levelContext.transform);
         customer.transform.localScale = Vector3.one;
+        customer.SetSpawnPosition(_levelContext.SpawnPoint.position);
         customer.WarpTo(_levelContext.SpawnPoint.position);
         customer.GoToSeat(availableSeat, randomRecipe);
     }

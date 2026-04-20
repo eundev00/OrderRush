@@ -10,6 +10,7 @@ public abstract class CharacterBase : MonoBehaviour
     public bool IsHolding => CurrentCarriable != null;
     public ICarriable CurrentCarriable { get; protected set; }
     public Transform ItemSlot => _itemSlot;
+    public bool IsExecuting => _actionExecutor.IsExecuting();
 
     public virtual void PickUp(ICarriable item)
     {

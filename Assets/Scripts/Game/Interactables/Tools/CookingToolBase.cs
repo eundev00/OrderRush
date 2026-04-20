@@ -97,36 +97,49 @@ public abstract class CookingToolBase : MonoBehaviour, IInteractable
     {
         Debug.Log($"[CookingToolBase] InteractAsync 호출됨 - IsHolding: {character.IsHolding}, IsOccupied: {HasIngredient}");
 
-        // 캐릭터가 아무것도 안 들고 있고 재료가 있으면 집기
-        if (!character.IsHolding && HasIngredient)
+        // 뭔가를 들고 있을 때
+        if (character.IsHolding)
         {
-            character.PickUp(_currentIngredientObject);  // OnPickedUp 자동 호출됨
-            Debug.Log($"[CookingToolBase] 재료 집음: {_currentIngredientObject.Data.IngredientName}");
-            RemoveIngredient();
-            return;
+            // 1. 접시를 들고 있고 재료가 있으면 → 접시에 재료 올리기
+            if (character.CurrentCarriable is Plate plate && HasIngredient)
+            {
+                character.PickUp(_currentIngredientObject);
+                await plate.Stack(_currentIngredientObject, character, ct);
+                character.PickUp(plate);
+                Debug.Log($"[{DisplayName}] 접시에 재료 올림: {_currentIngredientObject.Data.IngredientName}");
+                RemoveIngredient();
+            }
+            // 2. 재료를 들고 있고 재료가 없으면 → 재료 올리기
+            else if (character.CurrentCarriable is IngredientObject ingredientObj && !HasIngredient)
+            {
+                if (CanPlaceIngredient(ingredientObj.Data))
+                {
+                    character.PutDown();
+                    ingredientObj.transform.SetParent(_ingredientSlot);
+                    ingredientObj.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                    PlaceIngredient(ingredientObj.Data, ingredientObj);
+                    StartCooking();
+                    Debug.Log($"[{DisplayName}] 재료 올림: {ingredientObj.Data.IngredientName}");
+                }
+                else
+                {
+                    Debug.LogWarning($"[{DisplayName}] 이 도구에 올릴 수 없는 재료입니다.");
+                }
+            }
+        }
+        // 빈손일 때
+        else
+        {
+            // 재료가 있으면 → 재료 집기
+            if (HasIngredient)
+            {
+                character.PickUp(_currentIngredientObject);
+                RemoveIngredient();
+                Debug.Log($"[{DisplayName}] 재료 집음: {_currentIngredientObject.Data.IngredientName}");
+            }
         }
 
-        // 캐릭터가 재료 들고 있으면 올리기
-        if (character.IsHolding && !HasIngredient)
-        {
-            Debug.Log($"[{DisplayName}] 재료 올리기 시도");
-            var ingredientObject = character.CurrentCarriable as IngredientObject;
-            if (ingredientObject != null && CanPlaceIngredient(ingredientObject.Data))
-            {
-                character.PutDown();
-                ingredientObject.transform.SetParent(_ingredientSlot);
-                ingredientObject.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-                PlaceIngredient(ingredientObject.Data, ingredientObject);
-                StartCooking();
-            }
-            else
-            {
-                Debug.LogWarning($"[{DisplayName}] 이 도구에 올릴 수 없는 재료입니다.");
-            }
-        }
-
-        Debug.Log($"[Stove] IsCooking: {IsCooking}, IsOccupied: {HasIngredient}");
-
+        Debug.Log($"[{DisplayName}] IsCooking: {IsCooking}, IsOccupied: {HasIngredient}");
 
         await UniTask.CompletedTask;
     }

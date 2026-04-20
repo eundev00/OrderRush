@@ -9,6 +9,7 @@ using System;
 public class SceneBootstrapper
 {
     const string PreviousSceneKey = "PreviousScene";
+    const string LauncherScenePath = "Assets/Scenes/Launcher.unity";
 
     static string BootstrapScene =>
         EditorBuildSettings.scenes.Length > 0
@@ -51,12 +52,15 @@ public class SceneBootstrapper
         if (playModeButtons == null) return;
 
         var btn = new Button();
-        btn.text = $"{BootstrapSceneName}";
-        btn.AddToClassList("unity-editor-toolbar-element"); // 추가
+        btn.text = $"Launcher";
+        btn.AddToClassList("unity-editor-toolbar-element");
         btn.style.alignSelf = Align.Center;
         btn.clicked += () =>
         {
-            EditorSceneManager.OpenScene(BootstrapScene);
+            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            {
+                EditorSceneManager.OpenScene(LauncherScenePath);
+            }
         };
 
         var parent = playModeButtons.parent;
@@ -66,23 +70,23 @@ public class SceneBootstrapper
 
     static void OnPlayModeStateChanged(PlayModeStateChange state)
     {
-        if (state == PlayModeStateChange.ExitingEditMode)
-        {
-            PreviousScene = EditorSceneManager.GetActiveScene().path;
+        // if (state == PlayModeStateChange.ExitingEditMode)
+        // {
+        //     PreviousScene = EditorSceneManager.GetActiveScene().path;
 
-            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            {
-                EditorSceneManager.OpenScene(BootstrapScene);
-            }
-            else
-            {
-                EditorApplication.isPlaying = false;
-            }
-        }
-        else if (state == PlayModeStateChange.EnteredEditMode)
-        {
-            if (!string.IsNullOrEmpty(PreviousScene))
-                EditorSceneManager.OpenScene(PreviousScene);
-        }
+        //     if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+        //     {
+        //         EditorSceneManager.OpenScene(BootstrapScene);
+        //     }
+        //     else
+        //     {
+        //         EditorApplication.isPlaying = false;
+        //     }
+        // }
+        // else if (state == PlayModeStateChange.EnteredEditMode)
+        // {
+        //     if (!string.IsNullOrEmpty(PreviousScene))
+        //         EditorSceneManager.OpenScene(PreviousScene);
+        // }
     }
 }

@@ -34,7 +34,17 @@ public class KitchenTable : MonoBehaviour, IInteractable
         if (character.IsHolding)
         {
             var carriable = character.CurrentCarriable;
-            if (_carriable is IStackable stackable && stackable.CanStack(carriable))
+
+            // 접시를 들고 있고 테이블에 재료가 있으면 → 접시에 재료 올리기
+            if (carriable is Plate plate && _carriable is IngredientObject)
+            {
+                character.PickUp(_carriable);
+                await plate.Stack(_carriable, character, ct);
+                character.PickUp(plate);
+                _carriable = null;
+                Debug.Log("[KitchenTable] Ingredient added to plate");
+            }
+            else if (_carriable is IStackable stackable && stackable.CanStack(carriable))
             {
                 var item = character.PutDown();
                 await stackable.Stack(item, character, ct);

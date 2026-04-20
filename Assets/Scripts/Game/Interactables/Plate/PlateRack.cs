@@ -34,13 +34,6 @@ public class PlateRack : MonoBehaviour, IInteractable
     {
         if (character == null) return;
 
-        // 이미 들고 있으면 무시
-        if (character.IsHolding)
-        {
-            Debug.Log("[PlateRack] Character is already holding something");
-            return;
-        }
-
         // 수량이 0이면 무시
         if (_quantity <= 0)
         {
@@ -48,12 +41,35 @@ public class PlateRack : MonoBehaviour, IInteractable
             return;
         }
 
-
         // 접시 생성
         var plate = await _factory.Create<Plate>(PrefabKeys.GetPrefabPath(PrefabKeys.Plate));
-        if (plate != null)
+        if (plate == null) return;
+
+        // 뭔가를 들고 있을 때
+        if (character.IsHolding)
         {
-            character.PickUp(plate);  // OnPickedUp 자동 호출됨
+            // 재료를 들고 있으면 → 접시에 재료 담고 접시 들기
+            if (character.CurrentCarriable is IngredientObject ingredientObj)
+            {
+                character.PutDown();
+                await plate.Stack(ingredientObj, character, ct);
+                character.PickUp(plate);
+                _quantity--;
+                UpdatePlateHeight();
+                Debug.Log($"[PlateRack] Ingredient placed on new plate. Remaining plates: {_quantity}");
+            }
+            // 재료가 아닌 것을 들고 있으면 → 무시
+            else
+            {
+                Destroy(plate.gameObject);
+                Debug.Log("[PlateRack] Character is holding something that cannot be placed on a plate");
+            }
+        }
+        // 빈손일 때
+        else
+        {
+            // 접시만 들기
+            character.PickUp(plate);
             _quantity--;
             UpdatePlateHeight();
             Debug.Log($"[PlateRack] Plate picked up. Remaining: {_quantity}");

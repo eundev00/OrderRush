@@ -76,4 +76,14 @@ public class Plate : MonoBehaviour, ICarriable, IStackable
             }
         }
     }
+
+    public void ClearIngredients()
+    {
+        foreach (var ingredient in _placedIngredients)
+        {
+            Destroy(ingredient.gameObject);
+        }
+        _placedIngredients.Clear();
+        Debug.Log("[Plate] All ingredients cleared");
+    }
 }

@@ -20,12 +20,14 @@ public class DiningTable : MonoBehaviour, IInteractable
         for (int i = 0; i < _seats.Length; i++)
         {
             _seats[i].Init(this, i);
+            _currentPlates.Add(null);
         }
     }
 
     public void PlacePlate(int seatIndex, Plate plate)
     {
         _currentPlates[seatIndex] = plate;
+        plate.transform.SetParent(transform);
         plate.transform.position = _plateSlots[seatIndex].position;
     }
 
@@ -74,18 +76,12 @@ public class DiningTable : MonoBehaviour, IInteractable
 
                 // Order 완료 처리
                 customer.Order.Complete();
-                Debug.Log($"[DiningTable] Order completed: {customer.Order.Recipe.RecipeName}");
 
-                seat.Clear();
-
-                Debug.Log($"[DiningTable] Served food to customer at seat {seat.GetSeatIndex()}");
-                await UniTask.CompletedTask;
+                // 손님이 음식 먹고 나가기 (접시를 넘겨줌)
+                customer.EatAndLeave(plate);
                 return;
             }
         }
-
-        // 일치하는 주문 없음
-        Debug.LogWarning("[DiningTable] No matching order found!");
         await UniTask.CompletedTask;
     }
 
