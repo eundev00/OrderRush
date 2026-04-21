@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using Cysharp.Threading.Tasks;
 using System.Threading;
-using JetBrains.Annotations;
 
 public class NavMeshMover : MonoBehaviour
 {

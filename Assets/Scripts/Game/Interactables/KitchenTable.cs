@@ -1,7 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using JetBrains.Annotations;
 
 public class KitchenTable : MonoBehaviour, IInteractable
 {

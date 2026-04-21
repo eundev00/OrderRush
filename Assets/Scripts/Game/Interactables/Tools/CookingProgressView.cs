@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using JetBrains.Annotations;
 
 public class CookingProgressView : MonoBehaviour
 {

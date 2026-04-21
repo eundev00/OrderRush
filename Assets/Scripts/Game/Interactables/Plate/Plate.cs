@@ -4,7 +4,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
-using JetBrains.Annotations;
 
 public class Plate : MonoBehaviour, ICarriable, IStackable
 {
@@ -16,6 +15,7 @@ public class Plate : MonoBehaviour, ICarriable, IStackable
 
     public string DisplayName => "Plate";
     public List<IngredientObject> PlacedIngredients => _placedIngredients;
+    public bool IsDirty { get; private set; }
 
     public void OnPickedUp(Transform slot)
     {
@@ -39,6 +39,7 @@ public class Plate : MonoBehaviour, ICarriable, IStackable
         {
             ingredientObj.OnPutDown(_ingredientSlot);
             _placedIngredients.Add(ingredientObj);
+            IsDirty = true;
             Debug.Log($"[Plate] Ingredient stacked: {ingredientObj.Data.IngredientName}");
             CheckRecipe();
         }
@@ -84,6 +85,13 @@ public class Plate : MonoBehaviour, ICarriable, IStackable
             Destroy(ingredient.gameObject);
         }
         _placedIngredients.Clear();
+        IsDirty = false;
         Debug.Log("[Plate] All ingredients cleared");
+    }
+
+    public void SetClean()
+    {
+        IsDirty = false;
+        Debug.Log("[Plate] Set to clean");
     }
 }

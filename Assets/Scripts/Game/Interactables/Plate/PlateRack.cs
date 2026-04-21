@@ -2,7 +2,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
-using JetBrains.Annotations;
 
 public class PlateRack : MonoBehaviour, IInteractable
 {
