@@ -1,5 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
+using MessagePipe;
+using UniRx;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -9,29 +11,46 @@ public class LevelContextPresenter : ILevelContextPresenter, ITickable, IDisposa
     private readonly ILevelProgressService _levelsDataService;
     private readonly IOrderService _orderService;
     private readonly LevelFactory _levelFactory;
+    private readonly ISubscriber<PaymentEvent> _paymentSubscriber;
+    private readonly CompositeDisposable _disposable = new();
 
     public LevelData CurrentLevelData { get; private set; }
     public LevelContext CurrentLevelContext { get; private set; }
-    private int _currentMoney;
+    public LevelProgressModel LevelProgressModel { get; private set; }
+
     private float _elapsedTime;
-    private bool _isLevelActive;
 
-
-    public LevelContextPresenter(IResourcesLoaderService resourcesLoaderService,
+    public LevelContextPresenter(
+        IResourcesLoaderService resourcesLoaderService,
         ILevelProgressService levelsDataService,
         IOrderService orderService,
-        LevelFactory levelFactory)
+        LevelFactory levelFactory,
+        ISubscriber<PaymentEvent> paymentSubscriber)
     {
         _resourcesLoaderService = resourcesLoaderService;
         _levelsDataService = levelsDataService;
         _orderService = orderService;
         _levelFactory = levelFactory;
+        _paymentSubscriber = paymentSubscriber;
+
+        LevelProgressModel = new LevelProgressModel();
+
+        // PaymentEvent 구독
+        _paymentSubscriber
+            .Subscribe(OnPaymentReceived)
+            .AddTo(_disposable);
+    }
+
+    private void OnPaymentReceived(PaymentEvent evt)
+    {
+        LevelProgressModel.AddMoney(evt.Amount);
+        Debug.Log($"[LevelContextPresenter] Payment received: +{evt.Amount} for {evt.RecipeName} (Total: {LevelProgressModel.CurrentMoney.Value}/{LevelProgressModel.TargetMoney})");
+
+        CheckLevelCompleted();
     }
 
     public async UniTask LoadLevelContext(int levelNumber)
     {
-        _isLevelActive = false;
-
         // 1. 레벨 데이터 가져오기
         CurrentLevelData = _levelsDataService.GetLevelData(levelNumber);
         if (CurrentLevelData == null)
@@ -40,7 +59,7 @@ public class LevelContextPresenter : ILevelContextPresenter, ITickable, IDisposa
             return;
         }
 
-        // 2. 레벨 맵 로드 //LoadLevelsData
+        // 2. 레벨 맵 로드
         var levelContext = await _levelFactory.CreateLevelContext(levelNumber);
         if (levelContext == null)
         {
@@ -49,57 +68,62 @@ public class LevelContextPresenter : ILevelContextPresenter, ITickable, IDisposa
         }
         CurrentLevelContext = levelContext;
 
-        // 3. 초기화
-        _currentMoney = 0;
+        // 3. Model 초기화
+        LevelProgressModel.Initialize(CurrentLevelData.TargetMoney, CurrentLevelData.TimeLimit);
         _elapsedTime = 0f;
-        _isLevelActive = true;
 
         Debug.Log($"Level {CurrentLevelData.LevelNumber} loaded: {CurrentLevelData.LevelName}");
     }
 
-    public void AddMoney(int amount)
-    {
-        if (!_isLevelActive) return;
-
-        _currentMoney += amount;
-
-        CheckLevelCompleted();
-    }
-
     public void Tick()
     {
-        if (!_isLevelActive || CurrentLevelData == null) return;
+        if (!LevelProgressModel.IsLevelActive.Value || CurrentLevelData == null) return;
 
         _elapsedTime += Time.deltaTime;
 
-        // 시간 제한 체크
-        if (CurrentLevelData.TimeLimit > 0 && _elapsedTime >= CurrentLevelData.TimeLimit)
+        // 남은 시간 업데이트
+        if (CurrentLevelData.TimeLimit > 0)
         {
-            CheckLevelFailed();
+            float remainingTime = Mathf.Max(0, CurrentLevelData.TimeLimit - _elapsedTime);
+            LevelProgressModel.UpdateRemainingTime(remainingTime);
+
+            // 시간 제한 체크
+            if (LevelProgressModel.IsTimeExpired())
+            {
+                CheckLevelFailed();
+            }
         }
     }
 
     private void CheckLevelCompleted()
     {
-        if (_currentMoney >= CurrentLevelData.TargetMoney)
+        if (LevelProgressModel.IsCompleted())
         {
-            _isLevelActive = false;
+            LevelProgressModel.SetLevelInactive();
             _levelsDataService.SetMaxReachedLevel(CurrentLevelData.LevelNumber + 1);
-            Debug.Log($"Level {CurrentLevelData.LevelNumber} completed!");
+
+            Debug.Log($"[LevelContextPresenter] ===== LEVEL {CurrentLevelData.LevelNumber} COMPLETED! =====");
+            Debug.Log($"[LevelContextPresenter] Final Money: {LevelProgressModel.CurrentMoney.Value}/{LevelProgressModel.TargetMoney}");
         }
     }
 
     private void CheckLevelFailed()
     {
-        if (_currentMoney < CurrentLevelData.TargetMoney)
+        if (!LevelProgressModel.IsCompleted())
         {
-            _isLevelActive = false;
-            Debug.Log($"Level {CurrentLevelData.LevelNumber} failed!");
+            LevelProgressModel.SetLevelInactive();
+
+            Debug.Log($"[LevelContextPresenter] ===== LEVEL {CurrentLevelData.LevelNumber} FAILED! =====");
+            Debug.Log($"[LevelContextPresenter] Final Money: {LevelProgressModel.CurrentMoney.Value}/{LevelProgressModel.TargetMoney}");
+            Debug.Log($"[LevelContextPresenter] Time expired!");
         }
     }
 
     public void Dispose()
     {
+        _disposable?.Dispose();
+        LevelProgressModel?.Dispose();
+
         if (CurrentLevelContext != null && CurrentLevelData != null)
         {
             _levelFactory.ReleaseLevelContext(CurrentLevelData.LevelNumber);

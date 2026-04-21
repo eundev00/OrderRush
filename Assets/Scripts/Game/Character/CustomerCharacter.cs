@@ -1,5 +1,7 @@
 using Cysharp.Threading.Tasks;
+using MessagePipe;
 using UnityEngine;
+using VContainer;
 
 public class CustomerCharacter : CharacterBase
 {
@@ -10,6 +12,13 @@ public class CustomerCharacter : CharacterBase
     private const float EAT_DURATION = 5f;
 
     private Vector3 _spawnPosition;
+    private IPublisher<PaymentEvent> _paymentPublisher;
+
+    [Inject]
+    public void Construct(IPublisher<PaymentEvent> paymentPublisher)
+    {
+        _paymentPublisher = paymentPublisher;
+    }
 
     public void SetSpawnPosition(Vector3 position)
     {
@@ -46,6 +55,13 @@ public class CustomerCharacter : CharacterBase
         {
             plate.ClearIngredients();
             Debug.Log($"[CustomerCharacter] Plate cleared");
+        }
+
+        if (Order != null && _paymentPublisher != null)
+        {
+            var paymentEvent = new PaymentEvent(Order.Recipe.Price, Order.Recipe.RecipeName);
+            _paymentPublisher.Publish(paymentEvent);
+            Debug.Log($"[CustomerCharacter] Payment event published: ${Order.Recipe.Price} for {Order.Recipe.RecipeName}");
         }
 
         // 의자에서 일어나기 (NavMeshAgent 다시 활성화)
