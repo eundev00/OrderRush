@@ -9,7 +9,14 @@ using System;
 public class SceneBootstrapper
 {
     const string PreviousSceneKey = "PreviousScene";
+    const string LauncherButtonPressedKey = "LauncherButtonPressed";
     const string LauncherScenePath = "Assets/Scenes/Launcher.unity";
+
+    static bool IsLauncherButtonPressed
+    {
+        get => EditorPrefs.GetBool(LauncherButtonPressedKey, false);
+        set => EditorPrefs.SetBool(LauncherButtonPressedKey, value);
+    }
 
     static string BootstrapScene =>
         EditorBuildSettings.scenes.Length > 0
@@ -57,10 +64,8 @@ public class SceneBootstrapper
         btn.style.alignSelf = Align.Center;
         btn.clicked += () =>
         {
-            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            {
-                EditorSceneManager.OpenScene(LauncherScenePath);
-            }
+            IsLauncherButtonPressed = true;
+            EditorApplication.isPlaying = true;
         };
 
         var parent = playModeButtons.parent;
@@ -70,23 +75,30 @@ public class SceneBootstrapper
 
     static void OnPlayModeStateChanged(PlayModeStateChange state)
     {
-        // if (state == PlayModeStateChange.ExitingEditMode)
-        // {
-        //     PreviousScene = EditorSceneManager.GetActiveScene().path;
+        if (state == PlayModeStateChange.ExitingEditMode)
+        {
+            if (IsLauncherButtonPressed)
+            {
+                PreviousScene = EditorSceneManager.GetActiveScene().path;
 
-        //     if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-        //     {
-        //         EditorSceneManager.OpenScene(BootstrapScene);
-        //     }
-        //     else
-        //     {
-        //         EditorApplication.isPlaying = false;
-        //     }
-        // }
-        // else if (state == PlayModeStateChange.EnteredEditMode)
-        // {
-        //     if (!string.IsNullOrEmpty(PreviousScene))
-        //         EditorSceneManager.OpenScene(PreviousScene);
-        // }
+                if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+                {
+                    EditorSceneManager.OpenScene(LauncherScenePath);
+                }
+                else
+                {
+                    EditorApplication.isPlaying = false;
+                    IsLauncherButtonPressed = false;
+                }
+            }
+        }
+        else if (state == PlayModeStateChange.EnteredEditMode)
+        {
+            if (IsLauncherButtonPressed && !string.IsNullOrEmpty(PreviousScene))
+            {
+                EditorSceneManager.OpenScene(PreviousScene);
+                IsLauncherButtonPressed = false;
+            }
+        }
     }
 }
