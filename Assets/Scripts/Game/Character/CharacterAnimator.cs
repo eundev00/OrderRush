@@ -11,7 +11,7 @@ public class CharacterAnimator : MonoBehaviour
     [SerializeField] Animator _animator;
 
     public void SetSpeed(float speed)
-        => _animator.SetFloat(SpeedHash, speed, 0.1f, Time.deltaTime);
+        => _animator.SetFloat(SpeedHash, speed);
 
     public void SetWorking(bool isWorking)
         => _animator.SetBool(IsWorkingHash, isWorking);

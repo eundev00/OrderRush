@@ -9,7 +9,7 @@ public class LevelFactory
     private readonly IResourcesLoaderService _resourceLoader;
     private readonly IObjectResolver _container;
 
-    private const string DefaultPath = "Assets/Prefabs/Game/Level/Level{0}.prefab";
+    private const string DefaultPath = "Assets/Prefabs/Game/Level/LevelMap{0}.prefab";
 
 
     public LevelFactory(IResourcesLoaderService resourceLoader,

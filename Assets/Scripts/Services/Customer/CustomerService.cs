@@ -41,7 +41,7 @@ public class CustomerService : ICustomerService, ITickable
         {
             _spawnCount--;
             _timer = 0;
-            TrySpawn();
+            //    TrySpawn();
         }
     }
 

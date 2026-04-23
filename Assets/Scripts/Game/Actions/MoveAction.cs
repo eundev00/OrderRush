@@ -21,10 +21,12 @@ public class MoveAction : IGameAction
 
         try
         {
+
             await _mover.MoveToAsync(_destination, ct);
         }
         finally
         {
+            Debug.Log("MoveAction completed or cancelled");
             _animator.SetSpeed(0f);
         }
     }
