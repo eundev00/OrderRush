@@ -6,16 +6,14 @@ using VContainer;
 public class PlateRack : MonoBehaviour, IInteractable
 {
     [NotNull][SerializeField] Transform _interactPoint;
-    [SerializeField] int _quantity = 5;
-    [NotNull][SerializeField] Transform _plateVisual;
-    [SerializeField] float _heightPerPlate = 0.2f;
+    [SerializeField] int _quantity = 4;
+    [NotNull][SerializeField] GameObject[] _plates;
 
     private SpawnFactory _factory;
-
+    private int _currentPlateIndex;
 
     public string DisplayName => "Plate Rack";
     public Transform InteractPoint => _interactPoint;
-    private Vector3 _basePosition;
 
     [Inject]
     public void Construct(SpawnFactory factory)
@@ -25,8 +23,11 @@ public class PlateRack : MonoBehaviour, IInteractable
 
     void Start()
     {
-        _basePosition = _plateVisual.localPosition;
-        UpdatePlateHeight();
+        _currentPlateIndex = _quantity;
+        foreach (var plate in _plates)
+        {
+            plate.SetActive(true);
+        }
     }
 
     public async UniTask InteractAsync(CharacterBase character, CancellationToken ct)
@@ -34,7 +35,7 @@ public class PlateRack : MonoBehaviour, IInteractable
         if (character == null) return;
 
         // 수량이 0이면 무시
-        if (_quantity <= 0)
+        if (_currentPlateIndex <= 0)
         {
             Debug.Log("[PlateRack] No plates available");
             return;
@@ -53,9 +54,9 @@ public class PlateRack : MonoBehaviour, IInteractable
                 character.PutDown();
                 await plate.Stack(ingredientObj, character, ct);
                 character.PickUp(plate);
-                _quantity--;
-                UpdatePlateHeight();
-                Debug.Log($"[PlateRack] Ingredient placed on new plate. Remaining plates: {_quantity}");
+                _currentPlateIndex--;
+                UpdatePlateCount();
+                Debug.Log($"[PlateRack] Ingredient placed on new plate. Remaining plates: {_currentPlateIndex}");
             }
             // 재료가 아닌 것을 들고 있으면 → 무시
             else
@@ -69,28 +70,20 @@ public class PlateRack : MonoBehaviour, IInteractable
         {
             // 접시만 들기
             character.PickUp(plate);
-            _quantity--;
-            UpdatePlateHeight();
-            Debug.Log($"[PlateRack] Plate picked up. Remaining: {_quantity}");
+            _currentPlateIndex--;
+            UpdatePlateCount();
+            Debug.Log($"[PlateRack] Plate picked up. Remaining: {_currentPlateIndex}");
         }
 
         await UniTask.CompletedTask;
     }
 
-    void UpdatePlateHeight()
+    void UpdatePlateCount()
     {
-        if (_plateVisual == null) return;
-
-        // 수량이 0이면 숨기기
-        if (_quantity <= 0)
+        if (_plates.Length <= _currentPlateIndex)
         {
-            _plateVisual.gameObject.SetActive(false);
             return;
         }
-
-        // 수량에 따라 높이 조정
-        _plateVisual.gameObject.SetActive(true);
-        _plateVisual.localPosition = _basePosition + Vector3.up * (_quantity * _heightPerPlate);
-        Debug.Log($"[PlateRack] UpdatePlateHeight - Quantity: {_quantity}, Position: {_plateVisual.localPosition}");
+        _plates[_currentPlateIndex].SetActive(false);
     }
 }

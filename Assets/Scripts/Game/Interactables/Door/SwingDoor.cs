@@ -14,16 +14,19 @@ public class SwingDoor : MonoBehaviour
     {
         if (!_isOpen && other.CompareTag("Player"))
         {
-            var dot = Vector3.Dot(transform.forward,
-                other.transform.position - transform.position);
+            var dot = Vector3.Dot(transform.forward, other.GetComponentInParent<NavMeshMover>().Velocity);
             Open(dot > 0);
+            other.GetComponentInParent<NavMeshMover>()?.SetSlowSpeed();
         }
     }
 
     void OnTriggerExit(Collider other)
     {
         if (_isOpen && other.CompareTag("Player"))
+        {
             Close();
+            other.GetComponentInParent<NavMeshMover>()?.SetNormalSpeed();
+        }
     }
 
     void Open(bool fromFront)

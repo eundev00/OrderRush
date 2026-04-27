@@ -998,7 +998,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7206651135739240603}
   - component: {fileID: 9188286039040762368}
-  - component: {fileID: 1981341773354769246}
   m_Layer: 0
   m_Name: Chef_02
   m_TagString: Untagged
@@ -1052,29 +1051,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!136 &1981341773354769246
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8018935844622006817}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.7
-  m_Height: 3
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.2, z: 0}
 --- !u!1 &8610880304758900470
 GameObject:
   m_ObjectHideFlags: 0
@@ -1122,6 +1098,7 @@ GameObject:
   - component: {fileID: 6251384451303262347}
   - component: {fileID: 7130702295909915568}
   - component: {fileID: 727480115667940830}
+  - component: {fileID: 5503081512564017102}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1197,6 +1174,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NavMeshMover
   _agent: {fileID: 7096822151798818518}
+  _normalSpeed: 3.5
+  _slowSpeed: 2.5
 --- !u!114 &7130702295909915568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1222,6 +1201,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterAnimator
   _animator: {fileID: 9188286039040762368}
+--- !u!136 &5503081512564017102
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9123607777838088661}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.7
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.2, z: 0}
 --- !u!1001 &1346048122501471906
 PrefabInstance:
   m_ObjectHideFlags: 0
