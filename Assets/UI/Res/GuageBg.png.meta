@@ -1,12 +1,5 @@
 fileFormatVersion: 2
-guid: 72b875c4c00b23f43b4e5afd8c1fc43f
-AssetOrigin:
-  serializedVersion: 1
-  productId: 308485
-  packageName: GameDev Starter Kit - Cooking
-  packageVersion: v1.0.0
-  assetPath: Assets/AssetHunts!/GameDev Starter Kit - Cooking/Asset/2D Icons/Beef_Meat_01_Patty_Ready.png
-  uploadId: 761863
+guid: ec98761ee8261488c983c534d0db2fb5
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

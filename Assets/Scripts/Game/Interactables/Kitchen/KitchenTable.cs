@@ -40,15 +40,14 @@ public class KitchenTable : InteractableBase
                 var plate = _placedCarriable as Plate;
                 if (plate.TryPlaceOntoOther(character.CurrentCarriable))
                 {
-                    await character.PickUp(_placedCarriable);
-                    _placedCarriable = null;
+                    await character.PutDown();
                 }
             }
 
         }
         else if (character.IsHolding && _placedCarriable == null)
         {
-            _placedCarriable = await character.PutDown(_slot);
+            _placedCarriable = await character.PutDownAt(_slot);
         }
         else if (character.IsHolding == false && _placedCarriable != null)
         {

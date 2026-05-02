@@ -6,6 +6,7 @@ using VContainer.Unity;
 public class GameLifetimeScope : LifetimeScope
 {
     [SerializeField] Transform _root;
+    [SerializeField] RectTransform _gaugeContainer;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -17,11 +18,14 @@ public class GameLifetimeScope : LifetimeScope
         // Factories
         builder.Register<SpawnFactory>(Lifetime.Singleton);
 
+        // Gauge System
+        builder.Register<GaugeFactory>(Lifetime.Singleton).WithParameter(_gaugeContainer);
+
         // Initiators
         builder.RegisterEntryPoint<GameInitiator>();
         builder.RegisterEntryPoint<PlayerInputHandler>();
 
-        // Level 
+        // Level
         builder.Register<LevelFactory>(Lifetime.Scoped).WithParameter(_root);
         builder.Register<LevelContextPresenter>(Lifetime.Scoped)
                 .As<ILevelContextPresenter>()

@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: SteakMeat
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
   IngredientName: SteakMeat
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 68b5ab5afb5044d269bd32828ef99b2c, type: 3}
   PrefabName: SteakMeat
   Transitions:
   - Type: 0
     Result: {fileID: 11400000, guid: 012b81213826c4069b678dfdef7a021b, type: 2}
-    Duration: 3
-    OverDuration: 3
+    Duration: 5
+    OverDuration: 5

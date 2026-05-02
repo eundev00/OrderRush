@@ -31,34 +31,38 @@ public class Stove : CookingToolBase
         try
         {
             IsCooking = true;
-            _progressView.SetCookingStyle();
+
+            ShowCookingGauge();
 
             while (_cookingElapsedTime < transition.Duration)
             {
                 _cookingElapsedTime += Time.deltaTime;
-                UpdateProgress(_cookingElapsedTime, transition.Duration);
+                float progress = _cookingElapsedTime / transition.Duration;
+                UpdateProgress(progress);
                 await UniTask.Yield(PlayerLoopTiming.Update, _cookingCts.Token);
             }
 
             // 조리 완료
             Debug.Log($"[Stove] 조리 완료: {transition.Result.IngredientName}");
-            _progressView.SetProgress(1f);
+            UpdateProgress(1f);
             await CompleteTransition(transition);
 
             _cookingElapsedTime = 0f;
-            _progressView.SetOverdoneStyle();
+
+            // 주황색으로 색상 변경 (오버쿡)
+            _gaugePresenter?.SetColor(new Color(1f, 0.5f, 0f));
 
             // 오버쿡 타이머
             while (_cookingElapsedTime < transition.OverDuration)
             {
                 _cookingElapsedTime += Time.deltaTime;
-                UpdateProgress(_cookingElapsedTime, transition.OverDuration);
+                float progress = _cookingElapsedTime / transition.OverDuration;
+                UpdateProgress(progress);
 
                 await UniTask.Yield(PlayerLoopTiming.Update, _cookingCts.Token);
             }
 
             CurrentIngredientObject.SetRuined();
-            _progressView.SetVisible(false);
 
         }
         catch (OperationCanceledException)
@@ -84,7 +88,6 @@ public class Stove : CookingToolBase
         _cookingCts?.Dispose();
         _cookingCts = null;
         _cookingElapsedTime = 0;
-        _progressView.SetVisible(false);
     }
 
 

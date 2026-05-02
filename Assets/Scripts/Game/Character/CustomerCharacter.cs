@@ -1,23 +1,29 @@
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
 
-public class CustomerCharacter : CharacterBase
+public class CustomerCharacter : CharacterBase, IInteractable
 {
     public Order Order { get; private set; }
     public DiningSeat AssignedSeat { get; private set; }
 
-    private const float DEFAULT_TIME_LIMIT = 60f;
+    public const float DEFAULT_TIME_LIMIT = 60f;
     private const float EAT_DURATION = 5f;
+    public const float WAIT_TIME_LIMIT = 60f;
 
+
+    private IOrderService _orderService;
     private Vector3 _spawnPosition;
     private IPublisher<PaymentEvent> _paymentPublisher;
+    public Transform InteractPoint => AssignedSeat != null ? AssignedSeat.Table.InteractPoint : transform;
 
     [Inject]
-    public void Construct(IPublisher<PaymentEvent> paymentPublisher)
+    public void Construct(IPublisher<PaymentEvent> paymentPublisher, IOrderService orderService)
     {
         _paymentPublisher = paymentPublisher;
+        _orderService = orderService;
     }
 
     public void SetSpawnPosition(Vector3 position)
@@ -25,20 +31,14 @@ public class CustomerCharacter : CharacterBase
         _spawnPosition = position;
     }
 
-    public void GoToSeat(DiningSeat targetSeat, RecipeData recipe)
+    public void GoToSeat(DiningSeat targetSeat)
     {
         AssignedSeat = targetSeat;
 
         // 이동 → 착석 → 주문 생성
         EnqueueAction(new MoveAction(_mover, targetSeat.SitPoint.position, _animator));
         EnqueueAction(new SitAction(this, targetSeat));
-        EnqueueAction(new OrderAction(this, recipe));
-    }
-
-    public void CreateOrder(RecipeData recipe)
-    {
-        Order = new Order(recipe, DEFAULT_TIME_LIMIT);
-        Debug.Log($"[CustomerCharacter] Order created: {recipe.RecipeName} (Time limit: {DEFAULT_TIME_LIMIT}s)");
+        EnqueueAction(new WaitForOrderAction(this));
     }
 
     public async void EatAndLeave(Plate plate)
@@ -76,5 +76,43 @@ public class CustomerCharacter : CharacterBase
 
         Debug.Log($"[CustomerCharacter] Destroying...");
         Destroy(gameObject);
+    }
+
+    public void OnWaitTimeout()
+    {
+
+    }
+
+
+    public void SetWaitGauge(float ratio)
+    {
+    }
+
+    public UniTask InteractAsync(CharacterBase character, CancellationToken ct)
+    {
+        if (_actionExecutor.CurrentAction is WaitForOrderAction)
+            OnTakeOrder();
+        else if (_actionExecutor.CurrentAction is WaitForFoodAction)
+            OnServed(character);
+
+        return UniTask.CompletedTask;
+    }
+
+    private void OnTakeOrder()
+    {
+        _actionExecutor.CancelCurrentAction();
+        Order = _orderService.AddOrder();
+        EnqueueAction(new WaitForFoodAction(this));
+    }
+
+    private void OnServed(CharacterBase character)
+    {
+        // 음식이 서빙됐을 때의 로직 (예: 음식 확인, 먹기 시작)
+        Debug.Log($"[CustomerCharacter] Served with {character.CurrentCarriable.GetCarriableType()}");
+    }
+
+    public void SetHighlight(bool highlight)
+    {
+        throw new System.NotImplementedException();
     }
 }

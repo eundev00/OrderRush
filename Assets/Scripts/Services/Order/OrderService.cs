@@ -7,8 +7,9 @@ public class OrderService : IOrderService
     private readonly List<Order> _activeOrders = new();
     private const float DEFAULT_TIME_LIMIT = 60f;
 
-    public Order AddOrder(RecipeData recipe)
+    public Order AddOrder()
     {
+        var recipe = GetRandomRecipe();
         if (recipe == null)
         {
             Debug.LogWarning("Cannot add order with null recipe");
@@ -49,5 +50,17 @@ public class OrderService : IOrderService
     public List<RecipeData> GetActiveRecipes()
     {
         return _activeOrders.Select(order => order.Recipe).ToList();
+    }
+
+    private RecipeData GetRandomRecipe()
+    {
+        if (_activeOrders.Count == 0)
+        {
+            Debug.LogWarning("No active orders to select a recipe from");
+            return null;
+        }
+
+        var randomIndex = Random.Range(0, _activeOrders.Count);
+        return _activeOrders[randomIndex].Recipe;
     }
 }

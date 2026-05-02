@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -40,19 +39,16 @@ public abstract class CharacterBase : MonoBehaviour
     }
 
 
-    public async UniTask<ICarriable> PutDown()
+    public async UniTask PutDown()
     {
-        if (CurrentCarriable == null) return null;
+        if (CurrentCarriable == null) return;
 
         try
         {
-            var carriedItem = CurrentCarriable;
             float length = _animator.GetPickUpLength();
             _animator.TriggerPutDown();
-            carriedItem.AttachToSlot(ItemSlot);
             CurrentCarriable = null;
             await UniTask.Delay(TimeSpan.FromSeconds(length));
-            return carriedItem;
         }
         catch (OperationCanceledException ex)
         {
@@ -63,13 +59,11 @@ public abstract class CharacterBase : MonoBehaviour
             Debug.Log($" Error during PutDown: {ex}");
         }
 
-        return null;
+        return;
     }
 
 
-
-
-    public async UniTask<ICarriable> PutDown(Transform attachSlot)
+    public async UniTask<ICarriable> PutDownAt(Transform attachSlot)
     {
         if (CurrentCarriable == null) return null;
 

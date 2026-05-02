@@ -7,17 +7,23 @@ using System.Collections.Generic;
     public const string DefaultCube = "DefaultCube";
     public const string DiningChair = "DiningChair";
     public const string DiningTable2 = "DiningTable2";
+    public const string GameObject = "GameObject";
     public const string Steak = "Steak";
     public const string SteakMeat = "SteakMeat";
     public const string Plate = "Plate";
     public const string PlateRack = "PlateRack";
-    public const string MeatFridge = "MeatFridge";
+    public const string FoodStorage = "FoodStorage";
+    public const string Refrigerator = "Refrigerator";
+    public const string DoubleSink = "DoubleSink";
     public const string KithenTable = "KithenTable";
+    public const string KithenTable_Door = "KithenTable_Door";
+    public const string SingleSink = "SingleSink";
     public const string Stove = "Stove";
     public const string TrashCan = "TrashCan";
     public const string Level1 = "Level1";
-    public const string ProjectLifetimeScope = "ProjectLifetimeScope";
-    public const string TestCube = "TestCube";
+    public const string LevelMap1 = "LevelMap1";
+    public const string CharacterGauge = "CharacterGauge";
+    public const string KitchenGauge = "KitchenGauge";
 
     public static Dictionary<string, string> PrefabPaths = new Dictionary<string, string>()
     {
@@ -26,17 +32,23 @@ using System.Collections.Generic;
         { DefaultCube, "Assets/Prefabs/Game/DefaultCube.prefab" },
         { DiningChair, "Assets/Prefabs/Game/Dining/DiningChair.prefab" },
         { DiningTable2, "Assets/Prefabs/Game/Dining/DiningTable2.prefab" },
+        { GameObject, "Assets/Prefabs/Game/GameObject.prefab" },
         { Steak, "Assets/Prefabs/Game/Ingredients/Steak.prefab" },
         { SteakMeat, "Assets/Prefabs/Game/Ingredients/SteakMeat.prefab" },
         { Plate, "Assets/Prefabs/Game/Kitchen/Plate/Plate.prefab" },
         { PlateRack, "Assets/Prefabs/Game/Kitchen/Plate/PlateRack.prefab" },
-        { MeatFridge, "Assets/Prefabs/Game/Kitchen/Storage/MeatFridge.prefab" },
+        { FoodStorage, "Assets/Prefabs/Game/Kitchen/Storage/FoodStorage.prefab" },
+        { Refrigerator, "Assets/Prefabs/Game/Kitchen/Storage/Refrigerator.prefab" },
+        { DoubleSink, "Assets/Prefabs/Game/Kitchen/Tools/DoubleSink.prefab" },
         { KithenTable, "Assets/Prefabs/Game/Kitchen/Tools/KithenTable.prefab" },
+        { KithenTable_Door, "Assets/Prefabs/Game/Kitchen/Tools/KithenTable_Door.prefab" },
+        { SingleSink, "Assets/Prefabs/Game/Kitchen/Tools/SingleSink.prefab" },
         { Stove, "Assets/Prefabs/Game/Kitchen/Tools/Stove.prefab" },
         { TrashCan, "Assets/Prefabs/Game/Kitchen/Tools/TrashCan.prefab" },
         { Level1, "Assets/Prefabs/Game/Level/Level1.prefab" },
-        { ProjectLifetimeScope, "Assets/Prefabs/Game/ProjectLifetimeScope.prefab" },
-        { TestCube, "Assets/Prefabs/Game/TestCube.prefab" },
+        { LevelMap1, "Assets/Prefabs/Game/Level/LevelMap1.prefab" },
+        { CharacterGauge, "Assets/Prefabs/Game/UI/CharacterGauge.prefab" },
+        { KitchenGauge, "Assets/Prefabs/Game/UI/KitchenGauge.prefab" },
     };
 
     public static string GetPrefabPath(string tag)

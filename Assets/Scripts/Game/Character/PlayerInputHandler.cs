@@ -8,6 +8,7 @@ using MessagePipe;
 
 public class PlayerInputHandler : ITickable
 {
+    private static readonly LayerMask RaycastMask = ~(1 << LayerMask.NameToLayer("Character"));
     readonly IPublisher<MoveEvent> _movePublisher;
     readonly IPublisher<InteractEvent> _interactPublisher;
     readonly int _groundLayer;
@@ -48,7 +49,7 @@ public class PlayerInputHandler : ITickable
 
         var ray = _mainCamera.ScreenPointToRay(mouse.position.ReadValue());
 
-        if (Physics.Raycast(ray, out var hit, 100f))
+        if (Physics.Raycast(ray, out var hit, 100f, RaycastMask))
         {
             var interactable = hit.collider.GetComponentInParent<IInteractable>();
             if (interactable != null)
@@ -75,7 +76,7 @@ public class PlayerInputHandler : ITickable
 
         var ray = _mainCamera.ScreenPointToRay(touch.position.ReadValue());
 
-        if (Physics.Raycast(ray, out var hit, 100f))
+        if (Physics.Raycast(ray, out var hit, 100f, RaycastMask))
         {
             var interactable = hit.collider.GetComponentInParent<IInteractable>();
             if (interactable != null)

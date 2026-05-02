@@ -11,9 +11,11 @@ public class DiningSeat : MonoBehaviour
     public Transform SitPoint => _sitPoint;
     public bool HasCustomer => _currentCustomer != null;
     public CustomerCharacter CurrentCustomer => _currentCustomer;
+    public DiningTable Table { get; private set; }
 
     public void Init(DiningTable table, int index)
     {
+        Table = table;
         _seatIndex = index;
     }
 

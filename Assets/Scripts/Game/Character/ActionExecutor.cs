@@ -6,6 +6,7 @@ using UnityEngine;
 public class ActionExecutor : MonoBehaviour
 {
     private readonly Queue<IGameAction> _actionQueue = new();
+    public IGameAction CurrentAction { get; private set; }
     private CancellationTokenSource _executionCts;
     private bool _isExecuting;
 
@@ -30,14 +31,19 @@ public class ActionExecutor : MonoBehaviour
         _actionQueue.Enqueue(action);
     }
 
+    public void CancelCurrentAction()
+    {
+        _executionCts?.Cancel();
+        _executionCts?.Dispose();
+        _executionCts = null;
+    }
+
     public void Clear()
     {
         _actionQueue.Clear();
 
         // 현재 실행 중인 액션 취소
-        _executionCts?.Cancel();
-        _executionCts?.Dispose();
-        _executionCts = null;
+        CancelCurrentAction();
     }
 
     private async UniTask StartExecutionLoop()
@@ -47,13 +53,13 @@ public class ActionExecutor : MonoBehaviour
             if (_actionQueue.Count > 0)
             {
                 _isExecuting = true;
-                var action = _actionQueue.Dequeue();
+                CurrentAction = _actionQueue.Dequeue();
 
                 _executionCts = new CancellationTokenSource();
 
                 try
                 {
-                    await action.ExecuteAsync(_executionCts.Token);
+                    await CurrentAction.ExecuteAsync(_executionCts.Token);
                 }
                 catch (System.OperationCanceledException)
                 {
@@ -68,6 +74,7 @@ public class ActionExecutor : MonoBehaviour
                     _executionCts?.Dispose();
                     _executionCts = null;
                     _isExecuting = false;
+                    CurrentAction = null;
                 }
             }
 

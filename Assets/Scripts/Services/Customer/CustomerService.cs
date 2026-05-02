@@ -41,7 +41,7 @@ public class CustomerService : ICustomerService, ITickable
         {
             _spawnCount--;
             _timer = 0;
-            //    TrySpawn();
+            TrySpawn();
         }
     }
 
@@ -53,15 +53,11 @@ public class CustomerService : ICustomerService, ITickable
         var availableSeat = table.GetAvailableSeat();
         if (availableSeat == null) return;
 
-        if (_availableRecipes == null || _availableRecipes.Count == 0) return;
-        var randomRecipe = _availableRecipes[Random.Range(0, _availableRecipes.Count)];
-
         var customer = await _spawnFactory.Create<CustomerCharacter>(PrefabKeys.GetPrefabPath(PrefabKeys.CustomerCharacter1));
-
         customer.transform.SetParent(_levelContext.transform);
         customer.SetSpawnPosition(_levelContext.SpawnPoint.position);
         customer.WarpTo(_levelContext.SpawnPoint.position);
-        customer.GoToSeat(availableSeat, randomRecipe);
+        customer.GoToSeat(availableSeat);
     }
 
 

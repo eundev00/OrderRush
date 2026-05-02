@@ -1,12 +1,5 @@
 fileFormatVersion: 2
-guid: acb96c5d9ee147b42a77c2351dab610a
-AssetOrigin:
-  serializedVersion: 1
-  productId: 308485
-  packageName: GameDev Starter Kit - Cooking
-  packageVersion: v1.0.0
-  assetPath: Assets/AssetHunts!/GameDev Starter Kit - Cooking/Asset/2D Icons/Beef_Meat_01.png
-  uploadId: 761863
+guid: 68b5ab5afb5044d269bd32828ef99b2c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

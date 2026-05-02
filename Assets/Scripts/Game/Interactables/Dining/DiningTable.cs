@@ -53,31 +53,31 @@ public class DiningTable : InteractableBase
 
     private async UniTask ServeFood(CharacterBase character)
     {
-        var plate = character.CurrentCarriable as Plate;
-        if (plate == null) return;
+        // var plate = character.CurrentCarriable as Plate;
+        // if (plate == null) return;
 
-        var ingredientDatas = plate.PlacedIngredients.Select(obj => obj.Data).ToList();
+        // var ingredientDatas = plate.PlacedIngredients.Select(obj => obj.Data).ToList();
 
-        // 모든 좌석을 순회하며 주문과 맞는 손님 찾기
-        foreach (var seat in _seats)
-        {
-            if (!seat.HasCustomer) continue;
+        // // 모든 좌석을 순회하며 주문과 맞는 손님 찾기
+        // foreach (var seat in _seats)
+        // {
+        //     if (!seat.HasCustomer) continue;
 
-            var customer = seat.CurrentCustomer;
-            if (customer.Order.Recipe.IsComplete(ingredientDatas))
-            {
-                // 주문과 일치! 서빙 처리
-                await character.PutDown();
-                PlacePlate(seat.GetSeatIndex(), plate);
+        //     var customer = seat.CurrentCustomer;
+        //     if (customer.Order.Recipe.IsComplete(ingredientDatas))
+        //     {
+        //         // 주문과 일치! 서빙 처리
+        //         await character.PutDown();
+        //         PlacePlate(seat.GetSeatIndex(), plate);
 
-                // Order 완료 처리
-                customer.Order.Complete();
+        //         // Order 완료 처리
+        //         customer.Order.Complete();
 
-                // 손님이 음식 먹고 나가기 (접시를 넘겨줌)
-                customer.EatAndLeave(plate);
-                return;
-            }
-        }
+        //         // 손님이 음식 먹고 나가기 (접시를 넘겨줌)
+        //         customer.EatAndLeave(plate);
+        //         return;
+        //     }
+        // }
         await UniTask.CompletedTask;
     }
 

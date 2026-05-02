@@ -8,8 +8,6 @@ public abstract class CookingToolBase : InteractableBase
 {
 
     [NotNull][SerializeField] protected Transform _ingredientSlot;
-    [NotNull][SerializeField] protected Canvas _canvas;
-    [NotNull][SerializeField] protected CookingProgressView _progressView;
 
     public IngredientObject CurrentIngredientObject { get; protected set; }
     public IngredientData CurrentIngredientData => CurrentIngredientObject != null ? CurrentIngredientObject.Data : null;
@@ -17,17 +15,14 @@ public abstract class CookingToolBase : InteractableBase
 
     public bool IsCooking { get; protected set; }
     private SpawnFactory _factory;
-
-    protected virtual void Awake()
-    {
-        _canvas.worldCamera = Camera.main;
-    }
-
+    protected GaugeFactory _gaugeFactory;
+    protected GaugePresenter _gaugePresenter;
 
     [Inject]
-    public void Construct(SpawnFactory factory)
+    public void Construct(SpawnFactory factory, GaugeFactory gaugeFactory)
     {
         _factory = factory;
+        _gaugeFactory = gaugeFactory;
     }
 
     protected virtual void OnDestroy()
@@ -70,14 +65,40 @@ public abstract class CookingToolBase : InteractableBase
 
     protected virtual void StopCooking()
     {
-        _progressView.SetVisible(false);
+        HideCookingGauge();
         IsCooking = false;
     }
 
-    protected void UpdateProgress(float elapsedTime, float duration)
+    protected void UpdateProgress(float progress)
     {
-        float progress = elapsedTime / duration;
-        _progressView.SetProgress(progress);
+        if (_gaugePresenter != null)
+        {
+            _gaugePresenter.UpdatePosition();
+            _gaugePresenter.SetProgress(progress);
+        }
+    }
+
+    protected void ShowCookingGauge()
+    {
+        if (_gaugePresenter == null)
+        {
+            _gaugePresenter = _gaugeFactory.Create(transform, new Vector3(0, 0.5f, 0));
+            _gaugePresenter.Show();
+            _gaugePresenter.SetColor(Color.green);
+        }
+        else
+        {
+            _gaugePresenter.Show();
+        }
+    }
+
+    protected void HideCookingGauge()
+    {
+        if (_gaugePresenter != null)
+        {
+            _gaugeFactory.Release(_gaugePresenter);
+            _gaugePresenter = null;
+        }
     }
 
 
@@ -102,7 +123,7 @@ public abstract class CookingToolBase : InteractableBase
             var ingredientObj = character.CurrentCarriable as IngredientObject;
             if (ingredientObj && CanPlaceIngredient(ingredientObj.Data))
             {
-                await character.PutDown(_ingredientSlot);
+                await character.PutDownAt(_ingredientSlot);
                 CurrentIngredientObject = ingredientObj;
                 PlaceIngredient(CurrentIngredientObject.Data, CurrentIngredientObject);
                 StartCooking();
