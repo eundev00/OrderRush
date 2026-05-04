@@ -1,3 +1,4 @@
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class LevelContext : MonoBehaviour
@@ -9,4 +10,6 @@ public class LevelContext : MonoBehaviour
     public DiningTable[] DiningTables => _diningTables;
     public Transform SpawnPoint => _spawnPoint;
     public Transform WaitingPoint => _waitingPoint;
+
+
 }

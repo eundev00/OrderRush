@@ -4,20 +4,20 @@ using MessagePipe;
 using UnityEngine;
 using VContainer;
 
-public class CustomerCharacter : CharacterBase, IInteractable
+public class CustomerCharacter : CharacterBase
 {
     public Order Order { get; private set; }
-    public DiningSeat AssignedSeat { get; private set; }
+    public DiningTable AssignedTable { get; private set; }
+    public int AssignedSeatIndex { get; private set; }
 
     public const float DEFAULT_TIME_LIMIT = 60f;
     private const float EAT_DURATION = 5f;
     public const float WAIT_TIME_LIMIT = 60f;
 
-
     private IOrderService _orderService;
     private Vector3 _spawnPosition;
+
     private IPublisher<PaymentEvent> _paymentPublisher;
-    public Transform InteractPoint => AssignedSeat != null ? AssignedSeat.Table.InteractPoint : transform;
 
     [Inject]
     public void Construct(IPublisher<PaymentEvent> paymentPublisher, IOrderService orderService)
@@ -31,56 +31,75 @@ public class CustomerCharacter : CharacterBase, IInteractable
         _spawnPosition = position;
     }
 
-    public void GoToSeat(DiningSeat targetSeat)
+    public void GoToSeat(DiningTable targetTable, int seatIndex)
     {
-        AssignedSeat = targetSeat;
+        AssignedTable = targetTable;
+        AssignedSeatIndex = seatIndex;
 
         // 이동 → 착석 → 주문 생성
-        EnqueueAction(new MoveAction(_mover, targetSeat.SitPoint.position, _animator));
-        EnqueueAction(new SitAction(this, targetSeat));
-        EnqueueAction(new WaitForOrderAction(this));
+        var targetSeat = targetTable.GetSeatTransform(seatIndex);
+        if (targetSeat == null)
+        {
+            Debug.LogError($"[CustomerCharacter] Invalid seat index: {seatIndex}");
+            return;
+        }
+        EnqueueAction(new MoveAction(_mover, targetSeat.position, _animator));
+        EnqueueAction(new SitAction(this, AssignedTable, AssignedSeatIndex));
+        EnqueueAction(new WaitForOrderAction());
     }
 
     public async void EatAndLeave(Plate plate)
     {
-        Debug.Log($"[CustomerCharacter] Starting to eat...");
+        // Debug.Log($"[CustomerCharacter] Starting to eat...");
 
-        // 5초 동안 음식 먹기
-        await UniTask.Delay((int)(EAT_DURATION * 1000));
+        // // 5초 동안 음식 먹기
+        // await UniTask.Delay((int)(EAT_DURATION * 1000));
 
-        Debug.Log($"[CustomerCharacter] Finished eating, leaving...");
+        // Debug.Log($"[CustomerCharacter] Finished eating, leaving...");
 
-        // 접시 비우기 (의자에서 일어나기 전)
-        if (plate != null)
-        {
-            plate.ClearIngredients();
-            Debug.Log($"[CustomerCharacter] Plate cleared");
-        }
+        // // 접시 비우기 (의자에서 일어나기 전)
+        // if (plate != null)
+        // {
+        //     plate.ClearIngredients();
+        //     Debug.Log($"[CustomerCharacter] Plate cleared");
+        // }
 
-        if (Order != null && _paymentPublisher != null)
-        {
-            var paymentEvent = new PaymentEvent(Order.Recipe.Price, Order.Recipe.RecipeName);
-            _paymentPublisher.Publish(paymentEvent);
-            Debug.Log($"[CustomerCharacter] Payment event published: ${Order.Recipe.Price} for {Order.Recipe.RecipeName}");
-        }
+        // if (Order != null && _paymentPublisher != null)
+        // {
+        //     var paymentEvent = new PaymentEvent(Order.Recipe.Price, Order.Recipe.RecipeName);
+        //     _paymentPublisher.Publish(paymentEvent);
+        //     Debug.Log($"[CustomerCharacter] Payment event published: ${Order.Recipe.Price} for {Order.Recipe.RecipeName}");
+        // }
 
-        // 의자에서 일어나기 (NavMeshAgent 다시 활성화)
-        EnableNavMeshAgent();
-        AssignedSeat.Clear();
+        // // 의자에서 일어나기 (NavMeshAgent 다시 활성화)
+        // EnableNavMeshAgent();
+        // AssignedTable.Clear();
 
-        // 스폰 포지션으로 이동
-        EnqueueAction(new MoveAction(_mover, _spawnPosition, _animator));
+        // // 스폰 포지션으로 이동
+        // EnqueueAction(new MoveAction(_mover, _spawnPosition, _animator));
 
-        // 이동 완료 후 사라지기 (ActionExecutor의 큐가 비워지면)
-        await UniTask.WaitUntil(() => !IsExecuting);
+        // // 이동 완료 후 사라지기 (ActionExecutor의 큐가 비워지면)
+        // await UniTask.WaitUntil(() => !IsExecuting);
 
-        Debug.Log($"[CustomerCharacter] Destroying...");
-        Destroy(gameObject);
+        // Debug.Log($"[CustomerCharacter] Destroying...");
+        // Destroy(gameObject);
+    }
+
+    public void Leave()
+    {
+        Debug.Log($"[CustomerCharacter] Leaving table...");
+
+        // 기존 액션 모두 취소
+        ClearActions();
+
+        // LeaveAction 추가 (이동 후 Destroy)
+        EnqueueAction(new LeaveAction(this, _spawnPosition, _mover, _animator));
     }
 
     public void OnWaitTimeout()
     {
-
+        Debug.Log($"[CustomerCharacter] Wait timeout! Leaving angry...");
+        Leave();
     }
 
 
@@ -88,31 +107,17 @@ public class CustomerCharacter : CharacterBase, IInteractable
     {
     }
 
-    public UniTask InteractAsync(CharacterBase character, CancellationToken ct)
+    public bool TryTakeOrder()
     {
         if (_actionExecutor.CurrentAction is WaitForOrderAction)
-            OnTakeOrder();
-        else if (_actionExecutor.CurrentAction is WaitForFoodAction)
-            OnServed(character);
-
-        return UniTask.CompletedTask;
+        {
+            _actionExecutor.CancelCurrentAction();
+            Order = _orderService.AddOrder();
+            EnqueueAction(new WaitForFoodAction());
+            Debug.Log($"[CustomerCharacter] Order taken: {Order.Recipe.RecipeName}");
+            return true;
+        }
+        return false;
     }
 
-    private void OnTakeOrder()
-    {
-        _actionExecutor.CancelCurrentAction();
-        Order = _orderService.AddOrder();
-        EnqueueAction(new WaitForFoodAction(this));
-    }
-
-    private void OnServed(CharacterBase character)
-    {
-        // 음식이 서빙됐을 때의 로직 (예: 음식 확인, 먹기 시작)
-        Debug.Log($"[CustomerCharacter] Served with {character.CurrentCarriable.GetCarriableType()}");
-    }
-
-    public void SetHighlight(bool highlight)
-    {
-        throw new System.NotImplementedException();
-    }
 }

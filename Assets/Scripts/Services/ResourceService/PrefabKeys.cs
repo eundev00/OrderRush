@@ -20,10 +20,10 @@ using System.Collections.Generic;
     public const string SingleSink = "SingleSink";
     public const string Stove = "Stove";
     public const string TrashCan = "TrashCan";
-    public const string Level1 = "Level1";
     public const string LevelMap1 = "LevelMap1";
-    public const string CharacterGauge = "CharacterGauge";
     public const string KitchenGauge = "KitchenGauge";
+    public const string OrderIcon = "OrderIcon";
+    public const string TableGauge = "TableGauge";
 
     public static Dictionary<string, string> PrefabPaths = new Dictionary<string, string>()
     {
@@ -45,10 +45,10 @@ using System.Collections.Generic;
         { SingleSink, "Assets/Prefabs/Game/Kitchen/Tools/SingleSink.prefab" },
         { Stove, "Assets/Prefabs/Game/Kitchen/Tools/Stove.prefab" },
         { TrashCan, "Assets/Prefabs/Game/Kitchen/Tools/TrashCan.prefab" },
-        { Level1, "Assets/Prefabs/Game/Level/Level1.prefab" },
         { LevelMap1, "Assets/Prefabs/Game/Level/LevelMap1.prefab" },
-        { CharacterGauge, "Assets/Prefabs/Game/UI/CharacterGauge.prefab" },
         { KitchenGauge, "Assets/Prefabs/Game/UI/KitchenGauge.prefab" },
+        { OrderIcon, "Assets/Prefabs/Game/UI/OrderIcon.prefab" },
+        { TableGauge, "Assets/Prefabs/Game/UI/TableGauge.prefab" },
     };
 
     public static string GetPrefabPath(string tag)

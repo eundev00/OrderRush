@@ -10,16 +10,17 @@ public abstract class CookingToolBase : InteractableBase
     [NotNull][SerializeField] protected Transform _ingredientSlot;
 
     public IngredientObject CurrentIngredientObject { get; protected set; }
-    public IngredientData CurrentIngredientData => CurrentIngredientObject != null ? CurrentIngredientObject.Data : null;
-    public bool HasIngredient => CurrentIngredientObject != null;
 
     public bool IsCooking { get; protected set; }
     private SpawnFactory _factory;
-    protected GaugeFactory _gaugeFactory;
-    protected GaugePresenter _gaugePresenter;
+    protected KitchenGaugeFactory _gaugeFactory;
+    protected KitchenGaugePresenter _gaugePresenter;
+
+    public IngredientData CurrentIngredientData => CurrentIngredientObject != null ? CurrentIngredientObject.Data : null;
+    public bool HasIngredient => CurrentIngredientObject != null;
 
     [Inject]
-    public void Construct(SpawnFactory factory, GaugeFactory gaugeFactory)
+    public void Construct(SpawnFactory factory, KitchenGaugeFactory gaugeFactory)
     {
         _factory = factory;
         _gaugeFactory = gaugeFactory;
@@ -82,7 +83,7 @@ public abstract class CookingToolBase : InteractableBase
     {
         if (_gaugePresenter == null)
         {
-            _gaugePresenter = _gaugeFactory.Create(transform, new Vector3(0, 0.5f, 0));
+            _gaugePresenter = (KitchenGaugePresenter)_gaugeFactory.Create(transform, new Vector3(0, 0.5f, 0));
             _gaugePresenter.Show();
             _gaugePresenter.SetColor(Color.green);
         }

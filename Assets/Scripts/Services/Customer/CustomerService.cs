@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
-using VContainer;
 using VContainer.Unity;
 
 public class CustomerService : ICustomerService, ITickable
@@ -30,7 +30,7 @@ public class CustomerService : ICustomerService, ITickable
         _spawnCount = levelData.MaxCustomers;
     }
 
-    public void Tick()
+    public async void Tick()
     {
         if (_spawnCount == 0) return;
         if (_levelContext == null) return;
@@ -39,25 +39,26 @@ public class CustomerService : ICustomerService, ITickable
 
         if (_timer >= _spawnInterval)
         {
-            _spawnCount--;
             _timer = 0;
-            TrySpawn();
+            int count = await TrySpawn();
+            _spawnCount -= count;
         }
     }
 
-    private async void TrySpawn()
+    private async UniTask<int> TrySpawn()
     {
-        var table = _levelContext.DiningTables.FirstOrDefault(t => t.GetAvailableSeat() != null);
-        if (table == null) return;
+        var table = _levelContext.DiningTables.FirstOrDefault(t => t.IsEmptyTable());
+        if (table == null) return 0;
 
-        var availableSeat = table.GetAvailableSeat();
-        if (availableSeat == null) return;
-
+        int seatIndex = 0;
         var customer = await _spawnFactory.Create<CustomerCharacter>(PrefabKeys.GetPrefabPath(PrefabKeys.CustomerCharacter1));
         customer.transform.SetParent(_levelContext.transform);
         customer.SetSpawnPosition(_levelContext.SpawnPoint.position);
         customer.WarpTo(_levelContext.SpawnPoint.position);
-        customer.GoToSeat(availableSeat);
+        customer.GoToSeat(table, seatIndex);
+        seatIndex++;
+
+        return seatIndex;
     }
 
 

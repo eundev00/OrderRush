@@ -1,34 +1,28 @@
 using System;
 using UnityEngine;
-using VContainer;
 
-public class GaugePresenter : IDisposable
+public abstract class BaseUIPresenter<TView> : IDisposable
+    where TView : Component, IUIView
 {
-    public GaugeView View { get; private set; }
+    public TView View { get; protected set; }
 
-    private readonly Transform _target;
-    private readonly Vector3 _offset;
+    protected readonly Transform _target;
+    protected readonly Vector3 _offset;
 
-    private RectTransform _canvasRectTransform;
-    private bool _isDisposed;
-    private Camera _mainCamera;
+    protected RectTransform _canvasRectTransform;
+    protected bool _isDisposed;
+    protected Camera _mainCamera;
 
-    public GaugePresenter(Camera mainCamera, RectTransform canvasRectTransform, GaugeView view, Transform target, Vector3 offset, Sprite icon = null)
+    protected BaseUIPresenter(Camera mainCamera, RectTransform canvasRectTransform, TView view, Transform target, Vector3 offset)
     {
         View = view;
         _target = target;
         _offset = offset;
         _mainCamera = mainCamera;
         _canvasRectTransform = canvasRectTransform;
-
-        if (icon != null)
-        {
-            View.SetIcon(icon);
-        }
     }
 
-
-    public void UpdatePosition()
+    public virtual void UpdatePosition()
     {
         if (_isDisposed || View == null || _target == null)
         {
@@ -67,31 +61,13 @@ public class GaugePresenter : IDisposable
         View.transform.localPosition = localPoint;
     }
 
-    public void SetProgress(float progress)
-    {
-        if (_isDisposed || View == null) return;
-        View.SetProgress(progress);
-    }
-
-    public void SetColor(Color color)
-    {
-        if (_isDisposed || View == null) return;
-        View.SetColor(color);
-    }
-
-    public void SetIcon(Sprite sprite)
-    {
-        if (_isDisposed || View == null) return;
-        View.SetIcon(sprite);
-    }
-
-    public void Show()
+    public virtual void Show()
     {
         if (_isDisposed || View == null) return;
         View.Show();
     }
 
-    public void Hide()
+    public virtual void Hide()
     {
         if (_isDisposed || View == null) return;
         View.Hide();
@@ -102,12 +78,11 @@ public class GaugePresenter : IDisposable
         return _target == null;
     }
 
-    public void Dispose()
+    public virtual void Dispose()
     {
         if (_isDisposed) return;
 
         _isDisposed = true;
         View = null;
     }
-
 }

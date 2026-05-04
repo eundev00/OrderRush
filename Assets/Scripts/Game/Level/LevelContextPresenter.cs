@@ -67,7 +67,6 @@ public class LevelContextPresenter : ILevelContextPresenter, ITickable, IDisposa
             return;
         }
         CurrentLevelContext = levelContext;
-
         // 3. Model 초기화
         LevelProgressModel.Initialize(CurrentLevelData.TargetMoney, CurrentLevelData.TimeLimit);
         _elapsedTime = 0f;

@@ -2,15 +2,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class GaugeView : MonoBehaviour
+public class GaugeView : MonoBehaviour, IUIView
 {
     [NotNull][SerializeField] private Image _fillImage;
     [SerializeField] private Image _icon;
 
-    private RectTransform _rectTransform;
+
     private void Awake()
     {
-        _rectTransform = GetComponent<RectTransform>();
+        if (_icon != null)
+        {
+            _icon.gameObject.SetActive(false);
+        }
     }
 
     public void SetProgress(float value)
@@ -42,6 +45,10 @@ public class GaugeView : MonoBehaviour
     public void Hide()
     {
         gameObject.SetActive(false);
+        if (_icon != null)
+        {
+            _icon.gameObject.SetActive(false);
+        }
     }
 
 }
