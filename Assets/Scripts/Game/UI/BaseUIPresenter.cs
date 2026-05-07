@@ -32,7 +32,6 @@ public abstract class BaseUIPresenter<TView> : IDisposable
         Vector3 worldPosition = _target.position + _offset;
         Vector3 screenPosition = _mainCamera.WorldToScreenPoint(worldPosition);
 
-        // 화면 밖이면 숨김
         if (screenPosition.z < 0 ||
             screenPosition.x < 0 || screenPosition.x > Screen.width ||
             screenPosition.y < 0 || screenPosition.y > Screen.height)
@@ -44,13 +43,11 @@ public abstract class BaseUIPresenter<TView> : IDisposable
             return;
         }
 
-        // 화면 안이면 표시
         if (!View.gameObject.activeSelf)
         {
             View.Show();
         }
 
-        // 스크린 좌표 → UI 좌표 변환
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             _canvasRectTransform,
             screenPosition,

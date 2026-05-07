@@ -19,11 +19,9 @@ public abstract class BaseUIFactory<TView, TPresenter>
         _canvasRectTransform = canvasRectTransform;
         _camera = Camera.main;
 
-        // 어드레서블에서 프리팹 로드 (동기)
         var handle = Addressables.LoadAssetAsync<GameObject>(PrefabKeys.GetPrefabPath(prefabKey));
         _viewPrefab = handle.WaitForCompletion();
 
-        // Unity ObjectPool 생성
         _viewPool = new ObjectPool<TView>(
             createFunc: CreateView,
             actionOnGet: OnGetView,
@@ -74,10 +72,8 @@ public abstract class BaseUIFactory<TView, TPresenter>
 
         var view = presenter.View;
 
-        // 1. Presenter 정리 (구독 정리 등)
         presenter.Dispose();
 
-        // 2. View를 풀에 반환
         if (view != null)
         {
             _viewPool.Release(view);

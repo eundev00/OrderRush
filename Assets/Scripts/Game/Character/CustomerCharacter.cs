@@ -37,7 +37,6 @@ public class CustomerCharacter : CharacterBase
         AssignedTable = targetTable;
         AssignedSeatIndex = seatIndex;
 
-        // 이동 → 착석 → 주문 생성
         var targetSeat = targetTable.GetSeatTransform(seatIndex);
         if (targetSeat == null)
         {
@@ -51,38 +50,25 @@ public class CustomerCharacter : CharacterBase
 
     public void Leave()
     {
-        Debug.Log($"[CustomerCharacter] Leaving table...");
-
-        // 기존 액션 모두 취소
         ClearActions();
-
-        // LeaveAction 추가 (이동 후 Destroy)
         EnqueueAction(new LeaveAction(this, _spawnPosition, _mover, _animator));
     }
 
     public void OnWaitTimeout()
     {
-        Debug.Log($"[CustomerCharacter] Wait timeout! Leaving angry...");
         Leave();
     }
 
 
     public bool TryTakeOrder()
     {
-        var currentActionType = _actionExecutor.CurrentAction != null ? _actionExecutor.CurrentAction.GetType().Name : "null";
-        Debug.Log($"[CustomerCharacter] Trying to take order... CurrentAction: {currentActionType}, Order: {Order}");
-
-        // 이미 주문했으면 무시
         if (Order != null)
         {
-            Debug.Log("[CustomerCharacter] Already ordered");
             return false;
         }
 
-        // 현재 Action이 WaitForOrderAction이면 취소
         if (_actionExecutor.CurrentAction is WaitForOrderAction)
         {
-            Debug.Log("[CustomerCharacter] Cancelling WaitForOrderAction");
             _actionExecutor.CancelCurrentAction();
         }
 

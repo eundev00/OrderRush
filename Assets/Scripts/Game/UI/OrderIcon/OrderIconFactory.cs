@@ -3,7 +3,7 @@ using UnityEngine;
 public class OrderIconFactory : BaseUIFactory<OrderIconView, OrderIconPresenter>
 {
     public OrderIconFactory(RectTransform canvasRectTransform)
-        : base(canvasRectTransform, PrefabKeys.OrderIcon)
+        : base(canvasRectTransform, PrefabKeys.CharacterOrderIcon)
     {
     }
 
@@ -17,6 +17,6 @@ public class OrderIconFactory : BaseUIFactory<OrderIconView, OrderIconPresenter>
     protected override void OnReleaseView(OrderIconView view)
     {
         base.OnReleaseView(view);
-        view.SetIcon(null); // 아이콘 정리
+        view.SetIcon(null);
     }
 }

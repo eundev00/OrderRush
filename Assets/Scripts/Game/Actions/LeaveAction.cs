@@ -23,13 +23,7 @@ public class LeaveAction : IGameAction
 
     public async UniTask ExecuteAsync(CancellationToken ct)
     {
-        Debug.Log($"[LeaveAction] Customer {_customer.name} leaving...");
-
-        // 밖으로 이동
         await new MoveAction(_mover, _exitPosition, _animator).ExecuteAsync(ct);
-
-        // 사라지기
         Object.Destroy(_customer.gameObject);
-        Debug.Log($"[LeaveAction] Customer {_customer.name} left and destroyed");
     }
 }

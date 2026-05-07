@@ -6,15 +6,12 @@ public class WaitForOrderAction : IGameAction
 {
     public async UniTask ExecuteAsync(CancellationToken ct)
     {
-
         try
         {
             await UniTask.WaitUntilCanceled(ct);
         }
         finally
         {
-            Debug.Log("[WaitForOrderAction] Action ended or cancelled");
         }
-
     }
 }

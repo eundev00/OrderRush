@@ -41,8 +41,6 @@ public class ActionExecutor : MonoBehaviour
     public void Clear()
     {
         _actionQueue.Clear();
-
-        // 현재 실행 중인 액션 취소
         CancelCurrentAction();
     }
 
@@ -63,7 +61,6 @@ public class ActionExecutor : MonoBehaviour
                 }
                 catch (System.OperationCanceledException)
                 {
-                    Debug.Log("Action cancelled");
                 }
                 catch (System.Exception e)
                 {

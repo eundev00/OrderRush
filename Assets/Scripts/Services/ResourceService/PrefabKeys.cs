@@ -21,8 +21,9 @@ using System.Collections.Generic;
     public const string Stove = "Stove";
     public const string TrashCan = "TrashCan";
     public const string LevelMap1 = "LevelMap1";
+    public const string CharacterEmoteIcon = "CharacterEmoteIcon";
+    public const string CharacterOrderIcon = "CharacterOrderIcon";
     public const string KitchenGauge = "KitchenGauge";
-    public const string OrderIcon = "OrderIcon";
     public const string TableGauge = "TableGauge";
 
     public static Dictionary<string, string> PrefabPaths = new Dictionary<string, string>()
@@ -46,9 +47,10 @@ using System.Collections.Generic;
         { Stove, "Assets/Prefabs/Game/Kitchen/Tools/Stove.prefab" },
         { TrashCan, "Assets/Prefabs/Game/Kitchen/Tools/TrashCan.prefab" },
         { LevelMap1, "Assets/Prefabs/Game/Level/LevelMap1.prefab" },
-        { KitchenGauge, "Assets/Prefabs/Game/UI/KitchenGauge.prefab" },
-        { OrderIcon, "Assets/Prefabs/Game/UI/OrderIcon.prefab" },
-        { TableGauge, "Assets/Prefabs/Game/UI/TableGauge.prefab" },
+        { CharacterEmoteIcon, "Assets/Prefabs/Game/UI/WorldSpace/CharacterEmoteIcon.prefab" },
+        { CharacterOrderIcon, "Assets/Prefabs/Game/UI/WorldSpace/CharacterOrderIcon.prefab" },
+        { KitchenGauge, "Assets/Prefabs/Game/UI/WorldSpace/KitchenGauge.prefab" },
+        { TableGauge, "Assets/Prefabs/Game/UI/WorldSpace/TableGauge.prefab" },
     };
 
     public static string GetPrefabPath(string tag)

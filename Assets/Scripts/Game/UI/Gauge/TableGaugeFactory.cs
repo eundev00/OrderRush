@@ -17,6 +17,6 @@ public class TableGaugeFactory : BaseUIFactory<GaugeView, TableGaugePresenter>
     protected override void OnReleaseView(GaugeView view)
     {
         base.OnReleaseView(view);
-        view.SetIcon(null); // 아이콘 정리
+        view.SetIcon(null);
     }
 }
