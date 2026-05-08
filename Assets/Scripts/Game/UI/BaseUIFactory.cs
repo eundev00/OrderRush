@@ -63,8 +63,7 @@ public abstract class BaseUIFactory<TView, TPresenter>
 
     public abstract TPresenter Create(
         Transform target,
-        Vector3 offset,
-        Sprite icon = null);
+        Vector3 offset);
 
     public void Release(TPresenter presenter)
     {

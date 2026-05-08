@@ -18,13 +18,15 @@ public class CustomerCharacter : CharacterBase
 
     private IPublisher<PaymentEvent> _paymentPublisher;
     private OrderIconFactory _orderIconFactory;
+    private CharacterEmoteIconFactory _emoteIconFactory;
 
     [Inject]
-    public void Construct(IPublisher<PaymentEvent> paymentPublisher, ILevelContextPresenter levelContext, OrderIconFactory orderIconFactory)
+    public void Construct(IPublisher<PaymentEvent> paymentPublisher, ILevelContextPresenter levelContext, OrderIconFactory orderIconFactory, CharacterEmoteIconFactory emoteIconFactory)
     {
         _paymentPublisher = paymentPublisher;
         _levelContext = levelContext;
         _orderIconFactory = orderIconFactory;
+        _emoteIconFactory = emoteIconFactory;
     }
 
     public void SetSpawnPosition(Vector3 position)
@@ -32,7 +34,7 @@ public class CustomerCharacter : CharacterBase
         _spawnPosition = position;
     }
 
-    public void GoToSeat(DiningTable targetTable, int seatIndex)
+    public void EnqueueGoToSeat(DiningTable targetTable, int seatIndex)
     {
         AssignedTable = targetTable;
         AssignedSeatIndex = seatIndex;
@@ -48,7 +50,7 @@ public class CustomerCharacter : CharacterBase
         EnqueueAction(new WaitForOrderAction());
     }
 
-    public void Leave()
+    public void EnqueueLeave()
     {
         ClearActions();
         EnqueueAction(new LeaveAction(this, _spawnPosition, _mover, _animator));
@@ -56,15 +58,15 @@ public class CustomerCharacter : CharacterBase
 
     public void OnWaitTimeout()
     {
-        Leave();
+        EnqueueLeaveAngry();
     }
 
 
-    public bool TryTakeOrder()
+    public void EnqueueTakeOrder()
     {
         if (Order != null)
         {
-            return false;
+            return;
         }
 
         if (_actionExecutor.CurrentAction is WaitForOrderAction)
@@ -74,12 +76,13 @@ public class CustomerCharacter : CharacterBase
 
         EnqueueAction(new OrderAction(this, _levelContext));
         EnqueueAction(new WaitForFoodAction(this, _orderIconFactory));
-        return true;
     }
 
-    public void ServedFood()
+    public void EnqueueLeaveAngry()
     {
-
+        ClearActions();
+        EnqueueAction(new EmoteAction(this, _emoteIconFactory));
+        EnqueueAction(new LeaveAction(this, _spawnPosition, _mover, _animator));
     }
 
 }

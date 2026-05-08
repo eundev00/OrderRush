@@ -82,13 +82,15 @@ public abstract class CookingToolBase : InteractableBase
     {
         if (_gaugePresenter == null)
         {
-            _gaugePresenter = (KitchenGaugePresenter)_gaugeFactory.Create(transform, new Vector3(0, 0.5f, 0));
+            _gaugePresenter = _gaugeFactory.Create(transform, new Vector3(0, 0.5f, 0));
             _gaugePresenter.Show();
             _gaugePresenter.SetColor(Color.green);
+            _gaugePresenter.SetProgress(0f);
         }
         else
         {
             _gaugePresenter.Show();
+            _gaugePresenter.SetProgress(0f);
         }
     }
 

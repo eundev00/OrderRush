@@ -3,7 +3,7 @@ using UnityEngine;
 public class KitchenGaugePresenter : BaseUIPresenter<GaugeView>
 {
     public KitchenGaugePresenter(Camera mainCamera, RectTransform canvasRectTransform,
-        GaugeView view, Transform target, Vector3 offset, Sprite icon = null)
+        GaugeView view, Transform target, Vector3 offset)
         : base(mainCamera, canvasRectTransform, view, target, offset)
     {
     }

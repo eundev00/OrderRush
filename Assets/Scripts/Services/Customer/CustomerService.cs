@@ -53,7 +53,7 @@ public class CustomerService : ICustomerService, ITickable
         customer.transform.SetParent(_levelContext.transform);
         customer.SetSpawnPosition(_levelContext.SpawnPoint.position);
         customer.WarpTo(_levelContext.SpawnPoint.position);
-        customer.GoToSeat(table, seatIndex);
+        customer.EnqueueGoToSeat(table, seatIndex);
         seatIndex++;
 
         return seatIndex;

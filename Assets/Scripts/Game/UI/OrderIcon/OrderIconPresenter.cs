@@ -2,13 +2,9 @@ using UnityEngine;
 
 public class OrderIconPresenter : BaseUIPresenter<OrderIconView>
 {
-    public OrderIconPresenter(Camera mainCamera, RectTransform canvasRectTransform, OrderIconView view, Transform target, Vector3 offset, Sprite icon = null)
+    public OrderIconPresenter(Camera mainCamera, RectTransform canvasRectTransform, OrderIconView view, Transform target, Vector3 offset)
         : base(mainCamera, canvasRectTransform, view, target, offset)
     {
-        if (icon != null)
-        {
-            View.SetIcon(icon);
-        }
     }
 
     public void SetIcon(Sprite sprite)

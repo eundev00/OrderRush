@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Steak
   m_EditorClassIdentifier: Assembly-CSharp::RecipeData
   RecipeName: Steak
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 6e27bcc5d207040f380cd932b1446ee1, type: 3}
+  Price: 10
   RequiredIngredients:
   - {fileID: 11400000, guid: 012b81213826c4069b678dfdef7a021b, type: 2}
-  Price: 10

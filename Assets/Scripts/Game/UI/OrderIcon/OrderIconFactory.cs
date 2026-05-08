@@ -7,10 +7,10 @@ public class OrderIconFactory : BaseUIFactory<OrderIconView, OrderIconPresenter>
     {
     }
 
-    public override OrderIconPresenter Create(Transform target, Vector3 offset, Sprite icon = null)
+    public override OrderIconPresenter Create(Transform target, Vector3 offset)
     {
         OrderIconView view = GetViewFromPool();
-        var presenter = new OrderIconPresenter(_camera, _canvasRectTransform, view, target, offset, icon);
+        var presenter = new OrderIconPresenter(_camera, _canvasRectTransform, view, target, offset);
         return presenter;
     }
 

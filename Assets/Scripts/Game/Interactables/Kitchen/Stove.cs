@@ -31,6 +31,7 @@ public class Stove : CookingToolBase
         try
         {
             IsCooking = true;
+            _cookingElapsedTime = 0f;
 
             ShowCookingGauge();
 

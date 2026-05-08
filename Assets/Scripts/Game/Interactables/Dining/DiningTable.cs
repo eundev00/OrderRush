@@ -18,7 +18,7 @@ public class DiningTable : InteractableBase, IUpdatable
     private IUpdateSubscriptionService _updateService;
 
     private int _seatedCount = 0;
-    private float _waitOrderTime = 60f;
+    private float _waitOrderTime = 30f;
     private float _elapsedWaitTime = 0f;
 
     private bool _isWaitingForOrder = false;
@@ -129,7 +129,7 @@ public class DiningTable : InteractableBase, IUpdatable
         {
             if (seat.HasCustomer)
             {
-                seat.CurrentCustomer.Leave();
+                seat.CurrentCustomer.OnWaitTimeout();
                 seat.Clear();
                 _seatedCount--;
             }
@@ -183,7 +183,7 @@ public class DiningTable : InteractableBase, IUpdatable
         {
             if (seat.HasCustomer)
             {
-                seat.CurrentCustomer.TryTakeOrder();
+                seat.CurrentCustomer.EnqueueTakeOrder();
             }
         }
     }

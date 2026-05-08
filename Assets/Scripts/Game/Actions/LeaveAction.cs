@@ -23,6 +23,7 @@ public class LeaveAction : IGameAction
 
     public async UniTask ExecuteAsync(CancellationToken ct)
     {
+        _customer.EnableNavMeshAgent();
         await new MoveAction(_mover, _exitPosition, _animator).ExecuteAsync(ct);
         Object.Destroy(_customer.gameObject);
     }

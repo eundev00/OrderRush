@@ -7,10 +7,10 @@ public class CharacterEmoteIconFactory : BaseUIFactory<CharacterEmoteIconView, C
     {
     }
 
-    public override CharacterEmoteIconPresenter Create(Transform target, Vector3 offset, Sprite icon = null)
+    public override CharacterEmoteIconPresenter Create(Transform target, Vector3 offset)
     {
         CharacterEmoteIconView view = GetViewFromPool();
-        var presenter = new CharacterEmoteIconPresenter(_camera, _canvasRectTransform, view, target, offset, icon);
+        var presenter = new CharacterEmoteIconPresenter(_camera, _canvasRectTransform, view, target, offset);
         return presenter;
     }
 
