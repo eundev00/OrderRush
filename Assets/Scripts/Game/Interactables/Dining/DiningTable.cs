@@ -18,10 +18,11 @@ public class DiningTable : InteractableBase, IUpdatable
     private IUpdateSubscriptionService _updateService;
 
     private int _seatedCount = 0;
-    private float _waitOrderTime = 30f;
+    private float _waitOrderTime = 60f;
     private float _elapsedWaitTime = 0f;
 
     private bool _isWaitingForOrder = false;
+    private bool _isWaitingFood = false;
 
 
     [Inject]
@@ -93,6 +94,7 @@ public class DiningTable : InteractableBase, IUpdatable
     {
         _elapsedWaitTime = 0f;
         _isWaitingForOrder = true;
+        _isWaitingFood = false;
 
         // 게이지 생성 및 표시
         if (_tableGaugePresenter == null)
@@ -108,6 +110,7 @@ public class DiningTable : InteractableBase, IUpdatable
     public void StopWaitOrder()
     {
         _isWaitingForOrder = false;
+        _isWaitingFood = false;
         _elapsedWaitTime = 0f;
 
         // 게이지 숨김
@@ -120,9 +123,31 @@ public class DiningTable : InteractableBase, IUpdatable
         _updateService.UnregisterUpdatable(this);
     }
 
+    private void ExtendGaugeTime(float seconds)
+    {
+        if (!_isWaitingFood)
+        {
+            Debug.LogWarning("[DiningTable] Cannot extend gauge during order waiting phase");
+            return;
+        }
+
+        _elapsedWaitTime = Mathf.Max(0, _elapsedWaitTime - seconds);
+        float newProgress = _elapsedWaitTime / _waitOrderTime;
+        _tableGaugePresenter?.SetProgress(newProgress);
+
+        Debug.Log($"[DiningTable] Gauge extended by {seconds}s. Remaining: {_waitOrderTime - _elapsedWaitTime}s");
+    }
+
     private void OnWaitTimeout()
     {
-        Debug.Log("[DiningTable] Wait timeout! Customers leaving...");
+        if (_isWaitingFood)
+        {
+            Debug.Log("[DiningTable] Food wait timeout! Customers leaving...");
+        }
+        else
+        {
+            Debug.Log("[DiningTable] Order wait timeout! Customers leaving...");
+        }
 
         // 모든 앉은 손님 이탈 처리
         foreach (var seat in _seats)
@@ -158,27 +183,39 @@ public class DiningTable : InteractableBase, IUpdatable
 
     public override async UniTask InteractAsync(CharacterBase character, CancellationToken ct)
     {
-        Debug.Log($"[DiningTable] InteractAsync START - character: {character.name}, IsHolding: {character.IsHolding}");
+        Debug.Log($"[DiningTable] InteractAsync START - character: {character.name}, IsHolding: {character.IsHolding}, IsWaitingFood: {_isWaitingFood}");
 
-        // TODO: 조건 로직 직접 수정 필요
-        if (character.IsHolding)
+        if (_isWaitingFood)
         {
-            var carriableType = character.CurrentCarriable.GetCarriableType();
-            if (carriableType == CarriableType.Plate)
+            // 음식 대기 중 - 접시만 받음
+            if (character.IsHolding &&
+                character.CurrentCarriable.GetCarriableType() == CarriableType.Plate)
             {
                 await ServeFood(character);
             }
+            else
+            {
+                Debug.Log("[DiningTable] Waiting for food. Bring a plate!");
+            }
         }
-
-        // 주문 받기
-        TakeOrders();
+        else
+        {
+            // 주문 대기 중 - 빈 손으로만 주문 받기
+            if (!character.IsHolding)
+            {
+                TakeOrders();
+            }
+            else
+            {
+                Debug.Log("[DiningTable] Take orders first!");
+            }
+        }
 
         Debug.Log("[DiningTable] InteractAsync END");
     }
 
     private void TakeOrders()
     {
-        StopWaitOrder();
         foreach (var seat in _seats)
         {
             if (seat.HasCustomer)
@@ -186,6 +223,16 @@ public class DiningTable : InteractableBase, IUpdatable
                 seat.CurrentCustomer.EnqueueTakeOrder();
             }
         }
+
+        // 음식 대기로 전환 (게이지 리셋)
+        _isWaitingFood = true;
+        _elapsedWaitTime = 0f;
+        if (_tableGaugePresenter != null)
+        {
+            _tableGaugePresenter.SetProgress(0f);
+        }
+
+        Debug.Log("[DiningTable] Switched to waiting for food. Gauge reset.");
     }
 
     private async UniTask ServeFood(CharacterBase character)
@@ -199,52 +246,46 @@ public class DiningTable : InteractableBase, IUpdatable
 
         var ingredientDatas = plate.PlacedIngredients.Select(obj => obj.Data).ToList();
 
-        // 모든 좌석을 순회하며 주문과 맞는 손님 찾기
-        // foreach (var seat in _seats)
-        // {
-        //     if (!seat.HasCustomer) continue;
+        foreach (var seat in _seats)
+        {
+            if (!seat.HasCustomer) continue;
 
-        //     var customer = seat.CurrentCustomer;
-        //     if (customer.Order != null && customer.Order.Recipe.IsComplete(ingredientDatas))
-        //     {
-        //         // 주문과 일치! 서빙 처리
-        //         await character.PutDown();
-        //         PlacePlate(seat.GetSeatIndex(), plate);
+            var customer = seat.CurrentCustomer;
+            if (customer.Order != null &&
+                !customer.Order.IsCompleted &&
+                customer.Order.Recipe.IsComplete(ingredientDatas))
+            {
+                await character.PutDown();
+                PlacePlate(seat.GetSeatIndex(), plate);
 
-        //         // Order 완료 처리
-        //         customer.Order.Complete();
+                customer.Order.Complete();
+                ExtendGaugeTime(20f);
+                customer.EnqueueEatAndLeave();
 
-        //         // 손님이 음식 먹고 나가기 (접시를 넘겨줌)
-        //         customer.EatAndLeave(plate);
+                CheckAllServed();
 
-        //         Debug.Log($"[DiningTable] Food served to {customer.name}");
-        //         return;
-        //     }
-        // }
+                Debug.Log($"[DiningTable] Food served to {customer.name}");
+                return;
+            }
+        }
 
         Debug.Log("[DiningTable] No matching order found for this food");
     }
 
-    private async UniTask PickUpPlate(CharacterBase character)
+    private void CheckAllServed()
     {
-        Plate plate = null;
-        int plateIndex = -1;
-
-        for (int i = 0; i < _currentPlates.Count; i++)
+        foreach (var seat in _seats)
         {
-            if (_currentPlates[i] != null)
+            if (seat.HasCustomer &&
+                seat.CurrentCustomer.Order != null &&
+                !seat.CurrentCustomer.Order.IsCompleted)
             {
-                plate = _currentPlates[i];
-                plateIndex = i;
-                break;
+                return;
             }
         }
 
-        if (plate == null) return;
-
-        await character.PickUp(plate);
-        _currentPlates[plateIndex] = null;
-
-        await UniTask.CompletedTask;
+        StopWaitOrder();
+        Debug.Log("[DiningTable] All customers served");
     }
+
 }

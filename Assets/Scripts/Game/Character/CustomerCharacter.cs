@@ -61,6 +61,17 @@ public class CustomerCharacter : CharacterBase
         EnqueueLeaveAngry();
     }
 
+    public void EnqueueEatAndLeave()
+    {
+        if (_actionExecutor.CurrentAction is WaitForFoodAction)
+        {
+            _actionExecutor.CancelCurrentAction();
+        }
+
+        EnqueueAction(new EatAction(this, _paymentPublisher));
+        EnqueueAction(new LeaveAction(this, _spawnPosition, _mover, _animator));
+    }
+
 
     public void EnqueueTakeOrder()
     {
