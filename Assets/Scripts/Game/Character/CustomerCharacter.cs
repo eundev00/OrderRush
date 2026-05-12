@@ -21,7 +21,10 @@ public class CustomerCharacter : CharacterBase
     private CharacterEmoteIconFactory _emoteIconFactory;
 
     [Inject]
-    public void Construct(IPublisher<PaymentEvent> paymentPublisher, ILevelContextPresenter levelContext, OrderIconFactory orderIconFactory, CharacterEmoteIconFactory emoteIconFactory)
+    public void Construct(IPublisher<PaymentEvent> paymentPublisher,
+        ILevelContextPresenter levelContext,
+        OrderIconFactory orderIconFactory,
+        CharacterEmoteIconFactory emoteIconFactory)
     {
         _paymentPublisher = paymentPublisher;
         _levelContext = levelContext;
@@ -45,6 +48,8 @@ public class CustomerCharacter : CharacterBase
             Debug.LogError($"[CustomerCharacter] Invalid seat index: {seatIndex}");
             return;
         }
+
+        ClearActions();
         EnqueueAction(new MoveAction(_mover, targetSeat.position, _animator));
         EnqueueAction(new SitAction(this, AssignedTable, AssignedSeatIndex));
         EnqueueAction(new WaitForOrderAction());
@@ -94,6 +99,18 @@ public class CustomerCharacter : CharacterBase
         ClearActions();
         EnqueueAction(new EmoteAction(this, _emoteIconFactory));
         EnqueueAction(new LeaveAction(this, _spawnPosition, _mover, _animator));
+    }
+
+    public void EnqueueGoToWaitingPosition(Vector3 waitPosition, Quaternion waitRotation)
+    {
+        EnqueueAction(new MoveAction(_mover, waitPosition, _animator));
+        EnqueueAction(new WaitInLineAction(_animator, transform, waitRotation, _mover));
+    }
+
+    public void EnqueueMoveToWaitingPosition(Vector3 waitPosition, Quaternion waitRotation)
+    {
+        ClearActions();
+        EnqueueGoToWaitingPosition(waitPosition, waitRotation);
     }
 
 }

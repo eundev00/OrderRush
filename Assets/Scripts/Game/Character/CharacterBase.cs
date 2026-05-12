@@ -99,12 +99,12 @@ public abstract class CharacterBase : MonoBehaviour
         _animator.SetWorking(false);
     }
 
-    public void EnqueueAction(IGameAction action)
+    protected void EnqueueAction(IGameAction action)
     {
         _actionExecutor.Enqueue(action);
     }
 
-    public void ClearActions()
+    protected void ClearActions()
     {
         _actionExecutor.Clear();
     }

@@ -17,6 +17,7 @@ public class MoveAction : IGameAction
 
     public async UniTask ExecuteAsync(CancellationToken ct)
     {
+        _mover.EnableAgent();
         _animator.SetSpeed(1f);
 
         try

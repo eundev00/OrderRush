@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MessagePipe;
 using UnityEngine;
 using VContainer;
 using Services.UpdateService;
@@ -16,9 +17,10 @@ public class DiningTable : InteractableBase, IUpdatable
     private TableGaugeFactory _gaugeFactory;
     private TableGaugePresenter _tableGaugePresenter;
     private IUpdateSubscriptionService _updateService;
+    private IPublisher<TableAvailableEvent> _tableAvailablePublisher;
 
     private int _seatedCount = 0;
-    private float _defaultWaitTime = 60f;
+    private float _defaultWaitTime = 10f;
     private float _elapsedWaitTime = 0f;
 
     private bool _isWaitingForOrder = false;
@@ -26,12 +28,17 @@ public class DiningTable : InteractableBase, IUpdatable
 
     private const float GAUGE_RECOVERY_TIME = 20f;
 
+    public int MaxSeats => _seats.Length;
 
     [Inject]
-    public void Construct(TableGaugeFactory gaugeFactory, IUpdateSubscriptionService updateService)
+    public void Construct(
+        TableGaugeFactory gaugeFactory,
+        IUpdateSubscriptionService updateService,
+        IPublisher<TableAvailableEvent> tableAvailablePublisher)
     {
         _gaugeFactory = gaugeFactory;
         _updateService = updateService;
+        _tableAvailablePublisher = tableAvailablePublisher;
     }
 
     void Awake()
@@ -171,11 +178,23 @@ public class DiningTable : InteractableBase, IUpdatable
             seat.Clear();
             _seatedCount--;
 
-            // 접시 재료만 제거 (접시는 남김)
             if (_currentPlates[seatIndex] != null)
             {
                 _currentPlates[seatIndex].ClearIngredients();
             }
+
+            bool isEmpty = IsEmptyTable();
+            Debug.Log($"[DiningTable] CustomerLeaving - seatIndex: {seatIndex}, _seatedCount: {_seatedCount}, IsEmpty: {isEmpty}");
+
+            if (isEmpty)
+            {
+                Debug.Log($"[DiningTable] TableAvailableEvent Published - Table: {gameObject.name}");
+                _tableAvailablePublisher.Publish(new TableAvailableEvent(this));
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"[DiningTable] CustomerLeaving called but seat {seatIndex} has no customer");
         }
     }
 
@@ -184,10 +203,20 @@ public class DiningTable : InteractableBase, IUpdatable
     {
         if (_seatedCount > 0) return false;
 
-        // 접시가 하나라도 남아있으면 빈 테이블이 아님
-        foreach (var plate in _currentPlates)
+        int plateCount = 0;
+        for (int i = 0; i < _currentPlates.Count; i++)
         {
-            if (plate != null) return false;
+            if (_currentPlates[i] != null)
+            {
+                plateCount++;
+                Debug.Log($"[DiningTable] IsEmptyTable - Plate exists at seat {i}");
+            }
+        }
+
+        if (plateCount > 0)
+        {
+            Debug.Log($"[DiningTable] IsEmptyTable - Table not empty, {plateCount} plates remaining");
+            return false;
         }
 
         return true;
