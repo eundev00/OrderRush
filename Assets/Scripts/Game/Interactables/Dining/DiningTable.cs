@@ -149,14 +149,11 @@ public class DiningTable : InteractableBase, IUpdatable
 
     private void OnWaitTimeout()
     {
-        // 모든 앉은 손님 이탈 처리
         foreach (var seat in _seats)
         {
             if (seat.HasCustomer)
             {
                 seat.CurrentCustomer.OnWaitTimeout();
-                seat.Clear();
-                _seatedCount--;
             }
         }
 
@@ -183,18 +180,10 @@ public class DiningTable : InteractableBase, IUpdatable
                 _currentPlates[seatIndex].ClearIngredients();
             }
 
-            bool isEmpty = IsEmptyTable();
-            Debug.Log($"[DiningTable] CustomerLeaving - seatIndex: {seatIndex}, _seatedCount: {_seatedCount}, IsEmpty: {isEmpty}");
-
-            if (isEmpty)
+            if (IsEmptyTable())
             {
-                Debug.Log($"[DiningTable] TableAvailableEvent Published - Table: {gameObject.name}");
                 _tableAvailablePublisher.Publish(new TableAvailableEvent(this));
             }
-        }
-        else
-        {
-            Debug.LogWarning($"[DiningTable] CustomerLeaving called but seat {seatIndex} has no customer");
         }
     }
 
@@ -203,20 +192,9 @@ public class DiningTable : InteractableBase, IUpdatable
     {
         if (_seatedCount > 0) return false;
 
-        int plateCount = 0;
-        for (int i = 0; i < _currentPlates.Count; i++)
+        foreach (var plate in _currentPlates)
         {
-            if (_currentPlates[i] != null)
-            {
-                plateCount++;
-                Debug.Log($"[DiningTable] IsEmptyTable - Plate exists at seat {i}");
-            }
-        }
-
-        if (plateCount > 0)
-        {
-            Debug.Log($"[DiningTable] IsEmptyTable - Table not empty, {plateCount} plates remaining");
-            return false;
+            if (plate != null) return false;
         }
 
         return true;
@@ -237,6 +215,12 @@ public class DiningTable : InteractableBase, IUpdatable
                 {
                     await character.PickUp(plate);
                     _currentPlates[i] = null;
+
+                    if (IsEmptyTable())
+                    {
+                        _tableAvailablePublisher.Publish(new TableAvailableEvent(this));
+                    }
+
                     return;
                 }
             }

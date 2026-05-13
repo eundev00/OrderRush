@@ -37,7 +37,6 @@ public class SitAction : IGameAction
             return;
         }
 
-
         await UniTask.CompletedTask;
     }
 }

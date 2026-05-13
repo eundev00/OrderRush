@@ -17,6 +17,5 @@ public class CharacterEmoteIconFactory : BaseUIFactory<CharacterEmoteIconView, C
     protected override void OnReleaseView(CharacterEmoteIconView view)
     {
         base.OnReleaseView(view);
-        view.SetIcon(null);
     }
 }

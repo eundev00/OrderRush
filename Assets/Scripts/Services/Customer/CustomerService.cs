@@ -9,7 +9,6 @@ using VContainer.Unity;
 public class CustomerService : ICustomerService, ITickable
 {
     private LevelContext _levelContext;
-    private List<RecipeData> _availableRecipes;
     private float _spawnInterval;
     private readonly SpawnFactory _spawnFactory;
     private readonly ILevelProgressService _levelProgressService;
@@ -36,7 +35,6 @@ public class CustomerService : ICustomerService, ITickable
     public void SetTables(LevelContext levelContext, LevelData levelData)
     {
         _levelContext = levelContext;
-        _availableRecipes = levelData.AvailableRecipes;
         _spawnInterval = levelData.CustomerSpawnInterval;
         _spawnCount = levelData.MaxCustomers;
         _maxGroupSize = levelData.MaxGroupSize;
@@ -54,7 +52,7 @@ public class CustomerService : ICustomerService, ITickable
 
     public async void Tick()
     {
-        if (_spawnCount == 0) return;
+        if (_spawnCount <= 0) return;
         if (_levelContext == null) return;
 
         _timer += Time.deltaTime;
