@@ -3,6 +3,9 @@ using System.Collections.Generic;
    public static class PrefabKeys
    {
     public const string CustomerCharacter1 = "CustomerCharacter1";
+    public const string CustomerCharacter2 = "CustomerCharacter2";
+    public const string CustomerCharacter3 = "CustomerCharacter3";
+    public const string CustomerCharacter4 = "CustomerCharacter4";
     public const string Player = "Player";
     public const string DefaultCube = "DefaultCube";
     public const string DiningChair = "DiningChair";
@@ -29,6 +32,9 @@ using System.Collections.Generic;
     public static Dictionary<string, string> PrefabPaths = new Dictionary<string, string>()
     {
         { CustomerCharacter1, "Assets/Prefabs/Game/Character/CustomerCharacter1.prefab" },
+        { CustomerCharacter2, "Assets/Prefabs/Game/Character/CustomerCharacter2.prefab" },
+        { CustomerCharacter3, "Assets/Prefabs/Game/Character/CustomerCharacter3.prefab" },
+        { CustomerCharacter4, "Assets/Prefabs/Game/Character/CustomerCharacter4.prefab" },
         { Player, "Assets/Prefabs/Game/Character/Player.prefab" },
         { DefaultCube, "Assets/Prefabs/Game/DefaultCube.prefab" },
         { DiningChair, "Assets/Prefabs/Game/Dining/DiningChair.prefab" },

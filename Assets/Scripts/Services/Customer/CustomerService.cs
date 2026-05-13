@@ -93,15 +93,35 @@ public class CustomerService : ICustomerService, ITickable
             .FirstOrDefault(t => t.IsEmptyTable() && t.MaxSeats >= groupSize);
     }
 
+    private List<string> GetUniqueCharacterKeys(int groupSize)
+    {
+        var availableKeys = new List<string>
+        {
+            PrefabKeys.CustomerCharacter1,
+            PrefabKeys.CustomerCharacter2,
+            PrefabKeys.CustomerCharacter3,
+            PrefabKeys.CustomerCharacter4
+        };
+
+        for (int i = availableKeys.Count - 1; i > 0; i--)
+        {
+            int j = UnityEngine.Random.Range(0, i + 1);
+            (availableKeys[i], availableKeys[j]) = (availableKeys[j], availableKeys[i]);
+        }
+
+        return availableKeys.Take(groupSize).ToList();
+    }
+
     private async UniTask SpawnToWaitingQueue(int groupSize)
     {
         var group = new CustomerGroup(groupSize);
         int currentGroupIndex = _waitingList.Count;
+        var characterKeys = GetUniqueCharacterKeys(groupSize);
 
         for (int i = 0; i < groupSize; i++)
         {
             var customer = await _spawnFactory.Create<CustomerCharacter>(
-                PrefabKeys.GetPrefabPath(PrefabKeys.CustomerCharacter1));
+                PrefabKeys.GetPrefabPath(characterKeys[i]));
             customer.transform.SetParent(_levelContext.transform);
             customer.SetSpawnPosition(_levelContext.SpawnPoint.position);
             customer.WarpTo(_levelContext.SpawnPoint.position);
@@ -117,10 +137,12 @@ public class CustomerService : ICustomerService, ITickable
 
     private async UniTask SpawnAndSeatGroup(DiningTable table, int groupSize)
     {
+        var characterKeys = GetUniqueCharacterKeys(groupSize);
+
         for (int i = 0; i < groupSize; i++)
         {
             var customer = await _spawnFactory.Create<CustomerCharacter>(
-                PrefabKeys.GetPrefabPath(PrefabKeys.CustomerCharacter1));
+                PrefabKeys.GetPrefabPath(characterKeys[i]));
             customer.transform.SetParent(_levelContext.transform);
             customer.SetSpawnPosition(_levelContext.SpawnPoint.position);
             customer.WarpTo(_levelContext.SpawnPoint.position);
