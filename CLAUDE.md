@@ -33,6 +33,12 @@
    - 코드만으로 이해하기 어려운 복잡한 로직에만 추가
    - 자명한 코드에는 주석을 달지 말 것
 
+3. **네이밍 규칙**
+   - 시간/초 단위 변수는 `Duration` 접미사 사용
+   - 예: `_baseTimeBarDuration`, `_timeBarDurationIncrease`
+   - 모든 데이터 클래스는 `Data` 접미사 사용
+   - 예: `DaysData`, `StoryPhaseData`, `RecipeData`
+
 ---
 
 ## 기술 스택
