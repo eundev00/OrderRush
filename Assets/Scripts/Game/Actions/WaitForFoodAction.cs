@@ -14,6 +14,11 @@ public class WaitForFoodAction : IGameAction
     }
     public async UniTask ExecuteAsync(CancellationToken ct)
     {
+        if (_character == null || _character.gameObject == null)
+        {
+            return;
+        }
+
         Debug.Log($"[WaitForFoodAction] START - Character: {_character.name}");
 
         if (_character.Order == null)

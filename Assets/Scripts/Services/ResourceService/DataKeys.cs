@@ -10,12 +10,14 @@ public static class DataKeys
     public const string Ingredient_SlicedOnion = "Ingredient_SlicedOnion";
     public const string Ingredient_Steak = "Ingredient_Steak";
     public const string Ingredient_SteakMeat = "Ingredient_SteakMeat";
-    public const string Level1 = "Level1";
-    public const string LevelSettings = "LevelSettings";
     public const string Recipe_MushroomSteak = "Recipe_MushroomSteak";
     public const string Recipe_OnionRingSteak = "Recipe_OnionRingSteak";
     public const string Recipe_Steak = "Recipe_Steak";
     public const string Recipe_SteakPlatter = "Recipe_SteakPlatter";
+    public const string GameConfig = "GameConfig";
+    public const string Recipes = "Recipes";
+    public const string Run1_Days = "Run1_Days";
+    public const string RunsData = "RunsData";
 
     public static Dictionary<string, string> DataPaths = new Dictionary<string, string>()
     {
@@ -26,12 +28,14 @@ public static class DataKeys
         { Ingredient_SlicedOnion, "Assets/Data/Ingredient/Onion/SlicedOnion.asset" },
         { Ingredient_Steak, "Assets/Data/Ingredient/Steak/Steak.asset" },
         { Ingredient_SteakMeat, "Assets/Data/Ingredient/Steak/SteakMeat.asset" },
-        { Level1, "Assets/Data/Level/Level1.asset" },
-        { LevelSettings, "Assets/Data/Level/LevelSettings.asset" },
         { Recipe_MushroomSteak, "Assets/Data/Recipe/MushroomSteak.asset" },
         { Recipe_OnionRingSteak, "Assets/Data/Recipe/OnionRingSteak.asset" },
         { Recipe_Steak, "Assets/Data/Recipe/Steak.asset" },
         { Recipe_SteakPlatter, "Assets/Data/Recipe/SteakPlatter.asset" },
+        { GameConfig, "Assets/Data/GameConfig.asset" },
+        { Recipes, "Assets/Data/Recipe/RecipesData.asset" },
+        { Run1_Days, "Assets/Data/Run1_Days.asset" },
+        { RunsData, "Assets/Data/RunsData.asset" },
     };
 
     public static string GetDataPath(string tag)

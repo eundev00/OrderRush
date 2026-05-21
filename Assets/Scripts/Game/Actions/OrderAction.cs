@@ -1,28 +1,41 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using OrderRush.Services;
 using UnityEngine;
 
 public class OrderAction : IGameAction
 {
     private readonly CustomerCharacter _character;
-    private readonly ILevelContextPresenter _levelContext;
+    private readonly IAccountService _accountService;
+    private readonly IGameDataService _gameDataService;
 
-    public OrderAction(CustomerCharacter character, ILevelContextPresenter levelContextPresenter)
+    public OrderAction(CustomerCharacter character, IAccountService accountService, IGameDataService gameDataService)
     {
         _character = character;
-        _levelContext = levelContextPresenter;
+        _accountService = accountService;
+        _gameDataService = gameDataService;
     }
 
     public async UniTask ExecuteAsync(CancellationToken ct)
     {
-        var recipes = _levelContext.CurrentLevelData.AvailableRecipes;
-        if (recipes == null || recipes.Count == 0)
+        if (_character == null || _character.gameObject == null)
         {
             return;
         }
 
-        var recipe = recipes[Random.Range(0, recipes.Count)];
-        _character.Order = new Order(recipe, Constants.kDefaultWaitSeconds);
+        var recipe = _accountService.GetRandomOwnedRecipe();
+
+        if (recipe == null)
+        {
+            Debug.LogWarning("No owned recipes available!");
+            return;
+        }
+
+        if (_character != null && _character.gameObject != null)
+        {
+            _character.Order = new Order(recipe, _gameDataService.Config.OrderWaitDuration);
+        }
+
         await UniTask.CompletedTask;
     }
 }

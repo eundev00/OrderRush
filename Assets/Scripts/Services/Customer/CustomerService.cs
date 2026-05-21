@@ -3,76 +3,83 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
+using OrderRush.Services;
+using UniRx;
 using UnityEngine;
-using VContainer.Unity;
 
-public class CustomerService : ICustomerService, ITickable
+public class CustomerService : ICustomerService
 {
-    private LevelContext _levelContext;
+    private readonly ILevelContextPresenter _levelPresenter;
     private float _spawnInterval;
     private readonly SpawnFactory _spawnFactory;
-    private readonly ILevelProgressService _levelProgressService;
-    private float _timer;
-    private int _spawnCount;
+    private readonly IDayProgressService _dayProgressService;
+    private int _nextSpawnIndex;
+    private int _maxCustomers;
     private int _maxGroupSize;
+    private float _lastCheckedElapsed;
 
     private readonly List<CustomerGroup> _waitingList = new();
-    private readonly ISubscriber<TableAvailableEvent> _tableAvailableSubscriber;
-    private IDisposable _subscription;
+    private readonly CompositeDisposable _disposables = new();
 
 
 
     public CustomerService(
+        ILevelContextPresenter levelPresenter,
         SpawnFactory spawnFactory,
-        ILevelProgressService levelProgressService,
-        ISubscriber<TableAvailableEvent> tableAvailableSubscriber)
+        IDayProgressService dayProgressService)
     {
+        _levelPresenter = levelPresenter;
         _spawnFactory = spawnFactory;
-        _levelProgressService = levelProgressService;
-        _tableAvailableSubscriber = tableAvailableSubscriber;
+        _dayProgressService = dayProgressService;
     }
 
-    public void SetTables(LevelContext levelContext, LevelData levelData)
+    public void Initialize()
     {
-        _levelContext = levelContext;
-        _spawnInterval = levelData.CustomerSpawnInterval;
-        _spawnCount = levelData.MaxCustomers;
-        _maxGroupSize = levelData.MaxGroupSize;
+        var currentDay = _dayProgressService.CurrentDayContext;
+        var daysData = _dayProgressService.CurrentDaysData;
 
-        // 이벤트 구독
-        _subscription?.Dispose();
-        _subscription = _tableAvailableSubscriber.Subscribe(OnTableAvailable);
+        int dayNumber = currentDay.DayNumber;
+        float timeBarDuration = daysData.GetTimeBarDuration(dayNumber);
+        _maxCustomers = daysData.GetMaxCustomers(dayNumber);
+
+        _spawnInterval = timeBarDuration / _maxCustomers;
+        _nextSpawnIndex = 0;
+        _maxGroupSize = 2;
+        _lastCheckedElapsed = -1f;
+
+        currentDay.TimeBarElapsed
+            .Subscribe(CheckAndSpawn)
+            .AddTo(_disposables);
     }
 
     public void Dispose()
     {
-        _subscription?.Dispose();
+        _disposables?.Dispose();
         _waitingList.Clear();
     }
 
-    public async void Tick()
+    private async void CheckAndSpawn(float elapsed)
     {
-        if (_spawnCount <= 0) return;
-        if (_levelContext == null) return;
+        if (_nextSpawnIndex >= _maxCustomers) return;
 
-        _timer += Time.deltaTime;
+        float nextSpawnTime = _nextSpawnIndex * _spawnInterval;
 
-        if (_timer >= _spawnInterval)
+        if (_lastCheckedElapsed < nextSpawnTime && elapsed >= nextSpawnTime)
         {
-            _timer = 0;
-            int count = await TrySpawn();
-            _spawnCount -= count;
+            _lastCheckedElapsed = elapsed;
+            await TrySpawn();
+            _nextSpawnIndex++;
         }
     }
 
-    private async UniTask<int> TrySpawn()
+    private async UniTask TrySpawn()
     {
         int groupSize = UnityEngine.Random.Range(1, _maxGroupSize + 1);
 
         if (_waitingList.Count > 0)
         {
             await SpawnToWaitingQueue(groupSize);
-            return groupSize;
+            return;
         }
 
         var table = FindAvailableTable(groupSize);
@@ -80,16 +87,15 @@ public class CustomerService : ICustomerService, ITickable
         if (table == null)
         {
             await SpawnToWaitingQueue(groupSize);
-            return groupSize;
+            return;
         }
 
         await SpawnAndSeatGroup(table, groupSize);
-        return groupSize;
     }
 
     private DiningTable FindAvailableTable(int groupSize)
     {
-        return _levelContext.DiningTables
+        return _levelPresenter.DiningTables
             .FirstOrDefault(t => t.IsEmptyTable() && t.MaxSeats >= groupSize);
     }
 
@@ -122,14 +128,14 @@ public class CustomerService : ICustomerService, ITickable
         {
             var customer = await _spawnFactory.Create<CustomerCharacter>(
                 PrefabKeys.GetPrefabPath(characterKeys[i]));
-            customer.transform.SetParent(_levelContext.transform);
-            customer.SetSpawnPosition(_levelContext.SpawnPoint.position);
-            customer.WarpTo(_levelContext.SpawnPoint.position);
+            customer.transform.SetParent(_levelPresenter.LevelTransform);
+            customer.SetSpawnPosition(_levelPresenter.SpawnPosition);
+            customer.WarpTo(_levelPresenter.SpawnPosition);
 
             group.AddMember(customer);
 
             Vector3 waitPosition = CalculateWaitingPosition(currentGroupIndex, i);
-            customer.EnqueueGoToWaitingPosition(waitPosition, _levelContext.WaitingPoint.rotation);
+            customer.EnqueueGoToWaitingPosition(waitPosition, _levelPresenter.WaitingRotation);
         }
 
         _waitingList.Add(group);
@@ -143,16 +149,16 @@ public class CustomerService : ICustomerService, ITickable
         {
             var customer = await _spawnFactory.Create<CustomerCharacter>(
                 PrefabKeys.GetPrefabPath(characterKeys[i]));
-            customer.transform.SetParent(_levelContext.transform);
-            customer.SetSpawnPosition(_levelContext.SpawnPoint.position);
-            customer.WarpTo(_levelContext.SpawnPoint.position);
+            customer.transform.SetParent(_levelPresenter.LevelTransform);
+            customer.SetSpawnPosition(_levelPresenter.SpawnPosition);
+            customer.WarpTo(_levelPresenter.SpawnPosition);
             customer.EnqueueGoToSeat(table, i);
         }
     }
 
     private Vector3 CalculateWaitingPosition(int groupIndex, int memberIndex)
     {
-        Vector3 basePosition = _levelContext.WaitingPoint.position;
+        Vector3 basePosition = _levelPresenter.WaitingPosition;
         Vector3 forward = new Vector3(1, 0, 0);
 
         int totalPeopleAhead = 0;
@@ -164,50 +170,6 @@ public class CustomerService : ICustomerService, ITickable
 
         float offset = totalPeopleAhead * Constants.kWaitingLineSpacing;
         return basePosition + forward * offset;
-    }
-
-    private void OnTableAvailable(TableAvailableEvent evt)
-    {
-        if (_waitingList.Count > 0)
-        {
-            TryAssignWaitingGroupToTable(evt.Table);
-        }
-    }
-
-    private void TryAssignWaitingGroupToTable(DiningTable table)
-    {
-        if (_waitingList.Count == 0) return;
-
-        var targetGroup = _waitingList.FirstOrDefault(g => g.GroupSize <= table.MaxSeats);
-
-        if (targetGroup == null) return;
-
-        _waitingList.Remove(targetGroup);
-
-        targetGroup.AssignedTable = table;
-        for (int i = 0; i < targetGroup.Members.Count; i++)
-        {
-            var customer = targetGroup.Members[i];
-            customer.EnqueueGoToSeat(table, i);
-        }
-
-        RepositionWaitingQueue();
-    }
-
-    private void RepositionWaitingQueue()
-    {
-        int groupIndex = 0;
-        foreach (var group in _waitingList)
-        {
-            for (int memberIndex = 0; memberIndex < group.Members.Count; memberIndex++)
-            {
-                var customer = group.Members[memberIndex];
-                Vector3 newPosition = CalculateWaitingPosition(groupIndex, memberIndex);
-
-                customer.EnqueueMoveToWaitingPosition(newPosition, _levelContext.WaitingPoint.rotation);
-            }
-            groupIndex++;
-        }
     }
 
 }

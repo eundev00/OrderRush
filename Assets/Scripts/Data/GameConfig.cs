@@ -17,6 +17,10 @@ namespace OrderRush.Data
 
         [Header("Customer Settings")]
         [SerializeField] private float _tipRatio = 0.1f;
+        [SerializeField] private float _eatDuration = 5f;
+
+        [Header("Tool Settings")]
+        [SerializeField] private float _toolProcessSeconds = 5f;
 
         public int EnterWaitDuration => _enterWaitDuration;
         public int OrderWaitDuration => _orderWaitDuration;
@@ -24,6 +28,8 @@ namespace OrderRush.Data
         public float PatienceRecoveryAmount => _patienceRecoveryAmount;
         public List<int> RefreshCosts => _refreshCosts;
         public float TipRatio => _tipRatio;
+        public float EatDuration => _eatDuration;
+        public float ToolProcessSeconds => _toolProcessSeconds;
 
         public int GetRefreshCost(int refreshCount)
         {

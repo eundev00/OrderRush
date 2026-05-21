@@ -1,7 +1,9 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using OrderRush.Services;
 using UnityEngine;
+using VContainer;
 
 public class DishSink : InteractableBase
 {
@@ -10,6 +12,13 @@ public class DishSink : InteractableBase
     [NotNull][SerializeField] CookingProgressView _progressView;
 
     private Plate _currentPlate;
+    private IGameDataService _gameDataService;
+
+    [Inject]
+    public void Construct(IGameDataService gameDataService)
+    {
+        _gameDataService = gameDataService;
+    }
 
     void Awake()
     {
@@ -34,7 +43,7 @@ public class DishSink : InteractableBase
 
         try
         {
-            while (elapsedTime < Constants.kToolProcessSeconds)
+            while (elapsedTime < _gameDataService.Config.ToolProcessSeconds)
             {
                 // 취소 요청 확인
                 if (ct.IsCancellationRequested)
@@ -47,7 +56,7 @@ public class DishSink : InteractableBase
                 await UniTask.Yield();
                 elapsedTime += Time.deltaTime;
 
-                float progress = elapsedTime / Constants.kToolProcessSeconds;
+                float progress = elapsedTime / _gameDataService.Config.ToolProcessSeconds;
                 _progressView.SetProgress(progress);
             }
 

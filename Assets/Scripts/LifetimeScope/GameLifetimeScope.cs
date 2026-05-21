@@ -1,5 +1,3 @@
-using System.Linq;
-using OrderRush.Data;
 using OrderRush.Services;
 using UnityEngine;
 using VContainer;
@@ -9,16 +7,12 @@ public class GameLifetimeScope : LifetimeScope
 {
     [SerializeField] Transform _root;
     [SerializeField] RectTransform _gaugeContainer;
-    [SerializeField] RunsData _runsData;
 
     protected override void Configure(IContainerBuilder builder)
     {
-        // Data
-        builder.RegisterInstance(_runsData);
 
         // Services
-        builder.Register<ILevelProgressService, LevelProgressService>(Lifetime.Singleton);
-        builder.Register<IRunProgressService, RunProgressService>(Lifetime.Scoped);
+        builder.Register<IDayProgressService, DayProgressService>(Lifetime.Scoped);
         builder.Register<CustomerService>(Lifetime.Singleton).AsImplementedInterfaces();
 
         // Factories

@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using OrderRush.Services;
 using UnityEngine;
 using VContainer;
 
@@ -15,15 +16,17 @@ public abstract class CookingToolBase : InteractableBase
     private SpawnFactory _factory;
     protected KitchenGaugeFactory _gaugeFactory;
     protected KitchenGaugePresenter _gaugePresenter;
+    protected IGameDataService _gameDataService;
 
     public IngredientData CurrentIngredientData => CurrentIngredientObject != null ? CurrentIngredientObject.Data : null;
     public bool HasIngredient => CurrentIngredientObject != null;
 
     [Inject]
-    public void Construct(SpawnFactory factory, KitchenGaugeFactory gaugeFactory)
+    public void Construct(SpawnFactory factory, KitchenGaugeFactory gaugeFactory, IGameDataService gameDataService)
     {
         _factory = factory;
         _gaugeFactory = gaugeFactory;
+        _gameDataService = gameDataService;
     }
 
     protected virtual void OnDestroy()

@@ -20,6 +20,11 @@ public class EmoteAction : IGameAction
 
     public async UniTask ExecuteAsync(CancellationToken ct)
     {
+        if (_character == null || _character.gameObject == null)
+        {
+            return;
+        }
+
         try
         {
             _emoteIconPresenter = _emoteIconFactory.Create(_character.transform, new Vector3(0, 1.5f, 0));

@@ -1,6 +1,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
+using OrderRush.Services;
 using UnityEngine;
 using VContainer;
 
@@ -10,7 +11,8 @@ public class CustomerCharacter : CharacterBase
     public DiningTable AssignedTable { get; private set; }
     public int AssignedSeatIndex { get; private set; }
 
-    private ILevelContextPresenter _levelContext;
+    private IAccountService _accountService;
+    private IGameDataService _gameDataService;
     private Vector3 _spawnPosition;
 
     private IPublisher<PaymentEvent> _paymentPublisher;
@@ -19,12 +21,14 @@ public class CustomerCharacter : CharacterBase
 
     [Inject]
     public void Construct(IPublisher<PaymentEvent> paymentPublisher,
-        ILevelContextPresenter levelContext,
+        IAccountService accountService,
+        IGameDataService gameDataService,
         OrderIconFactory orderIconFactory,
         CharacterEmoteIconFactory emoteIconFactory)
     {
         _paymentPublisher = paymentPublisher;
-        _levelContext = levelContext;
+        _accountService = accountService;
+        _gameDataService = gameDataService;
         _orderIconFactory = orderIconFactory;
         _emoteIconFactory = emoteIconFactory;
     }
@@ -70,7 +74,7 @@ public class CustomerCharacter : CharacterBase
             _actionExecutor.CancelCurrentAction();
         }
 
-        EnqueueAction(new EatAction(this, _paymentPublisher));
+        EnqueueAction(new EatAction(this, _paymentPublisher, _gameDataService));
         EnqueueAction(new LeaveAction(this, _spawnPosition, _mover, _animator));
     }
 
@@ -87,7 +91,7 @@ public class CustomerCharacter : CharacterBase
             _actionExecutor.CancelCurrentAction();
         }
 
-        EnqueueAction(new OrderAction(this, _levelContext));
+        EnqueueAction(new OrderAction(this, _accountService, _gameDataService));
         EnqueueAction(new WaitForFoodAction(this, _orderIconFactory));
     }
 

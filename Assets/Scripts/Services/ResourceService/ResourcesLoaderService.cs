@@ -18,17 +18,6 @@ public class ResourcesLoaderService : IResourcesLoaderService
         return asset;
     }
 
-    public T LoadSync<T>(string key) where T : Object
-    {
-        if (_cache.TryGetValue(key, out var cached))
-            return (T)cached;
-
-        var handle = Addressables.LoadAssetAsync<T>(key);
-        var asset = handle.WaitForCompletion();
-        _cache[key] = asset;
-        return asset;
-    }
-
     public void Release(string key)
     {
         if (_cache.TryGetValue(key, out var handle))

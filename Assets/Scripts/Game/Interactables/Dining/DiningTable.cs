@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
+using OrderRush.Services;
 using UnityEngine;
 using VContainer;
 using Services.UpdateService;
@@ -18,6 +19,7 @@ public class DiningTable : InteractableBase, IUpdatable
     private TableGaugePresenter _tableGaugePresenter;
     private IUpdateSubscriptionService _updateService;
     private IPublisher<TableAvailableEvent> _tableAvailablePublisher;
+    private IGameDataService _gameDataService;
 
     private int _seatedCount = 0;
     private float _elapsedWaitTime = 0f;
@@ -32,11 +34,13 @@ public class DiningTable : InteractableBase, IUpdatable
     public void Construct(
         TableGaugeFactory gaugeFactory,
         IUpdateSubscriptionService updateService,
-        IPublisher<TableAvailableEvent> tableAvailablePublisher)
+        IPublisher<TableAvailableEvent> tableAvailablePublisher,
+        IGameDataService gameDataService)
     {
         _gaugeFactory = gaugeFactory;
         _updateService = updateService;
         _tableAvailablePublisher = tableAvailablePublisher;
+        _gameDataService = gameDataService;
     }
 
     void Awake()
@@ -82,7 +86,7 @@ public class DiningTable : InteractableBase, IUpdatable
         if (!_isWaitingForOrder) return;
 
         _elapsedWaitTime += Time.deltaTime;
-        float progress = _elapsedWaitTime / Constants.kDefaultWaitSeconds;
+        float progress = _elapsedWaitTime / _gameDataService.Config.FoodWaitDuration;
 
         // 게이지 업데이트
         if (_tableGaugePresenter != null)
@@ -91,7 +95,7 @@ public class DiningTable : InteractableBase, IUpdatable
         }
 
         // 시간 초과 시 처리
-        if (_elapsedWaitTime >= Constants.kDefaultWaitSeconds)
+        if (_elapsedWaitTime >= _gameDataService.Config.FoodWaitDuration)
         {
             OnWaitTimeout();
         }
@@ -138,8 +142,9 @@ public class DiningTable : InteractableBase, IUpdatable
             return;
         }
 
-        _elapsedWaitTime = Mathf.Max(0, _elapsedWaitTime - Constants.kGaugeExtendSeconds);
-        float newProgress = _elapsedWaitTime / Constants.kDefaultWaitSeconds;
+        float recoverAmount = _gameDataService.Config.FoodWaitDuration * _gameDataService.Config.PatienceRecoveryAmount;
+        _elapsedWaitTime = Mathf.Max(0, _elapsedWaitTime - recoverAmount);
+        float newProgress = _elapsedWaitTime / _gameDataService.Config.FoodWaitDuration;
         _tableGaugePresenter?.SetProgress(newProgress);
     }
 

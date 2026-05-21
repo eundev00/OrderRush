@@ -4,9 +4,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Recipe", menuName = "Order Rush/Recipe")]
 public class RecipeData : ScriptableObject
 {
+    public int RecipeID;
     public string RecipeName;
     public Sprite Icon;
-    public int Price;
+    public int SellPrice;
+    public bool IsDefaultRecipe;
     public List<IngredientData> RequiredIngredients;
 
 

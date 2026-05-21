@@ -16,6 +16,11 @@ public class SitAction : IGameAction
 
     public async UniTask ExecuteAsync(CancellationToken ct)
     {
+        if (_customer == null || _customer.gameObject == null)
+        {
+            return;
+        }
+
         if (_table == null)
         {
             UnityEngine.Debug.LogError("[SitAction] DiningTable is null!");

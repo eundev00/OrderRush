@@ -23,6 +23,11 @@ public class LeaveAction : IGameAction
 
     public async UniTask ExecuteAsync(CancellationToken ct)
     {
+        if (_customer == null || _customer.gameObject == null)
+        {
+            return;
+        }
+
         if (_customer.AssignedTable != null)
         {
             _customer.AssignedTable.CustomerLeaving(_customer.AssignedSeatIndex);
@@ -35,7 +40,10 @@ public class LeaveAction : IGameAction
         }
         finally
         {
-            Object.Destroy(_customer.gameObject);
+            if (_customer != null && _customer.gameObject != null)
+            {
+                Object.Destroy(_customer.gameObject);
+            }
         }
     }
 }

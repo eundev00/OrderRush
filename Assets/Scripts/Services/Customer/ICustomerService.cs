@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface ICustomerService
 {
-    void SetTables(LevelContext levelContext, LevelData levelData);
+    void Initialize();
 }

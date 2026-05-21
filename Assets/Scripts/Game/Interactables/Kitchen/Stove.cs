@@ -24,7 +24,7 @@ public class Stove : CookingToolBase
             return;
         }
 
-        Debug.Log($"[Stove] 조리 시작: {Constants.kToolProcessSeconds}초");
+        Debug.Log($"[Stove] 조리 시작: {_gameDataService.Config.ToolProcessSeconds}초");
 
         _cookingCts = new CancellationTokenSource();
 
@@ -35,10 +35,10 @@ public class Stove : CookingToolBase
 
             ShowCookingGauge();
 
-            while (_cookingElapsedTime < Constants.kToolProcessSeconds)
+            while (_cookingElapsedTime < _gameDataService.Config.ToolProcessSeconds)
             {
                 _cookingElapsedTime += Time.deltaTime;
-                float progress = _cookingElapsedTime / Constants.kToolProcessSeconds;
+                float progress = _cookingElapsedTime / _gameDataService.Config.ToolProcessSeconds;
                 UpdateProgress(progress);
                 await UniTask.Yield(PlayerLoopTiming.Update, _cookingCts.Token);
             }
@@ -54,10 +54,10 @@ public class Stove : CookingToolBase
             _gaugePresenter?.SetColor(new Color(1f, 0.5f, 0f));
 
             // 오버쿡 타이머
-            while (_cookingElapsedTime < Constants.kToolProcessSeconds)
+            while (_cookingElapsedTime < _gameDataService.Config.ToolProcessSeconds)
             {
                 _cookingElapsedTime += Time.deltaTime;
-                float progress = _cookingElapsedTime / Constants.kToolProcessSeconds;
+                float progress = _cookingElapsedTime / _gameDataService.Config.ToolProcessSeconds;
                 UpdateProgress(progress);
 
                 await UniTask.Yield(PlayerLoopTiming.Update, _cookingCts.Token);

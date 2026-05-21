@@ -3,6 +3,7 @@ using VContainer;
 using VContainer.Unity;
 using MessagePipe;
 using Services.UpdateService;
+using OrderRush.Services;
 
 public class ProjectLifetimeScope : LifetimeScope
 {
@@ -14,8 +15,12 @@ public class ProjectLifetimeScope : LifetimeScope
                .As<IUpdateSubscriptionService>();
         builder.Register<ResourcesLoaderService>(Lifetime.Singleton)
                .As<IResourcesLoaderService>();
-        builder.Register<UserDataService>(Lifetime.Singleton)
-               .As<IUserDataService>();
+        builder.Register<LocalStorageService>(Lifetime.Singleton)
+               .As<ILocalStorageService>();
+        builder.Register<GameDataService>(Lifetime.Singleton)
+               .As<IGameDataService>();
+        builder.Register<AccountService>(Lifetime.Singleton)
+               .As<IAccountService>();
         builder.RegisterEntryPoint<AppBootstrap>();
     }
 

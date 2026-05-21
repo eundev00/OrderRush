@@ -1,19 +1,26 @@
+using System.Threading;
 using Cysharp.Threading.Tasks;
+using OrderRush.Services;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 public class GameInitiator : IStartable
 {
+    private readonly IGameDataService _gameDataService;
     private readonly ILevelContextPresenter _levelPresenter;
-    private readonly ILevelProgressService _levelsDataService;
+    private readonly IDayProgressService _dayProgressService;
     private readonly ICustomerService _customerService;
 
-    [Inject]
-    public GameInitiator(ILevelProgressService levelsDataService, ILevelContextPresenter levelPresenter, ICustomerService customerService)
+    public GameInitiator(
+        IGameDataService gameDataService,
+        ILevelContextPresenter levelPresenter,
+        IDayProgressService dayProgressService,
+        ICustomerService customerService)
     {
-        _levelsDataService = levelsDataService;
+        _gameDataService = gameDataService;
         _levelPresenter = levelPresenter;
+        _dayProgressService = dayProgressService;
         _customerService = customerService;
     }
 
@@ -21,16 +28,12 @@ public class GameInitiator : IStartable
     {
         Debug.Log("GameInitiator: Initializing game...");
 
-        // 레벨 데이터 초기화
-        await _levelsDataService.LoadLevelsData();
-        _levelsDataService.LoadMaxReachedLevel();
+        await _dayProgressService.Initialize();
+        _dayProgressService.StartDay(1);
 
-        // 선택된 레벨 로드 (기본값 1)
-        int selectedLevel = _levelsDataService.GetSelectedLevel();
-        await _levelPresenter.LoadLevelContext(selectedLevel);
+        await _levelPresenter.LoadLevelContext(1);
 
-
-        _customerService.SetTables(_levelPresenter.CurrentLevelContext, _levelPresenter.CurrentLevelData);
+        _customerService.Initialize();
 
         Debug.Log("GameInitiator: Game initialized!");
     }
