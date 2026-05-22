@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -7,6 +8,7 @@ using OrderRush.Services;
 using UnityEngine;
 using VContainer;
 using Services.UpdateService;
+using UniRx;
 
 public class DiningTable : InteractableBase, IUpdatable
 {
@@ -18,8 +20,9 @@ public class DiningTable : InteractableBase, IUpdatable
     private TableGaugeFactory _gaugeFactory;
     private TableGaugePresenter _tableGaugePresenter;
     private IUpdateSubscriptionService _updateService;
-    private IPublisher<TableAvailableEvent> _tableAvailablePublisher;
     private IGameDataService _gameDataService;
+    private IDayProgressService _dayProgressService;
+    private ICustomerService _customerService;
 
     private int _seatedCount = 0;
     private float _elapsedWaitTime = 0f;
@@ -27,6 +30,7 @@ public class DiningTable : InteractableBase, IUpdatable
     private bool _isWaitingForOrder = false;
     private bool _isWaitingFood = false;
 
+    private readonly CompositeDisposable _disposables = new();
 
     public int MaxSeats => _seats.Length;
 
@@ -34,13 +38,20 @@ public class DiningTable : InteractableBase, IUpdatable
     public void Construct(
         TableGaugeFactory gaugeFactory,
         IUpdateSubscriptionService updateService,
-        IPublisher<TableAvailableEvent> tableAvailablePublisher,
-        IGameDataService gameDataService)
+        IGameDataService gameDataService,
+        IDayProgressService dayProgressService,
+        ICustomerService customerService,
+        ISubscriber<DayEndedEvent> dayEndedSubscriber)
     {
         _gaugeFactory = gaugeFactory;
         _updateService = updateService;
-        _tableAvailablePublisher = tableAvailablePublisher;
         _gameDataService = gameDataService;
+        _dayProgressService = dayProgressService;
+        _customerService = customerService;
+
+        dayEndedSubscriber
+            .Subscribe(_ => OnDayEnded())
+            .AddTo(_disposables);
     }
 
     void Awake()
@@ -50,6 +61,16 @@ public class DiningTable : InteractableBase, IUpdatable
             _seats[i].Init(this, i);
             _currentPlates.Add(null);
         }
+    }
+
+    private void OnDayEnded()
+    {
+        StopWaitGauge();
+    }
+
+    void OnDestroy()
+    {
+        _disposables?.Dispose();
     }
 
     public Transform GetSeatTransform(int seatIndex)
@@ -159,6 +180,7 @@ public class DiningTable : InteractableBase, IUpdatable
         }
 
         StopWaitGauge();
+        _dayProgressService.FailDay();
     }
 
     public void PlacePlate(int seatIndex, Plate plate)
@@ -178,12 +200,12 @@ public class DiningTable : InteractableBase, IUpdatable
 
             if (_currentPlates[seatIndex] != null)
             {
-                _currentPlates[seatIndex].ClearIngredients();
+                _currentPlates[seatIndex].RemoveEatenFood();
             }
 
             if (IsEmptyTable())
             {
-                _tableAvailablePublisher.Publish(new TableAvailableEvent(this));
+                _customerService.OnTableAvailable(this);
             }
         }
     }
@@ -219,7 +241,7 @@ public class DiningTable : InteractableBase, IUpdatable
 
                     if (IsEmptyTable())
                     {
-                        _tableAvailablePublisher.Publish(new TableAvailableEvent(this));
+                        _customerService.OnTableAvailable(this);
                     }
 
                     return;

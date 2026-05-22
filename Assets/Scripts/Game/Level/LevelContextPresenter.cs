@@ -1,17 +1,15 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using MessagePipe;
-using UniRx;
+using OrderRush.Services;
 using UnityEngine;
-using VContainer.Unity;
 
 public class LevelContextPresenter : ILevelContextPresenter, IDisposable
 {
     private readonly LevelFactory _levelFactory;
-    private readonly CompositeDisposable _disposable = new();
 
     private LevelContext _view;
+
     public int LevelNumber { get; private set; } = 1;
 
     public IReadOnlyList<DiningTable> DiningTables => _view?.DiningTables ?? Array.Empty<DiningTable>();
@@ -25,7 +23,6 @@ public class LevelContextPresenter : ILevelContextPresenter, IDisposable
     {
         _levelFactory = levelFactory;
     }
-
 
     public async UniTask LoadLevelContext(int levelNumber)
     {
@@ -42,8 +39,6 @@ public class LevelContextPresenter : ILevelContextPresenter, IDisposable
 
     public void Dispose()
     {
-        _disposable?.Dispose();
-
         if (_view != null)
         {
             _levelFactory.ReleaseLevelContext(LevelNumber);

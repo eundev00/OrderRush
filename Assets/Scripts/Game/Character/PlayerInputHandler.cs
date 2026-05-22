@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
@@ -5,28 +6,40 @@ using UnityEngine.EventSystems;
 using VContainer;
 using VContainer.Unity;
 using MessagePipe;
+using UniRx;
 
-public class PlayerInputHandler : ITickable
+public class PlayerInputHandler : ITickable, IDisposable
 {
     private static readonly LayerMask RaycastMask = ~(1 << LayerMask.NameToLayer("Character"));
     readonly IPublisher<MoveEvent> _movePublisher;
     readonly IPublisher<InteractEvent> _interactPublisher;
+    readonly ISubscriber<DayEndedEvent> _dayEndedSubscriber;
     readonly int _groundLayer;
 
     Camera _mainCamera;
+    bool _isEnabled = true;
+    readonly CompositeDisposable _disposables = new();
 
     [Inject]
     public PlayerInputHandler(
         IPublisher<MoveEvent> movePublisher,
-        IPublisher<InteractEvent> interactPublisher)
+        IPublisher<InteractEvent> interactPublisher,
+        ISubscriber<DayEndedEvent> dayEndedSubscriber)
     {
         _movePublisher = movePublisher;
         _interactPublisher = interactPublisher;
+        _dayEndedSubscriber = dayEndedSubscriber;
         _groundLayer = LayerMask.GetMask("Ground");
+
+        _dayEndedSubscriber
+            .Subscribe(_ => OnDayEnded())
+            .AddTo(_disposables);
     }
 
     public void Tick()
     {
+        if (!_isEnabled) return;
+
         if (_mainCamera == null)
             _mainCamera = Camera.main;
 
@@ -38,6 +51,16 @@ public class PlayerInputHandler : ITickable
 #else
         HandleTouchInput();
 #endif
+    }
+
+    private void OnDayEnded()
+    {
+        _isEnabled = false;
+    }
+
+    public void Dispose()
+    {
+        _disposables?.Dispose();
     }
 
     void HandleMouseInput()

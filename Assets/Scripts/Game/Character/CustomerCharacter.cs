@@ -33,6 +33,16 @@ public class CustomerCharacter : CharacterBase
         _emoteIconFactory = emoteIconFactory;
     }
 
+    protected override void OnDayEnded()
+    {
+        EnqueueLeave();
+    }
+
+    public void StopAllActions()
+    {
+        ClearActions();
+    }
+
     public void SetSpawnPosition(Vector3 position)
     {
         _spawnPosition = position;

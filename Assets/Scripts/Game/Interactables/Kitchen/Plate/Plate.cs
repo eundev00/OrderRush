@@ -8,6 +8,7 @@ using VContainer;
 public class Plate : MonoBehaviour, ICarriable
 {
     [NotNull][SerializeField] Transform _ingredientSlot;
+    [NotNull][SerializeField] GameObject _dirty;
     List<IngredientObject> _placedIngredients = new();
 
     public List<IngredientObject> PlacedIngredients => _placedIngredients;
@@ -40,18 +41,20 @@ public class Plate : MonoBehaviour, ICarriable
 
 
 
-    public void ClearIngredients()
+    public void RemoveEatenFood()
     {
         foreach (var ingredient in _placedIngredients)
         {
             Destroy(ingredient.gameObject);
         }
         _placedIngredients.Clear();
+        _dirty.SetActive(true);
     }
 
-    public void SetClean()
+    public void CleanPlate()
     {
         IsDirty = false;
+        _dirty.SetActive(false);
     }
 
 }

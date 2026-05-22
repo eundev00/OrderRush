@@ -13,7 +13,7 @@ public class CustomerService : ICustomerService
     private float _spawnInterval;
     private readonly SpawnFactory _spawnFactory;
     private readonly IDayProgressService _dayProgressService;
-    private readonly ISubscriber<TableAvailableEvent> _tableAvailableSubscriber;
+    private readonly ISubscriber<GameCleanupEvent> _gameCleanupSubscriber;
     private int _nextSpawnIndex;
     private int _maxCustomers;
     private int _maxGroupSize;
@@ -28,12 +28,12 @@ public class CustomerService : ICustomerService
         ILevelContextPresenter levelPresenter,
         SpawnFactory spawnFactory,
         IDayProgressService dayProgressService,
-        ISubscriber<TableAvailableEvent> tableAvailableSubscriber)
+        ISubscriber<GameCleanupEvent> gameCleanupSubscriber)
     {
         _levelPresenter = levelPresenter;
         _spawnFactory = spawnFactory;
         _dayProgressService = dayProgressService;
-        _tableAvailableSubscriber = tableAvailableSubscriber;
+        _gameCleanupSubscriber = gameCleanupSubscriber;
     }
 
     public void Initialize()
@@ -54,9 +54,14 @@ public class CustomerService : ICustomerService
             .Subscribe(CheckAndSpawn)
             .AddTo(_disposables);
 
-        _tableAvailableSubscriber
-            .Subscribe(OnTableAvailable)
+        _gameCleanupSubscriber
+            .Subscribe(_ => OnGameCleanup())
             .AddTo(_disposables);
+    }
+
+    private void OnGameCleanup()
+    {
+        Dispose();
     }
 
     public void Dispose()
@@ -159,6 +164,7 @@ public class CustomerService : ICustomerService
             customer.transform.SetParent(_levelPresenter.LevelTransform);
             customer.SetSpawnPosition(_levelPresenter.SpawnPosition);
             customer.WarpTo(_levelPresenter.SpawnPosition);
+
             customer.EnqueueGoToSeat(table, i);
         }
     }
@@ -179,12 +185,11 @@ public class CustomerService : ICustomerService
         return basePosition + forward * offset;
     }
 
-    private void OnTableAvailable(TableAvailableEvent evt)
+    public void OnTableAvailable(DiningTable table)
     {
         if (_waitingList.Count == 0) return;
 
         var firstGroup = _waitingList[0];
-        var table = evt.Table;
 
         if (!table.IsEmptyTable() || table.MaxSeats < firstGroup.GroupSize)
         {

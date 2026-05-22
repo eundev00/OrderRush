@@ -7,7 +7,7 @@ public class TableGaugeFactory : BaseUIFactory<GaugeView, TableGaugePresenter>
     {
     }
 
-    public override TableGaugePresenter Create(Transform target, Vector3 offset)
+    protected override TableGaugePresenter CreatePresenter(Transform target, Vector3 offset)
     {
         GaugeView view = GetViewFromPool();
         var presenter = new TableGaugePresenter(_camera, _canvasRectTransform, view, target, offset);

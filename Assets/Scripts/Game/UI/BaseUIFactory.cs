@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.AddressableAssets;
+using System.Collections.Generic;
 
 public abstract class BaseUIFactory<TView, TPresenter>
     where TView : Component, IUIView
@@ -13,6 +14,8 @@ public abstract class BaseUIFactory<TView, TPresenter>
     protected readonly ObjectPool<TView> _viewPool;
     protected readonly GameObject _viewPrefab;
     protected const int MaxPoolSize = 20;
+
+    private readonly List<TPresenter> _activePresenters = new();
 
     protected BaseUIFactory(RectTransform canvasRectTransform, string prefabKey)
     {
@@ -58,24 +61,35 @@ public abstract class BaseUIFactory<TView, TPresenter>
 
     protected TView GetViewFromPool()
     {
-        return _viewPool.Get();
+        var view = _viewPool.Get();
+        return view;
     }
 
-    public abstract TPresenter Create(
-        Transform target,
-        Vector3 offset);
+    public TPresenter Create(Transform target, Vector3 offset)
+    {
+        var presenter = CreatePresenter(target, offset);
+        _activePresenters.Add(presenter);
+        return presenter;
+    }
+    protected abstract TPresenter CreatePresenter(Transform target, Vector3 offset);
 
     public void Release(TPresenter presenter)
     {
         if (presenter == null) return;
 
         var view = presenter.View;
-
         presenter.Dispose();
 
         if (view != null)
         {
+            _activePresenters.Remove(presenter);
             _viewPool.Release(view);
         }
+    }
+
+    public void ReleaseAll()
+    {
+        foreach (var presenter in _activePresenters)
+            Release(presenter);
     }
 }

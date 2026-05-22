@@ -1,9 +1,12 @@
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using MessagePipe;
+using VContainer;
 
 public abstract class CharacterBase : MonoBehaviour
 {
+    private IDisposable _dayEndedSubscription;
     [NotNull][SerializeField] protected Transform _itemSlot;
     [NotNull][SerializeField] protected ActionExecutor _actionExecutor;
     [NotNull][SerializeField] protected NavMeshMover _mover;
@@ -14,6 +17,22 @@ public abstract class CharacterBase : MonoBehaviour
 
     public Transform ItemSlot => _itemSlot;
     public bool IsExecuting => _actionExecutor.IsExecuting();
+
+    [Inject]
+    public void Construct(ISubscriber<DayEndedEvent> dayEndedSubscriber)
+    {
+        _dayEndedSubscription = dayEndedSubscriber.Subscribe(_ => OnDayEnded());
+    }
+
+    protected virtual void OnDayEnded()
+    {
+        _actionExecutor.Clear();
+    }
+
+    void OnDestroy()
+    {
+        _dayEndedSubscription?.Dispose();
+    }
 
     public async UniTask PickUp(ICarriable item)
     {

@@ -13,6 +13,7 @@ namespace OrderRush.Services
         private readonly IGameDataService _gameDataService;
         private readonly IUpdateSubscriptionService _updateService;
         private readonly ISubscriber<PaymentEvent> _paymentSubscriber;
+        private readonly IPublisher<DayEndedEvent> _dayEndedPublisher;
         private int _currentRun;
         private DayContext _currentDayContext;
         private DaysData _currentDaysData;
@@ -26,11 +27,13 @@ namespace OrderRush.Services
         public DayProgressService(
             IGameDataService gameDataService,
             IUpdateSubscriptionService updateService,
-            ISubscriber<PaymentEvent> paymentSubscriber)
+            ISubscriber<PaymentEvent> paymentSubscriber,
+            IPublisher<DayEndedEvent> dayEndedPublisher)
         {
             _gameDataService = gameDataService;
             _updateService = updateService;
             _paymentSubscriber = paymentSubscriber;
+            _dayEndedPublisher = dayEndedPublisher;
             _currentDayContext = new DayContext();
         }
 
@@ -77,6 +80,14 @@ namespace OrderRush.Services
         {
             _isDayActive = false;
             _currentDayContext.IsCompleted = true;
+            _dayEndedPublisher.Publish(new DayEndedEvent());
+        }
+
+        public void FailDay()
+        {
+            _isDayActive = false;
+            _currentDayContext.IsCompleted = false;
+            _dayEndedPublisher.Publish(new DayEndedEvent());
         }
 
         public void RestartDay()

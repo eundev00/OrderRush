@@ -40,8 +40,8 @@ public class ActionExecutor : MonoBehaviour
 
     public void Clear()
     {
-        _actionQueue.Clear();
         CancelCurrentAction();
+        _actionQueue.Clear();
     }
 
     private async UniTask StartExecutionLoop()

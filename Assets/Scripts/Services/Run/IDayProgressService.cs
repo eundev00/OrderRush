@@ -13,6 +13,7 @@ namespace OrderRush.Services
         UniTask Initialize();
         void StartDay(int dayNumber);
         void CompleteDay();
+        void FailDay();
         void RestartDay();
         void NextDay();
         void CompleteRun();

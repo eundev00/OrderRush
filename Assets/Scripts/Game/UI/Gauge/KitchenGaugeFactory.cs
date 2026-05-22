@@ -7,7 +7,7 @@ public class KitchenGaugeFactory : BaseUIFactory<GaugeView, KitchenGaugePresente
     {
     }
 
-    public override KitchenGaugePresenter Create(Transform target, Vector3 offset)
+    protected override KitchenGaugePresenter CreatePresenter(Transform target, Vector3 offset)
     {
         GaugeView view = GetViewFromPool();
         var presenter = new KitchenGaugePresenter(_camera, _canvasRectTransform, view, target, offset);
