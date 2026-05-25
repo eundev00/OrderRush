@@ -7,21 +7,28 @@ using VContainer;
 public abstract class CharacterBase : MonoBehaviour
 {
     private IDisposable _dayEndedSubscription;
+    private IDisposable _gameCleanupSubscription;
     [NotNull][SerializeField] protected Transform _itemSlot;
     [NotNull][SerializeField] protected ActionExecutor _actionExecutor;
     [NotNull][SerializeField] protected NavMeshMover _mover;
     [NotNull][SerializeField] protected CharacterAnimator _animator;
 
     public bool IsHolding => CurrentCarriable != null;
-    public ICarriable CurrentCarriable { get; protected set; }
+    protected ICarriable _currentCarriable;
+    public ICarriable CurrentCarriable
+    {
+        get => _currentCarriable;
+        protected set => _currentCarriable = value;
+    }
 
     public Transform ItemSlot => _itemSlot;
     public bool IsExecuting => _actionExecutor.IsExecuting();
 
     [Inject]
-    public void Construct(ISubscriber<DayEndedEvent> dayEndedSubscriber)
+    public void Construct(ISubscriber<DayEndedEvent> dayEndedSubscriber, ISubscriber<GameCleanupEvent> gameCleanupSubscriber)
     {
         _dayEndedSubscription = dayEndedSubscriber.Subscribe(_ => OnDayEnded());
+        _gameCleanupSubscription = gameCleanupSubscriber.Subscribe(_ => OnGameCleanup());
     }
 
     protected virtual void OnDayEnded()
@@ -29,9 +36,15 @@ public abstract class CharacterBase : MonoBehaviour
         _actionExecutor.Clear();
     }
 
+    protected virtual void OnGameCleanup()
+    {
+        _currentCarriable = null;
+    }
+
     void OnDestroy()
     {
         _dayEndedSubscription?.Dispose();
+        _gameCleanupSubscription?.Dispose();
     }
 
     public async UniTask PickUp(ICarriable item)

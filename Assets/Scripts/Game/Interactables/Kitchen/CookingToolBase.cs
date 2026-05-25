@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MessagePipe;
 using OrderRush.Services;
 using UnityEngine;
 using VContainer;
@@ -17,21 +18,38 @@ public abstract class CookingToolBase : InteractableBase
     protected KitchenGaugeFactory _gaugeFactory;
     protected KitchenGaugePresenter _gaugePresenter;
     protected IGameDataService _gameDataService;
+    private IDisposable _gameCleanupSubscription;
+    private IDisposable _dayEndedSubscription;
 
     public IngredientData CurrentIngredientData => CurrentIngredientObject != null ? CurrentIngredientObject.Data : null;
     public bool HasIngredient => CurrentIngredientObject != null;
 
     [Inject]
-    public void Construct(SpawnFactory factory, KitchenGaugeFactory gaugeFactory, IGameDataService gameDataService)
+    public void Construct(SpawnFactory factory, KitchenGaugeFactory gaugeFactory, IGameDataService gameDataService, ISubscriber<GameCleanupEvent> gameCleanupSubscriber, ISubscriber<DayEndedEvent> dayEndedSubscriber)
     {
         _factory = factory;
         _gaugeFactory = gaugeFactory;
         _gameDataService = gameDataService;
+        _gameCleanupSubscription = gameCleanupSubscriber.Subscribe(_ => OnGameCleanup());
+        _dayEndedSubscription = dayEndedSubscriber.Subscribe(_ => OnDayEnded());
     }
 
     protected virtual void OnDestroy()
     {
         RemoveIngredient();
+        _gameCleanupSubscription?.Dispose();
+        _dayEndedSubscription?.Dispose();
+    }
+
+    protected virtual void OnDayEnded()
+    {
+        StopCooking();
+    }
+
+    protected virtual void OnGameCleanup()
+    {
+        StopCooking();
+        CurrentIngredientObject = null;
     }
 
     public virtual void PlaceIngredient(IngredientData ingredient, IngredientObject ingredientObject)

@@ -1,13 +1,11 @@
-using System.Collections.Generic;
 using OrderRush.Data;
-using UniRx;
+using OrderRush.Models;
 
 namespace OrderRush.Services
 {
     public interface IAccountService
     {
-        IReadOnlyReactiveProperty<int> Coins { get; }
-        IReadOnlyList<int> OwnedRecipeIDs { get; }
+        Account Account { get; }
 
         void Initialize();
         void AddCoins(int amount);
@@ -15,5 +13,6 @@ namespace OrderRush.Services
         bool TrySpendCoins(int amount);
         void AddOwnedRecipe(int recipeID);
         RecipeData GetRandomOwnedRecipe();
+        void SetCurrentProgress(int day);
     }
 }

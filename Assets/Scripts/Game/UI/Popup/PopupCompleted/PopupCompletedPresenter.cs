@@ -1,5 +1,6 @@
 using System;
 using OrderRush.Services;
+using UnityEngine.SceneManagement;
 using VContainer.Unity;
 
 public class PopupCompletedPresenter : IStartable, IDisposable
@@ -34,10 +35,14 @@ public class PopupCompletedPresenter : IStartable, IDisposable
 
     public void OnNextButtonClicked()
     {
+        _popup.Hide();
+        _dayProgressService.NextDay();
     }
 
     public void OnExitButtonClicked()
     {
+        SceneManager.UnloadSceneAsync("GameplayScene");
+        SceneManager.LoadSceneAsync("LobbyScene", LoadSceneMode.Additive);
     }
 
     public void Dispose()

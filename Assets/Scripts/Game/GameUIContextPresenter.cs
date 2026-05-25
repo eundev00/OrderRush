@@ -27,7 +27,7 @@ public class GameUIContextPresenter : IStartable, IDisposable
     public void Start()
     {
         _popupCompletedPresenter = new PopupCompletedPresenter(_gameUIContext.PopupCompleted, _dayProgressService);
-        _popupFailedPresenter = new PopupFailedPresenter(_gameUIContext.PopupDayFailed);
+        _popupFailedPresenter = new PopupFailedPresenter(_gameUIContext.PopupDayFailed, _dayProgressService);
 
         _popupCompletedPresenter.Start();
         _popupFailedPresenter.Start();

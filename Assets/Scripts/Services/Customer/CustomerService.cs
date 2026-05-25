@@ -61,7 +61,17 @@ public class CustomerService : ICustomerService
 
     private void OnGameCleanup()
     {
-        Dispose();
+        _waitingList.Clear();
+        _nextSpawnIndex = 0;
+        _lastCheckedElapsed = -1f;
+
+        var currentDay = _dayProgressService.CurrentDayContext;
+        var daysData = _dayProgressService.CurrentDaysData;
+
+        int dayNumber = currentDay.DayNumber;
+        float timeBarDuration = daysData.GetTimeBarDuration(dayNumber);
+        _maxCustomers = daysData.GetMaxCustomers(dayNumber);
+        _spawnInterval = timeBarDuration / _maxCustomers;
     }
 
     public void Dispose()

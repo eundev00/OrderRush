@@ -43,12 +43,12 @@ public abstract class BaseUIFactory<TView, TPresenter>
 
     protected virtual void OnGetView(TView view)
     {
-        view.gameObject.SetActive(true);
+        view.Show();
     }
 
     protected virtual void OnReleaseView(TView view)
     {
-        view.gameObject.SetActive(false);
+        view.Hide();
     }
 
     private void OnDestroyView(TView view)

@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 public class GaugeView : MonoBehaviour, IUIView
 {
@@ -17,11 +16,6 @@ public class GaugeView : MonoBehaviour, IUIView
         _fillImage.fillAmount = Mathf.Clamp01(value);
     }
 
-    public void SetColor(Color color)
-    {
-        _fillImage.color = color;
-    }
-
     public void SetWarning(bool isShow)
     {
         if (_warning) _warning.SetActive(isShow);
@@ -30,8 +24,8 @@ public class GaugeView : MonoBehaviour, IUIView
 
     public void Show()
     {
-        gameObject.SetActive(true);
         SetWarning(false);
+        gameObject.SetActive(true);
         _fillImage.fillAmount = 0f;
     }
 

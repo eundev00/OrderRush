@@ -41,7 +41,8 @@ public class DiningTable : InteractableBase, IUpdatable
         IGameDataService gameDataService,
         IDayProgressService dayProgressService,
         ICustomerService customerService,
-        ISubscriber<DayEndedEvent> dayEndedSubscriber)
+        ISubscriber<DayEndedEvent> dayEndedSubscriber,
+        ISubscriber<GameCleanupEvent> gameCleanupSubscriber)
     {
         _gaugeFactory = gaugeFactory;
         _updateService = updateService;
@@ -51,6 +52,10 @@ public class DiningTable : InteractableBase, IUpdatable
 
         dayEndedSubscriber
             .Subscribe(_ => OnDayEnded())
+            .AddTo(_disposables);
+
+        gameCleanupSubscriber
+            .Subscribe(_ => OnGameCleanup())
             .AddTo(_disposables);
     }
 
@@ -68,9 +73,41 @@ public class DiningTable : InteractableBase, IUpdatable
         StopWaitGauge();
     }
 
+    private void OnGameCleanup()
+    {
+        StopWaitGauge();
+
+        if (_tableGaugePresenter != null)
+        {
+            _gaugeFactory.Release(_tableGaugePresenter);
+            _tableGaugePresenter = null;
+        }
+
+        _seatedCount = 0;
+        _isWaitingForOrder = false;
+        _isWaitingFood = false;
+        _elapsedWaitTime = 0f;
+
+        for (int i = 0; i < _currentPlates.Count; i++)
+        {
+            _currentPlates[i] = null;
+        }
+
+        foreach (var seat in _seats)
+        {
+            seat.Clear();
+        }
+    }
+
     void OnDestroy()
     {
         _disposables?.Dispose();
+
+        if (_tableGaugePresenter != null)
+        {
+            _gaugeFactory.Release(_tableGaugePresenter);
+            _tableGaugePresenter = null;
+        }
     }
 
     public Transform GetSeatTransform(int seatIndex)

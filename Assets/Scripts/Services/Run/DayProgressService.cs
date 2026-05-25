@@ -14,6 +14,8 @@ namespace OrderRush.Services
         private readonly IUpdateSubscriptionService _updateService;
         private readonly ISubscriber<PaymentEvent> _paymentSubscriber;
         private readonly IPublisher<DayEndedEvent> _dayEndedPublisher;
+        private readonly IPublisher<GameCleanupEvent> _gameCleanupPublisher;
+        private readonly IAccountService _accountService;
         private int _currentRun;
         private DayContext _currentDayContext;
         private DaysData _currentDaysData;
@@ -28,12 +30,16 @@ namespace OrderRush.Services
             IGameDataService gameDataService,
             IUpdateSubscriptionService updateService,
             ISubscriber<PaymentEvent> paymentSubscriber,
-            IPublisher<DayEndedEvent> dayEndedPublisher)
+            IPublisher<DayEndedEvent> dayEndedPublisher,
+            IPublisher<GameCleanupEvent> gameCleanupPublisher,
+            IAccountService accountService)
         {
             _gameDataService = gameDataService;
             _updateService = updateService;
             _paymentSubscriber = paymentSubscriber;
             _dayEndedPublisher = dayEndedPublisher;
+            _gameCleanupPublisher = gameCleanupPublisher;
+            _accountService = accountService;
             _currentDayContext = new DayContext();
         }
 
@@ -80,6 +86,15 @@ namespace OrderRush.Services
         {
             _isDayActive = false;
             _currentDayContext.IsCompleted = true;
+
+            int earnedCoins = _currentDayContext.EarnedCoins.Value;
+            if (earnedCoins > 0)
+            {
+                _accountService.AddCoins(earnedCoins);
+            }
+
+            _accountService.SetCurrentProgress(_currentDayContext.DayNumber);
+
             _dayEndedPublisher.Publish(new DayEndedEvent());
         }
 
@@ -95,6 +110,8 @@ namespace OrderRush.Services
             if (_currentDayContext == null)
                 return;
 
+            _gameCleanupPublisher.Publish(new GameCleanupEvent());
+
             _currentDayContext.TimeBarElapsed.Value = 0f;
             _currentDayContext.EarnedCoins.Value = 0;
             _currentDayContext.SpawnedCustomers.Value = 0;
@@ -109,6 +126,13 @@ namespace OrderRush.Services
 
             int nextDayNumber = _currentDayContext.DayNumber + 1;
             StartDay(nextDayNumber);
+
+            _currentDayContext.TimeBarElapsed.Value = 0f;
+            _currentDayContext.EarnedCoins.Value = 0;
+            _currentDayContext.SpawnedCustomers.Value = 0;
+            _currentDayContext.IsCompleted = false;
+
+            _gameCleanupPublisher.Publish(new GameCleanupEvent());
         }
 
         public void CompleteRun()

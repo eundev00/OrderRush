@@ -70,10 +70,6 @@ public abstract class BaseUIPresenter<TView> : IDisposable
         View.Hide();
     }
 
-    public bool IsTargetDestroyed()
-    {
-        return _target == null;
-    }
 
     public virtual void Dispose()
     {

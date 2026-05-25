@@ -14,6 +14,7 @@ public class PlayerInputHandler : ITickable, IDisposable
     readonly IPublisher<MoveEvent> _movePublisher;
     readonly IPublisher<InteractEvent> _interactPublisher;
     readonly ISubscriber<DayEndedEvent> _dayEndedSubscriber;
+    readonly ISubscriber<GameCleanupEvent> _gameCleanupSubscriber;
     readonly int _groundLayer;
 
     Camera _mainCamera;
@@ -24,15 +25,21 @@ public class PlayerInputHandler : ITickable, IDisposable
     public PlayerInputHandler(
         IPublisher<MoveEvent> movePublisher,
         IPublisher<InteractEvent> interactPublisher,
-        ISubscriber<DayEndedEvent> dayEndedSubscriber)
+        ISubscriber<DayEndedEvent> dayEndedSubscriber,
+        ISubscriber<GameCleanupEvent> gameCleanupSubscriber)
     {
         _movePublisher = movePublisher;
         _interactPublisher = interactPublisher;
         _dayEndedSubscriber = dayEndedSubscriber;
+        _gameCleanupSubscriber = gameCleanupSubscriber;
         _groundLayer = LayerMask.GetMask("Ground");
 
         _dayEndedSubscriber
             .Subscribe(_ => OnDayEnded())
+            .AddTo(_disposables);
+
+        _gameCleanupSubscriber
+            .Subscribe(_ => OnGameCleanup())
             .AddTo(_disposables);
     }
 
@@ -56,6 +63,11 @@ public class PlayerInputHandler : ITickable, IDisposable
     private void OnDayEnded()
     {
         _isEnabled = false;
+    }
+
+    private void OnGameCleanup()
+    {
+        _isEnabled = true;
     }
 
     public void Dispose()
