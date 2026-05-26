@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MessagePipe;
 using UnityEngine;
 
 public class LeaveAction : IGameAction
@@ -8,17 +9,20 @@ public class LeaveAction : IGameAction
     private readonly Vector3 _exitPosition;
     private readonly NavMeshMover _mover;
     private readonly CharacterAnimator _animator;
+    private readonly IPublisher<CustomerRemovedEvent> _customerRemovedPublisher;
 
     public LeaveAction(
         CustomerCharacter customer,
         Vector3 exitPosition,
         NavMeshMover mover,
-        CharacterAnimator animator)
+        CharacterAnimator animator,
+        IPublisher<CustomerRemovedEvent> customerRemovedPublisher)
     {
         _customer = customer;
         _exitPosition = exitPosition;
         _mover = mover;
         _animator = animator;
+        _customerRemovedPublisher = customerRemovedPublisher;
     }
 
     public async UniTask ExecuteAsync(CancellationToken ct)
@@ -42,6 +46,7 @@ public class LeaveAction : IGameAction
         {
             if (_customer != null && _customer.gameObject != null)
             {
+                _customerRemovedPublisher.Publish(new CustomerRemovedEvent(_customer.IsServed));
                 Object.Destroy(_customer.gameObject);
             }
         }

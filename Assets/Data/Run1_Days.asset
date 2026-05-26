@@ -16,7 +16,7 @@ MonoBehaviour:
   _rent: 100
   _baseTimeBarDuration: 100
   _timeBarDurationIncrease: 25
-  _baseCustomers: 2
-  _customerIncrease: 1
+  _baseCustomers: 1
+  _customerIncrease: 0
   _daysInterval: 3
   _storyPhases: []

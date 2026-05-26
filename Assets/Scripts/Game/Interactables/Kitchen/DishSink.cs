@@ -34,7 +34,7 @@ public class DishSink : InteractableBase
 
             try
             {
-                await StartWashing(ct);
+                await StartWashing(character, ct);
 
                 // 완료 후 자동으로 집기
                 await character.PickUp(_currentPlate);
@@ -53,7 +53,7 @@ public class DishSink : InteractableBase
         {
             try
             {
-                await StartWashing(ct);
+                await StartWashing(character, ct);
 
                 // 완료 후 자동으로 집기
                 await character.PickUp(_currentPlate);
@@ -79,7 +79,7 @@ public class DishSink : InteractableBase
         await UniTask.CompletedTask;
     }
 
-    private async UniTask StartWashing(CancellationToken ct)
+    private async UniTask StartWashing(CharacterBase character, CancellationToken ct)
     {
         if (_gaugePresenter == null)
         {
@@ -93,6 +93,8 @@ public class DishSink : InteractableBase
 
         try
         {
+            character.StartWorking();
+
             while (elapsedTime < _gameDataService.Config.ToolProcessSeconds)
             {
                 await UniTask.Yield(PlayerLoopTiming.Update, ct);
@@ -103,11 +105,13 @@ public class DishSink : InteractableBase
             }
 
             // 설거지 완료
-            _currentPlate.CleanPlate();
+            _currentPlate.SetClean();
             Debug.Log("[DishSink] Washing completed");
         }
         finally
         {
+            character.StopWorking();
+
             if (_gaugePresenter != null)
             {
                 _gaugeFactory.Release(_gaugePresenter);

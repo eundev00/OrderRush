@@ -933,6 +933,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LobbyView
   _startButton: {fileID: 655637581}
+  _dayText: {fileID: 1041419029}
 --- !u!1 &1713448242
 GameObject:
   m_ObjectHideFlags: 0

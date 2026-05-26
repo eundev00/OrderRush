@@ -10,23 +10,28 @@ public class CustomerCharacter : CharacterBase
     public Order Order { get; set; }
     public DiningTable AssignedTable { get; private set; }
     public int AssignedSeatIndex { get; private set; }
+    public bool IsServed { get; set; }
 
     private IAccountService _accountService;
     private IGameDataService _gameDataService;
     private Vector3 _spawnPosition;
 
     private IPublisher<PaymentEvent> _paymentPublisher;
+    private IPublisher<CustomerRemovedEvent> _customerRemovedPublisher;
     private OrderIconFactory _orderIconFactory;
     private CharacterEmoteIconFactory _emoteIconFactory;
 
     [Inject]
-    public void Construct(IPublisher<PaymentEvent> paymentPublisher,
+    public void Construct(
+        IPublisher<PaymentEvent> paymentPublisher,
+        IPublisher<CustomerRemovedEvent> customerRemovedPublisher,
         IAccountService accountService,
         IGameDataService gameDataService,
         OrderIconFactory orderIconFactory,
         CharacterEmoteIconFactory emoteIconFactory)
     {
         _paymentPublisher = paymentPublisher;
+        _customerRemovedPublisher = customerRemovedPublisher;
         _accountService = accountService;
         _gameDataService = gameDataService;
         _orderIconFactory = orderIconFactory;
@@ -69,7 +74,7 @@ public class CustomerCharacter : CharacterBase
     public void EnqueueLeave()
     {
         ClearActions();
-        EnqueueAction(new LeaveAction(this, _spawnPosition, _mover, _animator));
+        EnqueueAction(new LeaveAction(this, _spawnPosition, _mover, _animator, _customerRemovedPublisher));
     }
 
     public void OnWaitTimeout()
@@ -84,8 +89,10 @@ public class CustomerCharacter : CharacterBase
             _actionExecutor.CancelCurrentAction();
         }
 
+        IsServed = true;
+
         EnqueueAction(new EatAction(this, _paymentPublisher, _gameDataService));
-        EnqueueAction(new LeaveAction(this, _spawnPosition, _mover, _animator));
+        EnqueueAction(new LeaveAction(this, _spawnPosition, _mover, _animator, _customerRemovedPublisher));
     }
 
 
@@ -109,7 +116,7 @@ public class CustomerCharacter : CharacterBase
     {
         ClearActions();
         EnqueueAction(new EmoteAction(this, _emoteIconFactory));
-        EnqueueAction(new LeaveAction(this, _spawnPosition, _mover, _animator));
+        EnqueueAction(new LeaveAction(this, _spawnPosition, _mover, _animator, _customerRemovedPublisher));
     }
 
     public void EnqueueGoToWaitingPosition(Vector3 waitPosition, Quaternion waitRotation)

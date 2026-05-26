@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 using VContainer;
 
 public class Plate : MonoBehaviour, ICarriable
@@ -13,6 +14,12 @@ public class Plate : MonoBehaviour, ICarriable
 
     public List<IngredientObject> PlacedIngredients => _placedIngredients;
     public bool IsDirty { get; private set; }
+
+
+    private void Awake()
+    {
+        SetClean();
+    }
 
     public void AttachToSlot(Transform slot)
     {
@@ -35,7 +42,7 @@ public class Plate : MonoBehaviour, ICarriable
 
         ingredientObj.OnPutDown(_ingredientSlot);
         _placedIngredients.Add(ingredientObj);
-        IsDirty = true;
+        SetDirty();
         return true;
     }
 
@@ -51,7 +58,13 @@ public class Plate : MonoBehaviour, ICarriable
         _dirty.SetActive(true);
     }
 
-    public void CleanPlate()
+    private void SetDirty()
+    {
+        IsDirty = true;
+        _dirty.SetActive(true);
+    }
+
+    public void SetClean()
     {
         IsDirty = false;
         _dirty.SetActive(false);

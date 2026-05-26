@@ -1,23 +1,34 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using MessagePipe;
 using OrderRush.Models;
 using UniRx;
 using UnityEngine;
 
 namespace OrderRush.Services
 {
-    public class AccountService : IAccountService
+    public class AccountService : IAccountService, IDisposable
     {
         private readonly ILocalStorageService _storage;
         private readonly IGameDataService _gameDataService;
+        private readonly ISubscriber<PaymentEvent> _paymentSubscriber;
+        private readonly ISubscriber<DayEndedEvent> _dayEndedSubscriber;
         private List<RecipeData> _ownedRecipes = new();
+        private readonly CompositeDisposable _disposables = new();
 
         public Account Account { get; private set; } = new();
 
-        public AccountService(ILocalStorageService storage, IGameDataService gameDataService)
+        public AccountService(
+            ILocalStorageService storage,
+            IGameDataService gameDataService,
+            ISubscriber<PaymentEvent> paymentSubscriber,
+            ISubscriber<DayEndedEvent> dayEndedSubscriber)
         {
             _storage = storage;
             _gameDataService = gameDataService;
+            _paymentSubscriber = paymentSubscriber;
+            _dayEndedSubscriber = dayEndedSubscriber;
         }
 
         public void Initialize()
@@ -38,6 +49,24 @@ namespace OrderRush.Services
             }
 
             SetOwnedRecipesCache();
+
+            _paymentSubscriber
+                .Subscribe(OnPayment)
+                .AddTo(_disposables);
+
+            _dayEndedSubscriber
+                .Subscribe(OnDayEnded)
+                .AddTo(_disposables);
+        }
+
+        private void OnPayment(PaymentEvent evt)
+        {
+            AddCoins(evt.Amount);
+        }
+
+        private void OnDayEnded(DayEndedEvent evt)
+        {
+            SetCurrentProgress(evt.NextDay);
         }
 
         public void AddCoins(int amount)
@@ -101,7 +130,7 @@ namespace OrderRush.Services
             if (_ownedRecipes.Count == 0)
                 return null;
 
-            return _ownedRecipes[Random.Range(0, _ownedRecipes.Count)];
+            return _ownedRecipes[UnityEngine.Random.Range(0, _ownedRecipes.Count)];
         }
 
         public void SetCurrentProgress(int day)
@@ -147,6 +176,11 @@ namespace OrderRush.Services
             {
                 _ownedRecipes.Add(_gameDataService.Recipes.Recipes[0]);
             }
+        }
+
+        public void Dispose()
+        {
+            _disposables?.Dispose();
         }
     }
 }

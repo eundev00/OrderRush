@@ -14,10 +14,12 @@ public class CustomerService : ICustomerService
     private readonly SpawnFactory _spawnFactory;
     private readonly IDayProgressService _dayProgressService;
     private readonly ISubscriber<GameCleanupEvent> _gameCleanupSubscriber;
+    private readonly ISubscriber<CustomerRemovedEvent> _customerServedSubscriber;
     private int _nextSpawnIndex;
     private int _maxCustomers;
     private int _maxGroupSize;
     private float _lastCheckedElapsed;
+    private int _servedCustomersCount;
 
     private readonly List<CustomerGroup> _waitingList = new();
     private readonly CompositeDisposable _disposables = new();
@@ -28,12 +30,14 @@ public class CustomerService : ICustomerService
         ILevelContextPresenter levelPresenter,
         SpawnFactory spawnFactory,
         IDayProgressService dayProgressService,
-        ISubscriber<GameCleanupEvent> gameCleanupSubscriber)
+        ISubscriber<GameCleanupEvent> gameCleanupSubscriber,
+        ISubscriber<CustomerRemovedEvent> customerServedSubscriber)
     {
         _levelPresenter = levelPresenter;
         _spawnFactory = spawnFactory;
         _dayProgressService = dayProgressService;
         _gameCleanupSubscriber = gameCleanupSubscriber;
+        _customerServedSubscriber = customerServedSubscriber;
     }
 
     public void Initialize()
@@ -47,8 +51,9 @@ public class CustomerService : ICustomerService
 
         _spawnInterval = timeBarDuration / _maxCustomers;
         _nextSpawnIndex = 0;
-        _maxGroupSize = 2;
+        _maxGroupSize = 1;
         _lastCheckedElapsed = -1f;
+        _servedCustomersCount = 0;
 
         currentDay.TimeBarElapsed
             .Subscribe(CheckAndSpawn)
@@ -57,6 +62,23 @@ public class CustomerService : ICustomerService
         _gameCleanupSubscriber
             .Subscribe(_ => OnGameCleanup())
             .AddTo(_disposables);
+
+        _customerServedSubscriber
+            .Subscribe(OnCustomerRemoved)
+            .AddTo(_disposables);
+    }
+
+    private void OnCustomerRemoved(CustomerRemovedEvent evt)
+    {
+        if (!evt.WasServed)
+            return;
+
+        _servedCustomersCount++;
+
+        if (_servedCustomersCount >= _maxCustomers)
+        {
+            _dayProgressService.CompleteDay();
+        }
     }
 
     private void OnGameCleanup()
@@ -64,6 +86,7 @@ public class CustomerService : ICustomerService
         _waitingList.Clear();
         _nextSpawnIndex = 0;
         _lastCheckedElapsed = -1f;
+        _servedCustomersCount = 0;
 
         var currentDay = _dayProgressService.CurrentDayContext;
         var daysData = _dayProgressService.CurrentDaysData;
