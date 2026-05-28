@@ -37,6 +37,11 @@ public class LevelContextPresenter : ILevelContextPresenter, IDisposable
         _view = levelContext;
     }
 
+    public void AddDiningTable(DiningTable table)
+    {
+        _view?.AddDiningTable(table);
+    }
+
     public void Dispose()
     {
         if (_view != null)

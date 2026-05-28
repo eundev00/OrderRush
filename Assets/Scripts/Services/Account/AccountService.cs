@@ -40,7 +40,8 @@ namespace OrderRush.Services
                 var defaultRecipe = _gameDataService.Recipes.Recipes.Find(r => r.IsDefaultRecipe);
                 if (defaultRecipe != null)
                 {
-                    AddOwnedRecipe(defaultRecipe.RecipeID);
+                    Account.OwnedRecipeIDs.Add(defaultRecipe.RecipeID);
+                    Save();
                 }
                 else
                 {
@@ -139,12 +140,29 @@ namespace OrderRush.Services
             Save();
         }
 
+        public void AddPurchasedCard(int cardID)
+        {
+            if (!Account.PurchasedCardIDs.Contains(cardID))
+            {
+                Account.PurchasedCardIDs.Add(cardID);
+                Save();
+            }
+        }
+
+        public IReadOnlyList<int> GetPurchasedCardIDs()
+        {
+            return Account.PurchasedCardIDs.AsReadOnly();
+        }
+
         private void Save()
         {
             _storage.SaveInt(LocalStorageKeys.AccountCoins, Account.Coins.Value);
 
             string recipeIDs = string.Join(",", Account.OwnedRecipeIDs);
             _storage.SaveString(LocalStorageKeys.AccountOwnedRecipes, recipeIDs);
+
+            string cardIDs = string.Join(",", Account.PurchasedCardIDs);
+            _storage.SaveString(LocalStorageKeys.PurchasedCardIDs, cardIDs);
 
             _storage.SaveInt(LocalStorageKeys.CurrentRun, Account.CurrentRun);
             _storage.SaveInt(LocalStorageKeys.CurrentDay, Account.CurrentDay);
@@ -158,6 +176,14 @@ namespace OrderRush.Services
             if (!string.IsNullOrEmpty(recipeIDs))
             {
                 Account.OwnedRecipeIDs = recipeIDs.Split(',')
+                    .Select(int.Parse)
+                    .ToList();
+            }
+
+            string cardIDs = _storage.LoadString(LocalStorageKeys.PurchasedCardIDs, "");
+            if (!string.IsNullOrEmpty(cardIDs))
+            {
+                Account.PurchasedCardIDs = cardIDs.Split(',')
                     .Select(int.Parse)
                     .ToList();
             }

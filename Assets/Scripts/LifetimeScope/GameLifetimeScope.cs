@@ -14,6 +14,8 @@ public class GameLifetimeScope : LifetimeScope
         // Services
         builder.Register<IDayProgressService, DayProgressService>(Lifetime.Scoped);
         builder.Register<CustomerService>(Lifetime.Singleton).AsImplementedInterfaces();
+        builder.Register<ICardService, CardService>(Lifetime.Scoped);
+        builder.Register<CardEffectApplier>(Lifetime.Scoped);
 
         // Factories
         builder.Register<SpawnFactory>(Lifetime.Singleton);

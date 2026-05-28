@@ -16,6 +16,7 @@ public static class DataKeys
     public const string Recipe_SteakPlatter = "Recipe_SteakPlatter";
     public const string GameConfig = "GameConfig";
     public const string Recipes = "Recipes";
+    public const string Cards = "Cards";
     public const string Run1_Days = "Run1_Days";
     public const string RunsData = "RunsData";
 
@@ -34,6 +35,7 @@ public static class DataKeys
         { Recipe_SteakPlatter, "Assets/Data/Recipe/SteakPlatter.asset" },
         { GameConfig, "Assets/Data/GameConfig.asset" },
         { Recipes, "Assets/Data/Recipe/RecipesData.asset" },
+        { Cards, "Assets/Data/Card/CardsData.asset" },
         { Run1_Days, "Assets/Data/Run1_Days.asset" },
         { RunsData, "Assets/Data/RunsData.asset" },
     };

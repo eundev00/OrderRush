@@ -12,12 +12,14 @@ namespace OrderRush.Services
     {
         private readonly IGameDataService _gameDataService;
         private readonly IUpdateSubscriptionService _updateService;
+        private readonly ISubscriber<PaymentEvent> _paymentSubscriber;
         private readonly IPublisher<DayEndedEvent> _dayEndedPublisher;
         private readonly IPublisher<GameCleanupEvent> _gameCleanupPublisher;
         private int _currentRun;
         private DayContext _currentDayContext;
         private DaysData _currentDaysData;
         private bool _isDayActive;
+        private IDisposable _paymentSubscription;
 
         public int CurrentRun => _currentRun;
         public DayContext CurrentDayContext => _currentDayContext;
@@ -26,11 +28,13 @@ namespace OrderRush.Services
         public DayProgressService(
             IGameDataService gameDataService,
             IUpdateSubscriptionService updateService,
+            ISubscriber<PaymentEvent> paymentSubscriber,
             IPublisher<DayEndedEvent> dayEndedPublisher,
             IPublisher<GameCleanupEvent> gameCleanupPublisher)
         {
             _gameDataService = gameDataService;
             _updateService = updateService;
+            _paymentSubscriber = paymentSubscriber;
             _dayEndedPublisher = dayEndedPublisher;
             _gameCleanupPublisher = gameCleanupPublisher;
             _currentDayContext = new DayContext();
@@ -41,7 +45,16 @@ namespace OrderRush.Services
             _currentRun = 1;
             _currentDaysData = _gameDataService.Days;
             _updateService.RegisterUpdatable(this);
+            _paymentSubscription = _paymentSubscriber.Subscribe(OnPayment);
             await UniTask.CompletedTask;
+        }
+
+        private void OnPayment(PaymentEvent evt)
+        {
+            if (_currentDayContext != null)
+            {
+                _currentDayContext.EarnedCoins.Value += evt.Amount;
+            }
         }
 
         public void StartDay(int dayNumber)
@@ -119,6 +132,7 @@ namespace OrderRush.Services
         public void Dispose()
         {
             _updateService.UnregisterUpdatable(this);
+            _paymentSubscription?.Dispose();
         }
     }
 }

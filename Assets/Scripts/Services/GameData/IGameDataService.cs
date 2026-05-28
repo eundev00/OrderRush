@@ -7,6 +7,7 @@ namespace OrderRush.Services
     {
         GameConfig Config { get; }
         RecipesData Recipes { get; }
+        CardsData Cards { get; }
         DaysData Days { get; }
 
         UniTask Initialize();

@@ -11,6 +11,7 @@ public class SpawnFactory : System.IDisposable
     private readonly IResourcesLoaderService _resourceLoader;
     private readonly IObjectResolver _container;
     private readonly List<GameObject> _spawnedObjects = new();
+    private readonly List<GameObject> _persistentObjects = new();
     private readonly IDisposable _gameCleanupSubscription;
 
 
@@ -59,6 +60,23 @@ public class SpawnFactory : System.IDisposable
         return obj;
     }
 
+    public async UniTask<T> CreatePersistent<T>(string key, Vector3 position, Transform parent) where T : Component
+    {
+        var prefab = await _resourceLoader.LoadAsync<GameObject>(key);
+        var obj = UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity, parent);
+        _container.InjectGameObject(obj);
+
+        var component = obj.GetComponent<T>();
+        if (component == null)
+        {
+            UnityEngine.Object.Destroy(obj);
+            return null;
+        }
+
+        _persistentObjects.Add(obj);
+        return component;
+    }
+
     public void Destroy(GameObject obj)
     {
         _spawnedObjects.Remove(obj);
@@ -83,6 +101,12 @@ public class SpawnFactory : System.IDisposable
     private void OnGameCleanup()
     {
         DestroyAll();
+    }
+
+    public void DestroyPersistentObject(GameObject obj)
+    {
+        _persistentObjects.Remove(obj);
+        UnityEngine.Object.Destroy(obj);
     }
 
     public void Dispose()

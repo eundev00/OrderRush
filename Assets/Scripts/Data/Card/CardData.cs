@@ -1,0 +1,13 @@
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "New Card", menuName = "Order Rush/Card")]
+public class CardData : ScriptableObject
+{
+    public int CardID;
+    public string CardName;
+    public string Description;
+    public Sprite Icon;
+    public int Cost;
+    public bool IsExpiring;
+    public CardEffectData Effect;
+}

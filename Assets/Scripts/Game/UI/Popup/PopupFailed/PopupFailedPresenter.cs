@@ -25,6 +25,8 @@ public class PopupFailedPresenter : IStartable, IDisposable
 
     public void ShowPopup()
     {
+        var earnedCoins = _dayProgressService.CurrentDayContext.EarnedCoins.Value;
+        _popup.SetEarnedCoins(earnedCoins);
         _popup.Show();
     }
 

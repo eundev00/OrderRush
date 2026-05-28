@@ -11,4 +11,5 @@ public interface ILevelContextPresenter
     Transform LevelTransform { get; }
 
     UniTask LoadLevelContext(int levelNumber);
+    void AddDiningTable(DiningTable table);
 }
