@@ -4,14 +4,15 @@ using Cysharp.Threading.Tasks;
 
 namespace OrderRush.Services
 {
-    public class CardService : ICardService
+    public class ShopService : IShopService
     {
         private readonly IGameDataService _gameDataService;
         private readonly IAccountService _accountService;
         private readonly CardEffectApplier _effectApplier;
         private readonly List<int> _purchasedCardIDs = new();
+        private int _refreshCount;
 
-        public CardService(
+        public ShopService(
             IGameDataService gameDataService,
             IAccountService accountService,
             CardEffectApplier effectApplier)
@@ -26,12 +27,46 @@ namespace OrderRush.Services
             _purchasedCardIDs.Clear();
             var savedIDs = _accountService.GetPurchasedCardIDs();
             _purchasedCardIDs.AddRange(savedIDs);
+            _refreshCount = 0;
         }
 
         public List<CardData> GetRandomCardsForSelection(int count)
         {
             var allCards = _gameDataService.Cards.Cards;
-            return allCards.OrderBy(x => UnityEngine.Random.value).Take(count).ToList();
+            var pool = new List<CardData>(allCards);
+            var result = new List<CardData>(count);
+
+            for (int i = 0; i < count && pool.Count > 0; i++)
+            {
+                int totalWeight = pool.Sum(c => c.Weight);
+                int roll = UnityEngine.Random.Range(0, totalWeight);
+                int cumulative = 0;
+
+                for (int j = 0; j < pool.Count; j++)
+                {
+                    cumulative += pool[j].Weight;
+                    if (roll < cumulative)
+                    {
+                        result.Add(pool[j]);
+                        pool.RemoveAt(j);
+                        break;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public int GetRefreshCost() => (_refreshCount + 1) * 50;
+
+        public async UniTask<List<CardData>> Refresh()
+        {
+            int cost = GetRefreshCost();
+            if (!_accountService.TrySpendCoins(cost))
+                return null;
+
+            _refreshCount++;
+            return GetRandomCardsForSelection(3);
         }
 
         public async UniTask<bool> TryPurchaseCard(CardData card)

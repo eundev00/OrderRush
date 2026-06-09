@@ -8,6 +8,7 @@ public class CardData : ScriptableObject
     public string Description;
     public Sprite Icon;
     public int Cost;
+    public int Weight = 10;
     public bool IsExpiring;
     public CardEffectData Effect;
 }

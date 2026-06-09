@@ -9,7 +9,7 @@ public class GameUIContextPresenter : IStartable, IDisposable
     private readonly GameUIContext _gameUIContext;
     private readonly IDayProgressService _dayProgressService;
     private readonly ISubscriber<DayEndedEvent> _dayEndedSubscriber;
-    private readonly ICardService _cardService;
+    private readonly IShopService _shopService;
     private readonly IAccountService _accountService;
     private readonly CompositeDisposable _disposable = new();
 
@@ -21,13 +21,13 @@ public class GameUIContextPresenter : IStartable, IDisposable
         GameUIContext gameUIContext,
         IDayProgressService dayProgressService,
         ISubscriber<DayEndedEvent> dayEndedSubscriber,
-        ICardService cardService,
+        IShopService cardService,
         IAccountService accountService)
     {
         _gameUIContext = gameUIContext;
         _dayProgressService = dayProgressService;
         _dayEndedSubscriber = dayEndedSubscriber;
-        _cardService = cardService;
+        _shopService = cardService;
         _accountService = accountService;
     }
 
@@ -35,7 +35,7 @@ public class GameUIContextPresenter : IStartable, IDisposable
     {
         _popupCompletedPresenter = new PopupCompletedPresenter(_gameUIContext.PopupCompleted, _dayProgressService);
         _popupFailedPresenter = new PopupFailedPresenter(_gameUIContext.PopupDayFailed, _dayProgressService);
-        _popupCardShopPresenter = new PopupCardShopPresenter(_gameUIContext.PopupCardShop, _cardService, _accountService);
+        _popupCardShopPresenter = new PopupCardShopPresenter(_gameUIContext.PopupCardShop, _shopService, _accountService);
 
         _popupCompletedPresenter.Start();
         _popupFailedPresenter.Start();

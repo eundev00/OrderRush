@@ -69,6 +69,7 @@ GameObject:
   - component: {fileID: 2743068976923585609}
   - component: {fileID: 8867715524599564913}
   - component: {fileID: 8678764769494257456}
+  - component: {fileID: 1858739869346683533}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -180,6 +181,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1858739869346683533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2051707188989624054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5ecc453721b94528ad2435718f89c05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardItemView
+  _nameText: {fileID: 612714671880372740}
+  _descriptionText: {fileID: 3747933652531560036}
+  _costText: {fileID: 7040940375187040783}
+  _button: {fileID: 8678764769494257456}
 --- !u!1 &2210086099179517695
 GameObject:
   m_ObjectHideFlags: 0
