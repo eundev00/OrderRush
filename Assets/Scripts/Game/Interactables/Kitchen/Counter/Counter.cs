@@ -2,27 +2,18 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class KitchenTable : InteractableBase
+public class Counter : InteractableBase
 {
-
     [NotNull][SerializeField] Transform _slot;
-    [SerializeField] Plate _initialPlate;
 
     ICarriable _placedCarriable;
 
-    void Awake()
-    {
-        if (_initialPlate != null)
-        {
-            _placedCarriable = _initialPlate;
-            _placedCarriable.AttachToSlot(_slot);
-        }
-    }
+    public bool HasItem => _placedCarriable != null;
+    public ICarriable CurrentItem => _placedCarriable;
 
     public override async UniTask InteractAsync(CharacterBase character, CancellationToken ct)
     {
         if (character == null) return;
-
 
         if (character.IsHolding && _placedCarriable != null)
         {
@@ -43,19 +34,15 @@ public class KitchenTable : InteractableBase
                     await character.PutDown();
                 }
             }
-
         }
         else if (character.IsHolding && _placedCarriable == null)
         {
             _placedCarriable = await character.PutDownAt(_slot);
         }
-        else if (character.IsHolding == false && _placedCarriable != null)
+        else if (!character.IsHolding && _placedCarriable != null)
         {
             await character.PickUp(_placedCarriable);
             _placedCarriable = null;
         }
-
-
-        await UniTask.CompletedTask;
     }
 }

@@ -10,14 +10,14 @@ public class DishSink : InteractableBase
     [NotNull][SerializeField] Transform _plateSlot;
 
     private Plate _currentPlate;
-    private IGameDataService _gameDataService;
+    private IKitchenStatService _kitchenStatService;
     private KitchenGaugeFactory _gaugeFactory;
     private KitchenGaugePresenter _gaugePresenter;
 
     [Inject]
-    public void Construct(IGameDataService gameDataService, KitchenGaugeFactory gaugeFactory)
+    public void Construct(IKitchenStatService kitchenStatService, KitchenGaugeFactory gaugeFactory)
     {
-        _gameDataService = gameDataService;
+        _kitchenStatService = kitchenStatService;
         _gaugeFactory = gaugeFactory;
     }
 
@@ -90,17 +90,18 @@ public class DishSink : InteractableBase
         _gaugePresenter.SetProgress(0f);
 
         float elapsedTime = 0f;
+        float washDuration = _kitchenStatService.GetModifiedDuration();
 
         try
         {
             character.StartWorking();
 
-            while (elapsedTime < _gameDataService.Config.ToolProcessSeconds)
+            while (elapsedTime < washDuration)
             {
                 await UniTask.Yield(PlayerLoopTiming.Update, ct);
                 elapsedTime += Time.deltaTime;
 
-                float progress = elapsedTime / _gameDataService.Config.ToolProcessSeconds;
+                float progress = elapsedTime / washDuration;
                 _gaugePresenter.SetProgress(progress);
             }
 

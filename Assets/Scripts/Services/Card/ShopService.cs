@@ -57,7 +57,7 @@ namespace OrderRush.Services
             return result;
         }
 
-        public int GetRefreshCost() => (_refreshCount + 1) * 50;
+        public int GetRefreshCost() => _gameDataService.Config.GetRefreshCost(_refreshCount);
 
         public async UniTask<List<CardData>> Refresh()
         {

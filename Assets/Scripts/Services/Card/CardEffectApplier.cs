@@ -7,13 +7,37 @@ namespace OrderRush.Services
     {
         private readonly ILevelContextPresenter _levelPresenter;
         private readonly SpawnFactory _spawnFactory;
+        private readonly IAccountService _accountService;
+        private readonly IKitchenStatService _kitchenStatService;
+        private readonly IGameDataService _gameDataService;
 
         public CardEffectApplier(
             ILevelContextPresenter levelPresenter,
-            SpawnFactory spawnFactory)
+            SpawnFactory spawnFactory,
+            IAccountService accountService,
+            IKitchenStatService kitchenStatService,
+            IGameDataService gameDataService)
         {
             _levelPresenter = levelPresenter;
             _spawnFactory = spawnFactory;
+            _accountService = accountService;
+            _kitchenStatService = kitchenStatService;
+            _gameDataService = gameDataService;
+        }
+
+        public async UniTask ApplyAllPurchasedCards()
+        {
+            var purchasedIDs = _accountService.GetPurchasedCardIDs();
+            var allCards = _gameDataService.Cards.Cards;
+
+            foreach (var id in purchasedIDs)
+            {
+                var card = allCards.Find(c => c.CardID == id);
+                if (card != null)
+                {
+                    await ApplyEffect(card.Effect);
+                }
+            }
         }
 
         public async UniTask ApplyEffect(CardEffectData effect)
@@ -22,6 +46,17 @@ namespace OrderRush.Services
             {
                 case EffectType.Table:
                     await ApplyTableAddition((TableAdditionEffect)effect);
+                    break;
+                case EffectType.Menu:
+                    ApplyMenuUnlock((MenuCardEffect)effect);
+                    break;
+                case EffectType.ToolUpgrade:
+                    ApplyUpgrade((UpgradeCardEffect)effect);
+                    break;
+                case EffectType.StaffHire:
+                    break;
+                case EffectType.OvercookExtend:
+                    ApplyOvercookExtend((OvercookCardEffect)effect);
                     break;
             }
         }
@@ -39,6 +74,21 @@ namespace OrderRush.Services
             {
                 _levelPresenter.AddDiningTable(table);
             }
+        }
+
+        private void ApplyMenuUnlock(MenuCardEffect effect)
+        {
+            _accountService.AddOwnedRecipe(effect.Recipe.RecipeID);
+        }
+
+        private void ApplyUpgrade(UpgradeCardEffect effect)
+        {
+            _kitchenStatService.AddDurationReduce(effect.DurationReducePercent);
+        }
+
+        private void ApplyOvercookExtend(OvercookCardEffect effect)
+        {
+            _kitchenStatService.AddOvercookExtend(effect.ExtendPercent);
         }
 
         private Vector3 CalculateNewTablePosition()

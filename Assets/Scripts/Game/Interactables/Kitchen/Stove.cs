@@ -1,10 +1,19 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using OrderRush.Services;
 using UnityEngine;
+using VContainer;
 
 public class Stove : CookingToolBase
 {
+    private IKitchenStatService _kitchenStatService;
+
+    [Inject]
+    public void ConstructStove(IKitchenStatService kitchenStatService)
+    {
+        _kitchenStatService = kitchenStatService;
+    }
 
     private CancellationTokenSource _cookingCts;
     private float _cookingElapsedTime;
@@ -24,7 +33,7 @@ public class Stove : CookingToolBase
             return;
         }
 
-        Debug.Log($"[Stove] 조리 시작: {_gameDataService.Config.ToolProcessSeconds}초");
+        Debug.Log($"[Stove] 조리 시작: {_kitchenStatService.GetModifiedDuration()}초");
 
         _cookingCts = new CancellationTokenSource();
 
@@ -35,29 +44,29 @@ public class Stove : CookingToolBase
 
             ShowCookingGauge();
 
-            while (_cookingElapsedTime < _gameDataService.Config.ToolProcessSeconds)
+            float cookDuration = _kitchenStatService.GetModifiedDuration();
+            while (_cookingElapsedTime < cookDuration)
             {
                 _cookingElapsedTime += Time.deltaTime;
-                float progress = _cookingElapsedTime / _gameDataService.Config.ToolProcessSeconds;
+                float progress = _cookingElapsedTime / cookDuration;
                 UpdateProgress(progress);
                 await UniTask.Yield(PlayerLoopTiming.Update, _cookingCts.Token);
             }
 
-            // 조리 완료
             Debug.Log($"[Stove] 조리 완료: {transition.Result.IngredientName}");
             UpdateProgress(0f);
             await CompleteTransition(transition);
 
             _cookingElapsedTime = 0f;
 
-            // 주황색으로 색상 변경 (오버쿡)
+            // 오버쿡
             _gaugePresenter?.SetWarning(true);
 
-            // 오버쿡 타이머
-            while (_cookingElapsedTime < _gameDataService.Config.ToolProcessSeconds)
+            float overcookDuration = _kitchenStatService.GetOvercookDuration();
+            while (_cookingElapsedTime < overcookDuration)
             {
                 _cookingElapsedTime += Time.deltaTime;
-                float progress = _cookingElapsedTime / _gameDataService.Config.ToolProcessSeconds;
+                float progress = _cookingElapsedTime / overcookDuration;
                 UpdateProgress(progress);
 
                 await UniTask.Yield(PlayerLoopTiming.Update, _cookingCts.Token);
@@ -79,9 +88,6 @@ public class Stove : CookingToolBase
     }
 
 
-
-
-
     protected override void StopCooking()
     {
         base.StopCooking();
@@ -90,6 +96,5 @@ public class Stove : CookingToolBase
         _cookingCts = null;
         _cookingElapsedTime = 0;
     }
-
 
 }

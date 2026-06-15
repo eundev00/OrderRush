@@ -28,10 +28,25 @@ public class LobbyPresenter : IStartable, IDisposable
     {
         _view.SetDay(_accountService.Account.CurrentDay);
 
+        _accountService.Account.Coins
+            .Subscribe(coins => _view.SetCoins(coins))
+            .AddTo(_disposable);
+
         _view.StartButton
             .OnClickAsObservable()
             .Subscribe(_ => OnStartButtonClicked())
             .AddTo(_disposable);
+
+        _view.ResetButton
+            .OnClickAsObservable()
+            .Subscribe(_ => OnResetButtonClicked())
+            .AddTo(_disposable);
+    }
+
+    private void OnResetButtonClicked()
+    {
+        _accountService.ResetAll();
+        _view.SetDay(_accountService.Account.CurrentDay);
     }
 
     private void OnStartButtonClicked()

@@ -139,6 +139,20 @@ namespace OrderRush.Services
             return Account.PurchasedCardIDs.AsReadOnly();
         }
 
+        public void ResetAll()
+        {
+            _storage.DeleteAll();
+
+            Account.Coins.Value = 0;
+            Account.CurrentDay = 1;
+            Account.CurrentRun = 1;
+            Account.OwnedRecipeIDs.Clear();
+            Account.PurchasedCardIDs.Clear();
+
+            _ownedRecipes.Clear();
+            SetOwnedRecipesCache();
+        }
+
         private void Save()
         {
             _storage.SaveInt(LocalStorageKeys.AccountCoins, Account.Coins.Value);

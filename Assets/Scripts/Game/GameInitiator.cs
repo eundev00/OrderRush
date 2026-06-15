@@ -11,17 +11,20 @@ public class GameInitiator : IStartable
     private readonly IDayProgressService _dayProgressService;
     private readonly ICustomerService _customerService;
     private readonly IAccountService _accountService;
+    private readonly CardEffectApplier _cardEffectApplier;
 
     public GameInitiator(
         ILevelContextPresenter levelPresenter,
         IDayProgressService dayProgressService,
         ICustomerService customerService,
-        IAccountService accountService)
+        IAccountService accountService,
+        CardEffectApplier cardEffectApplier)
     {
         _levelPresenter = levelPresenter;
         _dayProgressService = dayProgressService;
         _customerService = customerService;
         _accountService = accountService;
+        _cardEffectApplier = cardEffectApplier;
     }
 
     public async void Start()
@@ -34,6 +37,8 @@ public class GameInitiator : IStartable
         _dayProgressService.StartDay(currentDay);
 
         await _levelPresenter.LoadLevelContext(1);
+
+        await _cardEffectApplier.ApplyAllPurchasedCards();
 
         _customerService.Initialize();
 

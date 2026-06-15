@@ -17,5 +17,6 @@ namespace OrderRush.Services
         void SetCurrentProgress(int day);
         void AddPurchasedCard(int cardID);
         IReadOnlyList<int> GetPurchasedCardIDs();
+        void ResetAll();
     }
 }
