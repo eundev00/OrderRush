@@ -30,14 +30,17 @@ public class LevelContext : MonoBehaviour
 
     public Transform GetNextTableSpawnPoint()
     {
-        int index = DiningTables.Count - 1;
+        int index = DiningTables.Count;
         if (index < 0 || index >= _tablePoints.Length)
             return null;
+
+        Debug.Log($" GetNextTableSpawnPoint : {index} / {_tablePoints.Length}");
         return _tablePoints[index];
     }
 
     public void AddDiningTable(DiningTable table)
     {
         DiningTables.Add(table);
+        Debug.Log($" AddDiningTable : {DiningTables.Count} tables");
     }
 }

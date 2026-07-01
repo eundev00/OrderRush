@@ -7,11 +7,13 @@ public class PopupCompletedPresenter : IStartable, IDisposable
 {
     private readonly PopupCompleted _popup;
     private readonly IDayProgressService _dayProgressService;
+    private readonly Action _onNext;
 
-    public PopupCompletedPresenter(PopupCompleted popup, IDayProgressService dayProgressService)
+    public PopupCompletedPresenter(PopupCompleted popup, IDayProgressService dayProgressService, Action onNext)
     {
         _popup = popup;
         _dayProgressService = dayProgressService;
+        _onNext = onNext;
     }
 
     public void Start()
@@ -36,7 +38,7 @@ public class PopupCompletedPresenter : IStartable, IDisposable
     public void OnNextButtonClicked()
     {
         _popup.Hide();
-        _dayProgressService.NextDay();
+        _onNext?.Invoke();
     }
 
     public void OnExitButtonClicked()

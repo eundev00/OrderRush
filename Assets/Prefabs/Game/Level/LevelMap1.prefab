@@ -5238,18 +5238,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ServingCounter3
       objectReference: {fileID: 0}
-    - target: {fileID: 754916718960342447, guid: cc3a595349e2753458ad4066502e6fe7, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 754916718960342447, guid: cc3a595349e2753458ad4066502e6fe7, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 754916718960342447, guid: cc3a595349e2753458ad4066502e6fe7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4013128964759345146, guid: cc3a595349e2753458ad4066502e6fe7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1

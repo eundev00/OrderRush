@@ -33,9 +33,9 @@ public class GameUIContextPresenter : IStartable, IDisposable
 
     public void Start()
     {
-        _popupCompletedPresenter = new PopupCompletedPresenter(_gameUIContext.PopupCompleted, _dayProgressService);
+        _popupCardShopPresenter = new PopupCardShopPresenter(_gameUIContext.PopupCardShop, _shopService, _accountService, _dayProgressService);
+        _popupCompletedPresenter = new PopupCompletedPresenter(_gameUIContext.PopupCompleted, _dayProgressService, ShowCardShop);
         _popupFailedPresenter = new PopupFailedPresenter(_gameUIContext.PopupDayFailed, _dayProgressService);
-        _popupCardShopPresenter = new PopupCardShopPresenter(_gameUIContext.PopupCardShop, _shopService, _accountService);
 
         _popupCompletedPresenter.Start();
         _popupFailedPresenter.Start();

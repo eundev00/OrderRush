@@ -8,15 +8,18 @@ public class PopupCardShopPresenter : IStartable, IDisposable
     private readonly PopupCardShop _view;
     private readonly IShopService _shopService;
     private readonly IAccountService _accountService;
+    private readonly IDayProgressService _dayProgressService;
 
     public PopupCardShopPresenter(
         PopupCardShop view,
         IShopService shopService,
-        IAccountService accountService)
+        IAccountService accountService,
+        IDayProgressService dayProgressService)
     {
         _view = view;
         _shopService = shopService;
         _accountService = accountService;
+        _dayProgressService = dayProgressService;
     }
 
     public void Start()
@@ -45,6 +48,7 @@ public class PopupCardShopPresenter : IStartable, IDisposable
         if (success)
         {
             _view.Hide();
+            _dayProgressService.NextDay();
         }
     }
 
@@ -63,6 +67,7 @@ public class PopupCardShopPresenter : IStartable, IDisposable
     private void OnSkipButtonClicked()
     {
         _view.Hide();
+        _dayProgressService.NextDay();
     }
 
     public void Dispose()

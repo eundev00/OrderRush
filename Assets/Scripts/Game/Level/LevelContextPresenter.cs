@@ -59,6 +59,7 @@ public class LevelContextPresenter : ILevelContextPresenter, IDisposable
 
         foreach (var cardID in purchasedCardIDs)
         {
+            Debug.Log($" RestorePurchasedTables : {cardID}");
             var card = _gameDataService.GetCardByID(cardID);
             if (card?.Effect == null)
                 continue;
