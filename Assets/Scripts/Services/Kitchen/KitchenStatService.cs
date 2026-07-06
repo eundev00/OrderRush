@@ -6,7 +6,7 @@ namespace OrderRush.Services
     {
         private readonly IGameDataService _gameDataService;
         private float _totalReducePercent;
-        private float _totalOvercookExtendPercent;
+        private float _totalSlowBurnPercent;
 
         public KitchenStatService(IGameDataService gameDataService)
         {
@@ -26,16 +26,16 @@ namespace OrderRush.Services
             return Mathf.Max(modified, minDuration);
         }
 
-        public void AddOvercookExtend(float extendPercent)
+        public void AddSlowBurn(float extendPercent)
         {
-            _totalOvercookExtendPercent += extendPercent;
+            _totalSlowBurnPercent += extendPercent;
         }
 
         public float GetOvercookDuration()
         {
             float baseDuration = _gameDataService.Config.ToolProcessSeconds;
             float maxDuration = baseDuration * 1.5f;
-            return Mathf.Min(baseDuration * (1f + _totalOvercookExtendPercent), maxDuration);
+            return Mathf.Min(baseDuration * (1f + _totalSlowBurnPercent), maxDuration);
         }
     }
 }

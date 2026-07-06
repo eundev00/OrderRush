@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace OrderRush.Data
 {
-    [CreateAssetMenu(fileName = "DaysData", menuName = "Order Rush/DaysData")]
+    [CreateAssetMenu(fileName = "DaysData", menuName = "Order Rush/Day/DaysData", order = 100)]
     public class DaysData : ScriptableObject
     {
         [Header("Run Settings")]

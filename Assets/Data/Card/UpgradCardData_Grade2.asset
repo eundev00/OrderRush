@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24557a6810ac54611a707288499f3dfe, type: 3}
-  m_Name: StaffCard_Serve
+  m_Name: UpgradCardData_Grade2
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  CardID: 0
-  CardName: 
-  Description: 
+  CardID: 11
+  CardName: Speed Up
+  Description: Speeds up cooking by 20%
   Icon: {fileID: 0}
-  Cost: 0
+  Cost: 20
   Weight: 10
   IsExpiring: 0
-  Effect: {fileID: 0}
+  Effect: {fileID: 11400000, guid: c0eb3d753ba770e43821d62ad5e4b059, type: 2}

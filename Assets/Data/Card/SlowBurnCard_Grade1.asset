@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24557a6810ac54611a707288499f3dfe, type: 3}
-  m_Name: UpgradCardData
+  m_Name: SlowBurnCard_Grade1
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  CardID: 2
-  CardName: Speed Up
-  Description: Slightly speeds up all cooking tools
+  CardID: 20
+  CardName: Slow Burn
+  Description: Extends burn time by 10%.
   Icon: {fileID: 0}
-  Cost: 0
+  Cost: 10
   Weight: 10
   IsExpiring: 0
-  Effect: {fileID: 11400000, guid: 5da372838e5da0d47bbf043994272e98, type: 2}
+  Effect: {fileID: 11400000, guid: 3046ea072d1eefc49a6284d8508cb28a, type: 2}

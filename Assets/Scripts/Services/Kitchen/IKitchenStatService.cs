@@ -4,7 +4,7 @@ namespace OrderRush.Services
     {
         void AddDurationReduce(float reducePercent);
         float GetModifiedDuration();
-        void AddOvercookExtend(float extendPercent);
+        void AddSlowBurn(float extendPercent);
         float GetOvercookDuration();
     }
 }

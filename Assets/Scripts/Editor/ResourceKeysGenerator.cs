@@ -107,8 +107,7 @@ public class ResourceKeysGenerator
         foreach (var assetPath in assetPathList)
         {
             var fileName = Path.GetFileNameWithoutExtension(assetPath);
-            var keyName = GetDataKeyName(assetPath, fileName);
-            sb.AppendLine($"    public const string {keyName} = \"{keyName}\";");
+            sb.AppendLine($"    public const string {fileName} = \"{fileName}\";");
         }
 
         sb.AppendLine("");
@@ -119,8 +118,7 @@ public class ResourceKeysGenerator
         foreach (var assetPath in assetPathList)
         {
             var fileName = Path.GetFileNameWithoutExtension(assetPath);
-            var keyName = GetDataKeyName(assetPath, fileName);
-            sb.AppendLine("        { " + keyName + ", \"" + assetPath + "\" },");
+            sb.AppendLine("        { " + fileName + ", \"" + fileName + "\" },");
         }
 
         sb.AppendLine("    };");

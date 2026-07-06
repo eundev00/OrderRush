@@ -9,7 +9,7 @@ public class CharacterAnimator : MonoBehaviour
     static readonly int PickUpHash = Animator.StringToHash("PickUp");
     static readonly int PutDownHash = Animator.StringToHash("PutDown");
 
-    [SerializeField] Animator _animator;
+    [NotNull][SerializeField] Animator _animator;
 
     public void SetSpeed(float speed)
     {

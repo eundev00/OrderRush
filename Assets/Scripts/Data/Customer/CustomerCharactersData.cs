@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace OrderRush.Data
 {
-    [CreateAssetMenu(fileName = "CustomerCharactersData", menuName = "Order Rush/Customer Characters Data")]
+    [CreateAssetMenu(fileName = "CustomerCharactersData", menuName = "Order Rush/Customer/Customer Characters Data")]
     public class CustomerCharactersData : ScriptableObject
     {
         [SerializeField] private List<CustomerCharacterData> _characters = new();

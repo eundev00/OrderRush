@@ -45,21 +45,21 @@ namespace OrderRush.Services
                     await _levelPresenter.AddTableFromEffect((TableAdditionEffect)effect);
                     break;
                 case EffectType.Menu:
-                    ApplyMenuUnlock((MenuCardEffect)effect);
+                    ApplyMenuUnlock((MenuEffect)effect);
                     break;
                 case EffectType.ToolUpgrade:
-                    ApplyUpgrade((UpgradeCardEffect)effect);
+                    ApplyUpgrade((UpgradeEffect)effect);
                     break;
                 case EffectType.StaffHire:
-                    await ApplyStaffHire((StaffCardEffect)effect);
+                    await ApplyStaffHire((StaffEffect)effect);
                     break;
-                case EffectType.OvercookExtend:
-                    ApplyOvercookExtend((OvercookCardEffect)effect);
+                case EffectType.SlowBurn:
+                    ApplySlowBurnExtend((SlowBurnEffect)effect);
                     break;
             }
         }
 
-        private async UniTask ApplyStaffHire(StaffCardEffect effect)
+        private async UniTask ApplyStaffHire(StaffEffect effect)
         {
             var staff = await _spawnFactory.Create<StaffCharacter>(effect.StaffPrefabName);
             if (staff == null) return;
@@ -67,19 +67,19 @@ namespace OrderRush.Services
             staff.WarpTo(_levelPresenter.SpawnPosition);
         }
 
-        private void ApplyMenuUnlock(MenuCardEffect effect)
+        private void ApplyMenuUnlock(MenuEffect effect)
         {
             _accountService.AddOwnedRecipe(effect.Recipe.RecipeID);
         }
 
-        private void ApplyUpgrade(UpgradeCardEffect effect)
+        private void ApplyUpgrade(UpgradeEffect effect)
         {
             _kitchenStatService.AddDurationReduce(effect.DurationReducePercent);
         }
 
-        private void ApplyOvercookExtend(OvercookCardEffect effect)
+        private void ApplySlowBurnExtend(SlowBurnEffect effect)
         {
-            _kitchenStatService.AddOvercookExtend(effect.ExtendPercent);
+            _kitchenStatService.AddSlowBurn(effect.ExtendPercent);
         }
     }
 }

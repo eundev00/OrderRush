@@ -10,7 +10,7 @@ namespace OrderRush.Data
         Wild
     }
 
-    [CreateAssetMenu(fileName = "CustomerCharacterData", menuName = "Order Rush/CustomerCharacterData")]
+    [CreateAssetMenu(fileName = "CustomerCharacterData", menuName = "Order Rush/Customer/CustomerCharacterData")]
     public class CustomerCharacterData : ScriptableObject
     {
         [Header("Character Info")]

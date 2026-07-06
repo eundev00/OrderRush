@@ -4259,6 +4259,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PopupCardShop
   _cardItems:
   - {fileID: 4968255647404515496}
+  - {fileID: 1723942589}
+  - {fileID: 2129109363}
   _skipButton: {fileID: 718946683}
   _refreshButton: {fileID: 821150571}
   _refreshCostText: {fileID: 1372995281}
@@ -4598,6 +4600,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3757861736837521325, guid: b34e7e7c37e634965a7d01e9248a7b7c, type: 3}
   m_PrefabInstance: {fileID: 1723942587}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1723942589 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1858739869346683533, guid: b34e7e7c37e634965a7d01e9248a7b7c, type: 3}
+  m_PrefabInstance: {fileID: 1723942587}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5ecc453721b94528ad2435718f89c05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardItemView
 --- !u!1 &1760216497
 GameObject:
   m_ObjectHideFlags: 0
@@ -5659,6 +5672,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3757861736837521325, guid: b34e7e7c37e634965a7d01e9248a7b7c, type: 3}
   m_PrefabInstance: {fileID: 2129109361}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2129109363 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1858739869346683533, guid: b34e7e7c37e634965a7d01e9248a7b7c, type: 3}
+  m_PrefabInstance: {fileID: 2129109361}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5ecc453721b94528ad2435718f89c05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardItemView
 --- !u!1001 &4968255647404515495
 PrefabInstance:
   m_ObjectHideFlags: 0

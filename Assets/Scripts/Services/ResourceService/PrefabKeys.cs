@@ -7,7 +7,6 @@ using System.Collections.Generic;
     public const string CustomerCharacter3 = "CustomerCharacter3";
     public const string CustomerCharacter4 = "CustomerCharacter4";
     public const string Player = "Player";
-    public const string ServingStaff = "ServingStaff";
     public const string DefaultCube = "DefaultCube";
     public const string DiningChair = "DiningChair";
     public const string DiningTable2 = "DiningTable2";
@@ -18,13 +17,16 @@ using System.Collections.Generic;
     public const string PlateRack = "PlateRack";
     public const string FoodStorage = "FoodStorage";
     public const string Refrigerator = "Refrigerator";
+    public const string Counter1 = "Counter1";
+    public const string Counter2 = "Counter2";
     public const string DoubleSink = "DoubleSink";
-    public const string Counter = "Counter";
-    public const string Counter_Door = "Counter_Door";
+    public const string KithenTableDeco = "KithenTableDeco";
+    public const string ServingCounter = "ServingCounter";
     public const string SingleSink = "SingleSink";
     public const string Stove = "Stove";
     public const string TrashCan = "TrashCan";
     public const string LevelMap1 = "LevelMap1";
+    public const string Card = "Card";
     public const string CharacterEmoteIcon = "CharacterEmoteIcon";
     public const string CharacterOrderIcon = "CharacterOrderIcon";
     public const string KitchenGauge = "KitchenGauge";
@@ -37,7 +39,6 @@ using System.Collections.Generic;
         { CustomerCharacter3, "Assets/Prefabs/Game/Character/CustomerCharacter3.prefab" },
         { CustomerCharacter4, "Assets/Prefabs/Game/Character/CustomerCharacter4.prefab" },
         { Player, "Assets/Prefabs/Game/Character/Player.prefab" },
-        { ServingStaff, "Assets/Prefabs/Game/Character/ServingStaff.prefab" },
         { DefaultCube, "Assets/Prefabs/Game/DefaultCube.prefab" },
         { DiningChair, "Assets/Prefabs/Game/Dining/DiningChair.prefab" },
         { DiningTable2, "Assets/Prefabs/Game/Dining/DiningTable2.prefab" },
@@ -48,13 +49,16 @@ using System.Collections.Generic;
         { PlateRack, "Assets/Prefabs/Game/Kitchen/Plate/PlateRack.prefab" },
         { FoodStorage, "Assets/Prefabs/Game/Kitchen/Storage/FoodStorage.prefab" },
         { Refrigerator, "Assets/Prefabs/Game/Kitchen/Storage/Refrigerator.prefab" },
+        { Counter1, "Assets/Prefabs/Game/Kitchen/Tools/Counter1.prefab" },
+        { Counter2, "Assets/Prefabs/Game/Kitchen/Tools/Counter2.prefab" },
         { DoubleSink, "Assets/Prefabs/Game/Kitchen/Tools/DoubleSink.prefab" },
-        { Counter, "Assets/Prefabs/Game/Kitchen/Tools/Counter.prefab" },
-        { Counter_Door, "Assets/Prefabs/Game/Kitchen/Tools/Counter_Door.prefab" },
+        { KithenTableDeco, "Assets/Prefabs/Game/Kitchen/Tools/KithenTableDeco.prefab" },
+        { ServingCounter, "Assets/Prefabs/Game/Kitchen/Tools/ServingCounter.prefab" },
         { SingleSink, "Assets/Prefabs/Game/Kitchen/Tools/SingleSink.prefab" },
         { Stove, "Assets/Prefabs/Game/Kitchen/Tools/Stove.prefab" },
         { TrashCan, "Assets/Prefabs/Game/Kitchen/Tools/TrashCan.prefab" },
         { LevelMap1, "Assets/Prefabs/Game/Level/LevelMap1.prefab" },
+        { Card, "Assets/Prefabs/Game/UI/ScreenSpace/Card.prefab" },
         { CharacterEmoteIcon, "Assets/Prefabs/Game/UI/WorldSpace/CharacterEmoteIcon.prefab" },
         { CharacterOrderIcon, "Assets/Prefabs/Game/UI/WorldSpace/CharacterOrderIcon.prefab" },
         { KitchenGauge, "Assets/Prefabs/Game/UI/WorldSpace/KitchenGauge.prefab" },

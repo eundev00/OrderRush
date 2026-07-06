@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15225e87dba90461b8f2865ed9eab561, type: 3}
-  m_Name: OvercookEffect1
-  m_EditorClassIdentifier: Assembly-CSharp::OvercookCardEffect
-  EffectType: 4
-  ExtendPercent: 10
+  m_Script: {fileID: 11500000, guid: fcb5bda83ef644f878ff37364fccb9e5, type: 3}
+  m_Name: UpgradeCardEffect20
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeCardEffect
+  EffectType: 0
+  DurationReducePercent: 20

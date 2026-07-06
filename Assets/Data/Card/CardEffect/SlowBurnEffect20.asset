@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ab413af3932a45c09e8944d9bb6d82c, type: 3}
-  m_Name: ServedStaffEffect
-  m_EditorClassIdentifier: Assembly-CSharp::StaffCardEffect
-  EffectType: 2
-  StaffPrefabName: 
+  m_Script: {fileID: 11500000, guid: 15225e87dba90461b8f2865ed9eab561, type: 3}
+  m_Name: SlowBurnEffect20
+  m_EditorClassIdentifier: Assembly-CSharp::OvercookCardEffect
+  EffectType: 4
+  ExtendPercent: 20

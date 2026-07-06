@@ -3,41 +3,61 @@ using System.Collections.Generic;
 
 public static class DataKeys
 {
-    public const string Ingredient_GrilledMushroom = "Ingredient_GrilledMushroom";
-    public const string Ingredient_Mushroom = "Ingredient_Mushroom";
-    public const string Ingredient_Onion = "Ingredient_Onion";
-    public const string Ingredient_OnionRing = "Ingredient_OnionRing";
-    public const string Ingredient_SlicedOnion = "Ingredient_SlicedOnion";
-    public const string Ingredient_Steak = "Ingredient_Steak";
-    public const string Ingredient_SteakMeat = "Ingredient_SteakMeat";
-    public const string Recipe_MushroomSteak = "Recipe_MushroomSteak";
-    public const string Recipe_OnionRingSteak = "Recipe_OnionRingSteak";
-    public const string Recipe_Steak = "Recipe_Steak";
-    public const string Recipe_SteakPlatter = "Recipe_SteakPlatter";
+    public const string ServedStaffEffect = "ServedStaffEffect";
+    public const string SlowBrunEffect10 = "SlowBrunEffect10";
+    public const string SlowBurnEffect20 = "SlowBurnEffect20";
+    public const string TableEffect = "TableEffect";
+    public const string UpgradeCardEffect10 = "UpgradeCardEffect10";
+    public const string UpgradeCardEffect20 = "UpgradeCardEffect20";
+    public const string CardsData = "CardsData";
+    public const string SlowBurnCard_Grade1 = "SlowBurnCard_Grade1";
+    public const string SlowBurnCard_Grade2 = "SlowBurnCard_Grade2";
+    public const string StaffCard_Grade1 = "StaffCard_Grade1";
+    public const string TableCard = "TableCard";
+    public const string UpgradCardData_Grade1 = "UpgradCardData_Grade1";
+    public const string UpgradCardData_Grade2 = "UpgradCardData_Grade2";
     public const string GameConfig = "GameConfig";
-    public const string Recipes = "Recipes";
-    public const string Cards = "Cards";
+    public const string GrilledMushroom = "GrilledMushroom";
+    public const string Mushroom = "Mushroom";
+    public const string Onion = "Onion";
+    public const string OnionRing = "OnionRing";
+    public const string SlicedOnion = "SlicedOnion";
+    public const string Steak = "Steak";
+    public const string SteakMeat = "SteakMeat";
+    public const string Recipe01_Steak = "Recipe01_Steak";
+    public const string Recipe02_OnionRingSteak = "Recipe02_OnionRingSteak";
+    public const string RecipesData = "RecipesData";
     public const string Run1_Days = "Run1_Days";
     public const string RunsData = "RunsData";
 
     public static Dictionary<string, string> DataPaths = new Dictionary<string, string>()
     {
-        { Ingredient_GrilledMushroom, "Assets/Data/Ingredient/Mushroom/GrilledMushroom.asset" },
-        { Ingredient_Mushroom, "Assets/Data/Ingredient/Mushroom/Mushroom.asset" },
-        { Ingredient_Onion, "Assets/Data/Ingredient/Onion/Onion.asset" },
-        { Ingredient_OnionRing, "Assets/Data/Ingredient/Onion/OnionRing.asset" },
-        { Ingredient_SlicedOnion, "Assets/Data/Ingredient/Onion/SlicedOnion.asset" },
-        { Ingredient_Steak, "Assets/Data/Ingredient/Steak/Steak.asset" },
-        { Ingredient_SteakMeat, "Assets/Data/Ingredient/Steak/SteakMeat.asset" },
-        { Recipe_MushroomSteak, "Assets/Data/Recipe/MushroomSteak.asset" },
-        { Recipe_OnionRingSteak, "Assets/Data/Recipe/OnionRingSteak.asset" },
-        { Recipe_Steak, "Assets/Data/Recipe/Steak.asset" },
-        { Recipe_SteakPlatter, "Assets/Data/Recipe/SteakPlatter.asset" },
-        { GameConfig, "Assets/Data/GameConfig.asset" },
-        { Recipes, "Assets/Data/Recipe/RecipesData.asset" },
-        { Cards, "Assets/Data/Card/CardsData.asset" },
-        { Run1_Days, "Assets/Data/Run1_Days.asset" },
-        { RunsData, "Assets/Data/RunsData.asset" },
+        { ServedStaffEffect, "ServedStaffEffect" },
+        { SlowBrunEffect10, "SlowBrunEffect10" },
+        { SlowBurnEffect20, "SlowBurnEffect20" },
+        { TableEffect, "TableEffect" },
+        { UpgradeCardEffect10, "UpgradeCardEffect10" },
+        { UpgradeCardEffect20, "UpgradeCardEffect20" },
+        { CardsData, "CardsData" },
+        { SlowBurnCard_Grade1, "SlowBurnCard_Grade1" },
+        { SlowBurnCard_Grade2, "SlowBurnCard_Grade2" },
+        { StaffCard_Grade1, "StaffCard_Grade1" },
+        { TableCard, "TableCard" },
+        { UpgradCardData_Grade1, "UpgradCardData_Grade1" },
+        { UpgradCardData_Grade2, "UpgradCardData_Grade2" },
+        { GameConfig, "GameConfig" },
+        { GrilledMushroom, "GrilledMushroom" },
+        { Mushroom, "Mushroom" },
+        { Onion, "Onion" },
+        { OnionRing, "OnionRing" },
+        { SlicedOnion, "SlicedOnion" },
+        { Steak, "Steak" },
+        { SteakMeat, "SteakMeat" },
+        { Recipe01_Steak, "Recipe01_Steak" },
+        { Recipe02_OnionRingSteak, "Recipe02_OnionRingSteak" },
+        { RecipesData, "RecipesData" },
+        { Run1_Days, "Run1_Days" },
+        { RunsData, "RunsData" },
     };
 
     public static string GetDataPath(string tag)

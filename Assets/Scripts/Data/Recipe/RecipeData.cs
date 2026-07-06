@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Recipe", menuName = "Order Rush/Recipe")]
+[CreateAssetMenu(fileName = "New Recipe", menuName = "Order Rush/Recipe/Recipe", order = 51)]
 public class RecipeData : ScriptableObject
 {
     public int RecipeID;
