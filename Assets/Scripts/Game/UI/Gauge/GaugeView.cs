@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class GaugeView : MonoBehaviour, IUIView
 {
     [NotNull][SerializeField] private Image _fillImage;
-    [NotNull][SerializeField] private GameObject _warning;
+    [SerializeField] private GameObject _warning;
 
     private void Awake()
     {

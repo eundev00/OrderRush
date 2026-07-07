@@ -17,6 +17,6 @@ MonoBehaviour:
   Description: Extends burn time by 10%.
   Icon: {fileID: 0}
   Cost: 10
-  Weight: 10
+  Weight: 50
   IsExpiring: 0
   Effect: {fileID: 11400000, guid: 3046ea072d1eefc49a6284d8508cb28a, type: 2}

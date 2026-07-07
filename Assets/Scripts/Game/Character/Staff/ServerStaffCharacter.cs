@@ -1,4 +1,4 @@
-public class ServingStaffCharacter : StaffCharacter
+public class ServerStaffCharacter : StaffCharacter
 {
     protected override bool CanHandle(WorkType type)
     {

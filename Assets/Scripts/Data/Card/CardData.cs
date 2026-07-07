@@ -8,7 +8,7 @@ public class CardData : ScriptableObject
     public string Description;
     public Sprite Icon;
     public int Cost;
-    public int Weight = 10;
+    public int Weight = 50; // 높을수록 더 자주 등장
     public bool IsExpiring;
     public CardEffectData Effect;
 }

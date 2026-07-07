@@ -17,5 +17,6 @@ MonoBehaviour:
   Description: Add one 2-seat table to your restauran
   Icon: {fileID: 0}
   Cost: 10
+  Weight: 70
   IsExpiring: 0
   Effect: {fileID: 11400000, guid: ceb5861f71fc44271bad996e370f62b5, type: 2}

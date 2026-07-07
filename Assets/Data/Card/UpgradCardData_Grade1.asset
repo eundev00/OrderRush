@@ -16,7 +16,7 @@ MonoBehaviour:
   CardName: Speed Up
   Description: Speeds up cooking by 10%
   Icon: {fileID: 0}
-  Cost: 10
+  Cost: 50
   Weight: 10
   IsExpiring: 0
   Effect: {fileID: 11400000, guid: 5da372838e5da0d47bbf043994272e98, type: 2}

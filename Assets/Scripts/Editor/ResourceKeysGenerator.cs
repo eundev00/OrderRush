@@ -118,7 +118,9 @@ public class ResourceKeysGenerator
         foreach (var assetPath in assetPathList)
         {
             var fileName = Path.GetFileNameWithoutExtension(assetPath);
-            sb.AppendLine("        { " + fileName + ", \"" + fileName + "\" },");
+            var keyName = GetDataKeyName(assetPath, fileName);
+            sb.AppendLine("        { " + fileName + ", \"" + assetPath + "\" },");
+
         }
 
         sb.AppendLine("    };");
