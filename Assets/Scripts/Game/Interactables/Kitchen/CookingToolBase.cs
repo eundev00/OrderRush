@@ -160,6 +160,7 @@ public abstract class CookingToolBase : InteractableBase
         else if (!character.IsHolding && HasIngredient)
         {
             StopCooking();
+            await UniTask.Yield();
             await character.PickUp(CurrentIngredientObject);
             RemoveIngredient();
         }

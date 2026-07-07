@@ -498,5 +498,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stove
   _platesHighlight: {fileID: 1857551041066860689}
-  _interactPoint: {fileID: 3441785857535103536}
+  _interactPoints:
+  - {fileID: 3441785857535103536}
   _ingredientSlot: {fileID: 3587292214975430633}

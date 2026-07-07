@@ -20,12 +20,29 @@ public class InteractAction : IGameAction
 
     public async UniTask ExecuteAsync(CancellationToken ct)
     {
-        var interactPoint = _target.InteractPoint.position;
+        var sortedPoints = _target.GetInteractPointsSortedByDistance(_character.transform.position);
 
-        if (!NavMesh.SamplePosition(interactPoint, out var navHit, 2.0f, NavMesh.AllAreas))
+        Transform validPoint = null;
+        NavMeshHit navHit = default;
+
+        foreach (var point in sortedPoints)
         {
-            return;
+            if (!NavMesh.SamplePosition(point.position, out navHit, 2.0f, NavMesh.AllAreas))
+                continue;
+
+            NavMeshPath path = new NavMeshPath();
+            if (NavMesh.CalculatePath(_character.transform.position, navHit.position, NavMesh.AllAreas, path))
+            {
+                if (path.status == NavMeshPathStatus.PathComplete)
+                {
+                    validPoint = point;
+                    break;
+                }
+            }
         }
+
+        if (validPoint == null)
+            return;
 
         try
         {
@@ -34,7 +51,7 @@ public class InteractAction : IGameAction
             await _mover.MoveToAsync(navHit.position, ct);
             _animator.SetSpeed(0f);
 
-            _character.transform.rotation = _target.InteractPoint.rotation;
+            _character.transform.rotation = validPoint.rotation;
 
             await _target.InteractAsync(_character, ct);
         }

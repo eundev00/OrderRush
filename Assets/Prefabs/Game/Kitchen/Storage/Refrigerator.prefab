@@ -533,7 +533,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StorageBase
   _platesHighlight: {fileID: 2119310411273832214}
-  _interactPoint: {fileID: 8594179412903879439}
+  _interactPoints:
+  - {fileID: 8594179412903879439}
   _ingredient: {fileID: 11400000, guid: b1bf2f926ba43426089a081eb8198d59, type: 2}
   _doorTransform: {fileID: 1578294436719086846}
   _quantity: -1

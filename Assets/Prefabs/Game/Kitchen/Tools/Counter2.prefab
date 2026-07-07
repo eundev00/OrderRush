@@ -50,7 +50,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KitchenTable
   _platesHighlight: {fileID: 2630337602705281605}
-  _interactPoint: {fileID: 2511746412812462719}
+  _interactPoints:
+  - {fileID: 2511746412812462719}
   _slot: {fileID: 5384152229995862062}
 --- !u!114 &2630337602705281605
 MonoBehaviour:

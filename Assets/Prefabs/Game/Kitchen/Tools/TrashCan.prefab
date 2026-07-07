@@ -178,7 +178,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrashCan
   _platesHighlight: {fileID: 1284720539286072231}
-  _interactPoint: {fileID: 3497639895638678447}
+  _interactPoints:
+  - {fileID: 3497639895638678447}
   _slot: {fileID: 3484795494805734563}
 --- !u!114 &1284720539286072231
 MonoBehaviour:

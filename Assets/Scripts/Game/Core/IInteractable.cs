@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IInteractable
 {
-    Transform InteractPoint { get; }
+    Transform[] GetInteractPointsSortedByDistance(Vector3 fromPosition);
     UniTask InteractAsync(CharacterBase character, CancellationToken ct);
     void SetHighlight(bool highlight);
 }

@@ -407,7 +407,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlateRack
   _platesHighlight: {fileID: 3428748757410456992}
-  _interactPoint: {fileID: 5746450774001251669}
+  _interactPoints:
+  - {fileID: 5746450774001251669}
   _plates:
   - {fileID: 4775939569317471903}
   - {fileID: 3265756395943820890}

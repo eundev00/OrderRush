@@ -51,7 +51,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ServingCounter
   _platesHighlight: {fileID: 4236136455132490550}
-  _interactPoint: {fileID: 754916718960342447}
+  _interactPoints:
+  - {fileID: 754916718960342447}
+  - {fileID: 5334655283737519178}
   _slot: {fileID: 2830183602483975471}
 --- !u!114 &4236136455132490550
 MonoBehaviour:

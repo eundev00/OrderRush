@@ -50,7 +50,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DishSink
   _platesHighlight: {fileID: 9117400617794900691}
-  _interactPoint: {fileID: 2511746412812462719}
+  _interactPoints:
+  - {fileID: 2511746412812462719}
   _plateSlot: {fileID: 5384152229995862062}
 --- !u!114 &9117400617794900691
 MonoBehaviour:
