@@ -32,10 +32,12 @@ public class EatAction : IGameAction
             var recipe = _gameDataService.GetRecipeByID(_customer.OrderedRecipeID);
             if (recipe != null)
             {
-                var coinFX = _worldUIFactory.Create<FloatingCoinFX>(PrefabKeys.FloatingCoinFX);
+                var coinFX = _worldUIFactory.Create<FloatingCoinFX>(
+                    PrefabKeys.FloatingCoinFX,
+                    _customer.transform,
+                    new Vector3(0, 2f, 0));
 
-                Vector3 coinPosition = _customer.transform.position + new Vector3(0, 2f, 0);
-                await coinFX.PlayAnimation(coinPosition, ct);
+                await coinFX.PlayAnimation(ct);
 
                 _worldUIFactory.Release(PrefabKeys.FloatingCoinFX, coinFX);
                 _paymentPublisher.Publish(new PaymentEvent(recipe.SellPrice, recipe.RecipeName));

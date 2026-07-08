@@ -8,6 +8,7 @@ public class HudView : MonoBehaviour
     [NotNull][SerializeField] private TMP_Text _dayText;
     [NotNull][SerializeField] private TMP_Text _maxText;
     [NotNull][SerializeField] private Image _timerFill;
+    [NotNull][SerializeField] private Button _homeButton;
 
     public void SetCoin(int value)
     {

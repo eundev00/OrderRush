@@ -7,16 +7,19 @@ using VContainer.Unity;
 public class HudPresenter : IStartable, IDisposable
 {
     readonly IDayProgressService _dayProgressService;
+    readonly IAccountService _accountService;
     readonly ISubscriber<GameCleanupEvent> _gameCleanupSubscriber;
     readonly HudView _hudView;
     readonly CompositeDisposable _disposable = new();
 
     public HudPresenter(
         IDayProgressService dayProgressService,
+        IAccountService accountService,
         ISubscriber<GameCleanupEvent> gameCleanupSubscriber,
         HudView hudView)
     {
         _dayProgressService = dayProgressService;
+        _accountService = accountService;
         _gameCleanupSubscriber = gameCleanupSubscriber;
         _hudView = hudView;
     }
@@ -35,7 +38,7 @@ public class HudPresenter : IStartable, IDisposable
             })
             .AddTo(_disposable);
 
-        dayContext.EarnedCoins
+        _accountService.Account.Coins
             .Subscribe(coins => _hudView.SetCoin(coins))
             .AddTo(_disposable);
 

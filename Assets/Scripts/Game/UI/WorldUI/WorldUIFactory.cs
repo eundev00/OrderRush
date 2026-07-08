@@ -11,6 +11,8 @@ public class WorldUIFactory
     private readonly Dictionary<string, GameObject> _loadedPrefabs = new();
     private const int MaxPoolSize = 20;
 
+    public RectTransform CanvasRectTransform => _canvasRectTransform;
+
     public WorldUIFactory(RectTransform canvasRectTransform)
     {
         _canvasRectTransform = canvasRectTransform;

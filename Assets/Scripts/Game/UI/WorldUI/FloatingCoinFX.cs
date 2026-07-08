@@ -1,12 +1,15 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 
 public class FloatingCoinFX : MonoBehaviour, IUIView
 {
+    [NotNull][SerializeField] private RectTransform _coinRect;
+
     [Header("Rise")]
-    [SerializeField] private float riseHeight = 1f;
+    [SerializeField] private float riseHeight = 100f;
     [SerializeField] private float riseDuration = 0.35f;
     [SerializeField] private Ease riseEase = Ease.OutBack;
 
@@ -33,33 +36,21 @@ public class FloatingCoinFX : MonoBehaviour, IUIView
         gameObject.SetActive(false);
     }
 
-    public async UniTask PlayAnimation(Vector3 worldPosition, CancellationToken ct = default)
+    public async UniTask PlayAnimation(CancellationToken ct = default)
     {
         _sequence?.Kill();
 
-        transform.position = worldPosition;
-        transform.localScale = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
+        _coinRect.localPosition = Vector3.zero;
 
         _sequence = DOTween.Sequence();
 
-        // 상승: 팝업 스케일 + 위로 이동 + 회전 1회 (동시 진행)
-        _sequence.Append(transform.DOScale(1f, riseDuration).SetEase(riseEase));
-        _sequence.Join(transform.DOMoveY(worldPosition.y + riseHeight, riseDuration).SetEase(riseEase));
-        _sequence.Join(transform
-            .DOLocalRotate(rotationAxis * rotationAnglePerPhase, riseDuration, RotateMode.FastBeyond360)
-            .SetRelative()
-            .SetEase(Ease.Linear));
+        // 상승
+        _sequence.Append(_coinRect.DOLocalMoveY(riseHeight, riseDuration).SetEase(riseEase));
 
         _sequence.AppendInterval(holdDuration);
 
-        // 하강: 아래로 이동 + 회전 1회 + 스케일 축소 (동시 진행)
-        _sequence.Append(transform.DOMoveY(worldPosition.y, fallDuration).SetEase(fallEase));
-        _sequence.Join(transform
-            .DOLocalRotate(rotationAxis * rotationAnglePerPhase, fallDuration, RotateMode.FastBeyond360)
-            .SetRelative()
-            .SetEase(Ease.Linear));
-        _sequence.Join(transform.DOScale(0f, fallDuration).SetEase(fallEase));
+        // 하강
+        _sequence.Append(_coinRect.DOLocalMoveY(0f, fallDuration).SetEase(fallEase));
 
         ct.Register(() => _sequence?.Kill());
         await _sequence.AsyncWaitForCompletion();

@@ -369,6 +369,13 @@ public class DiningTable : InteractableBase, IUpdatable
 
     private void TakeOrders()
     {
+        _isWaitingFood = true;
+        _elapsedWaitTime = 0f;
+        if (_tableProgressGauge != null)
+        {
+            _tableProgressGauge.SetProgress(0f);
+        }
+
         foreach (var seat in _seats)
         {
             if (seat.HasCustomer)
@@ -378,12 +385,6 @@ public class DiningTable : InteractableBase, IUpdatable
         }
 
         // 음식 대기로 전환 (게이지 리셋)
-        _isWaitingFood = true;
-        _elapsedWaitTime = 0f;
-        if (_tableProgressGauge != null)
-        {
-            _tableProgressGauge.SetProgress(0f);
-        }
 
         Debug.Log("[DiningTable] Switched to waiting for food. Gauge reset.");
     }
@@ -422,12 +423,13 @@ public class DiningTable : InteractableBase, IUpdatable
         }
 
         var targetCustomer = targetSeat.CurrentCustomer;
-        await character.PutDown();
-        PlacePlate(targetSeat.GetSeatIndex(), plate);
-
         targetCustomer.IsServed = true;
         ExtendGaugeTime();
         ProcessServingComplete();
+
+        await character.PutDown();
+        PlacePlate(targetSeat.GetSeatIndex(), plate);
+
 
         Debug.Log($"[DiningTable] Food served to {targetCustomer.name}");
     }

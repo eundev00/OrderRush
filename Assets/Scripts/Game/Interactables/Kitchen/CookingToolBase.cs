@@ -122,6 +122,7 @@ public abstract class CookingToolBase : InteractableBase
     {
         if (_gaugeView != null)
         {
+            _gaugeView.Hide();
             _worldUIFactory.Release(PrefabKeys.KitchenGauge, _gaugeView);
             _gaugeView = null;
         }
