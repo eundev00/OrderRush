@@ -15,8 +15,8 @@ public abstract class CookingToolBase : InteractableBase
 
     public bool IsCooking { get; protected set; }
     private SpawnFactory _factory;
-    protected KitchenGaugeFactory _gaugeFactory;
-    protected KitchenGaugePresenter _gaugePresenter;
+    protected WorldUIFactory _worldUIFactory;
+    protected ProgressGauge _gaugeView;
     protected IGameDataService _gameDataService;
     private IDisposable _gameCleanupSubscription;
     private IDisposable _dayEndedSubscription;
@@ -25,10 +25,10 @@ public abstract class CookingToolBase : InteractableBase
     public bool HasIngredient => CurrentIngredientObject != null;
 
     [Inject]
-    public void Construct(SpawnFactory factory, KitchenGaugeFactory gaugeFactory, IGameDataService gameDataService, ISubscriber<GameCleanupEvent> gameCleanupSubscriber, ISubscriber<DayEndedEvent> dayEndedSubscriber)
+    public void Construct(SpawnFactory factory, WorldUIFactory worldUIFactory, IGameDataService gameDataService, ISubscriber<GameCleanupEvent> gameCleanupSubscriber, ISubscriber<DayEndedEvent> dayEndedSubscriber)
     {
         _factory = factory;
-        _gaugeFactory = gaugeFactory;
+        _worldUIFactory = worldUIFactory;
         _gameDataService = gameDataService;
         _gameCleanupSubscription = gameCleanupSubscriber.Subscribe(_ => OnGameCleanup());
         _dayEndedSubscription = dayEndedSubscriber.Subscribe(_ => OnDayEnded());
@@ -95,33 +95,35 @@ public abstract class CookingToolBase : InteractableBase
 
     protected void UpdateProgress(float progress)
     {
-        if (_gaugePresenter != null)
+        if (_gaugeView != null)
         {
-            _gaugePresenter.SetProgress(progress);
+            _gaugeView.SetProgress(progress);
         }
     }
 
     protected void ShowCookingGauge()
     {
-        if (_gaugePresenter == null)
+        if (_gaugeView == null)
         {
-            _gaugePresenter = _gaugeFactory.Create(transform, new Vector3(0, 0.5f, 0));
-            _gaugePresenter.Show();
-            _gaugePresenter.SetProgress(0f);
+            _gaugeView = _worldUIFactory.Create<ProgressGauge>(
+                PrefabKeys.KitchenGauge,
+                transform,
+                new Vector3(0, 0.5f, 0));
+            _gaugeView.SetProgress(0f);
         }
         else
         {
-            _gaugePresenter.Show();
-            _gaugePresenter.SetProgress(0f);
+            _gaugeView.Show();
+            _gaugeView.SetProgress(0f);
         }
     }
 
     protected void HideCookingGauge()
     {
-        if (_gaugePresenter != null)
+        if (_gaugeView != null)
         {
-            _gaugeFactory.Release(_gaugePresenter);
-            _gaugePresenter = null;
+            _worldUIFactory.Release(PrefabKeys.KitchenGauge, _gaugeView);
+            _gaugeView = null;
         }
     }
 

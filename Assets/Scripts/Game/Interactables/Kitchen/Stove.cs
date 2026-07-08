@@ -60,7 +60,7 @@ public class Stove : CookingToolBase
             _cookingElapsedTime = 0f;
 
             // 오버쿡
-            _gaugePresenter?.SetWarning(true);
+            _gaugeView?.SetWarning(true);
 
             float overcookDuration = _kitchenStatService.GetOvercookDuration();
             while (_cookingElapsedTime < overcookDuration)

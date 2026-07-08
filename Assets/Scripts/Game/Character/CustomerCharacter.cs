@@ -19,8 +19,7 @@ public class CustomerCharacter : CharacterBase
 
     private IPublisher<PaymentEvent> _paymentPublisher;
     private IPublisher<CustomerRemovedEvent> _customerRemovedPublisher;
-    private OrderIconFactory _orderIconFactory;
-    private CharacterEmoteIconFactory _emoteIconFactory;
+    private WorldUIFactory _worldUIFactory;
 
     [Inject]
     public void Construct(
@@ -28,15 +27,13 @@ public class CustomerCharacter : CharacterBase
         IPublisher<CustomerRemovedEvent> customerRemovedPublisher,
         IAccountService accountService,
         IGameDataService gameDataService,
-        OrderIconFactory orderIconFactory,
-        CharacterEmoteIconFactory emoteIconFactory)
+        WorldUIFactory worldUIFactory)
     {
         _paymentPublisher = paymentPublisher;
         _customerRemovedPublisher = customerRemovedPublisher;
         _accountService = accountService;
         _gameDataService = gameDataService;
-        _orderIconFactory = orderIconFactory;
-        _emoteIconFactory = emoteIconFactory;
+        _worldUIFactory = worldUIFactory;
     }
 
     protected override void OnDayEnded()
@@ -92,7 +89,7 @@ public class CustomerCharacter : CharacterBase
 
         IsServed = true;
 
-        EnqueueAction(new EatAction(this, _paymentPublisher, _gameDataService));
+        EnqueueAction(new EatAction(this, _paymentPublisher, _gameDataService, _worldUIFactory));
         EnqueueAction(new LeaveAction(this, _spawnPosition, _mover, _animator, _customerRemovedPublisher));
     }
 
@@ -108,13 +105,13 @@ public class CustomerCharacter : CharacterBase
         }
 
         EnqueueAction(new OrderAction(this, _accountService));
-        EnqueueAction(new WaitForFoodAction(this, _orderIconFactory, _gameDataService));
+        EnqueueAction(new WaitForFoodAction(this, _worldUIFactory, _gameDataService));
     }
 
     public void EnqueueLeaveAngry()
     {
         ClearActions();
-        EnqueueAction(new EmoteAction(this, _emoteIconFactory));
+        EnqueueAction(new EmoteAction(this, _worldUIFactory));
         EnqueueAction(new LeaveAction(this, _spawnPosition, _mover, _animator, _customerRemovedPublisher));
     }
 

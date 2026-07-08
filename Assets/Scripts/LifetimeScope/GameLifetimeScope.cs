@@ -23,10 +23,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<SpawnFactory>(Lifetime.Singleton);
 
         // UI Factories
-        builder.Register<KitchenGaugeFactory>(Lifetime.Singleton).WithParameter(_gaugeContainer);
-        builder.Register<TableGaugeFactory>(Lifetime.Singleton).WithParameter(_gaugeContainer);
-        builder.Register<OrderIconFactory>(Lifetime.Singleton).WithParameter(_gaugeContainer);
-        builder.Register<CharacterEmoteIconFactory>(Lifetime.Singleton).WithParameter(_gaugeContainer);
+        builder.Register<WorldUIFactory>(Lifetime.Singleton).WithParameter(_gaugeContainer);
 
         // Initiators
         builder.RegisterEntryPoint<GameInitiator>();

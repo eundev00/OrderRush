@@ -3,28 +3,33 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class CharacterEmoteIconPresenter : BaseUIPresenter<CharacterEmoteIconView>
+public class CharacterEmoteIcon : MonoBehaviour, IUIView
 {
-
-    public CharacterEmoteIconPresenter(Camera mainCamera, RectTransform canvasRectTransform, CharacterEmoteIconView view, Transform target, Vector3 offset)
-        : base(mainCamera, canvasRectTransform, view, target, offset)
-    {
-
-    }
+    [NotNull][SerializeField] private Image _iconImage;
 
     public void SetIcon(Sprite sprite)
     {
-        if (_isDisposed || View == null) return;
-        View.SetIcon(sprite);
+        if (_iconImage != null)
+        {
+            _iconImage.sprite = sprite;
+            _iconImage.gameObject.SetActive(sprite != null);
+        }
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
     }
 
     public async UniTask PlayPopupAnimation(CancellationToken ct)
     {
-        if (_isDisposed || View == null) return;
-
-        var transform = View.transform;
-
         transform.localScale = Vector3.zero;
 
         var tween1 = transform.DOScale(1.2f, 0.2f).SetEase(Ease.OutBack);

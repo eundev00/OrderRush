@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterEmoteIconView : MonoBehaviour, IUIView
+public class OrderIcon : MonoBehaviour, IUIView
 {
     [NotNull][SerializeField] private Image _iconImage;
 

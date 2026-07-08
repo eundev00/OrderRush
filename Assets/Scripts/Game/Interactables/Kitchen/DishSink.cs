@@ -11,14 +11,14 @@ public class DishSink : InteractableBase
 
     private Plate _currentPlate;
     private IKitchenStatService _kitchenStatService;
-    private KitchenGaugeFactory _gaugeFactory;
-    private KitchenGaugePresenter _gaugePresenter;
+    private WorldUIFactory _worldUIFactory;
+    private ProgressGauge _gauge;
 
     [Inject]
-    public void Construct(IKitchenStatService kitchenStatService, KitchenGaugeFactory gaugeFactory)
+    public void Construct(IKitchenStatService kitchenStatService, WorldUIFactory worldUIFactory)
     {
         _kitchenStatService = kitchenStatService;
-        _gaugeFactory = gaugeFactory;
+        _worldUIFactory = worldUIFactory;
     }
 
 
@@ -81,13 +81,16 @@ public class DishSink : InteractableBase
 
     private async UniTask StartWashing(CharacterBase character, CancellationToken ct)
     {
-        if (_gaugePresenter == null)
+        if (_gauge == null)
         {
-            _gaugePresenter = _gaugeFactory.Create(transform, new Vector3(0, 0.5f, 0));
+            _gauge = _worldUIFactory.Create<ProgressGauge>(
+                PrefabKeys.KitchenGauge,
+                transform,
+                new Vector3(0, 0.5f, 0));
         }
 
-        _gaugePresenter.Show();
-        _gaugePresenter.SetProgress(0f);
+        _gauge.Show();
+        _gauge.SetProgress(0f);
 
         float elapsedTime = 0f;
         float washDuration = _kitchenStatService.GetModifiedDuration();
@@ -102,7 +105,7 @@ public class DishSink : InteractableBase
                 elapsedTime += Time.deltaTime;
 
                 float progress = elapsedTime / washDuration;
-                _gaugePresenter.SetProgress(progress);
+                _gauge.SetProgress(progress);
             }
 
             // 설거지 완료
@@ -113,10 +116,10 @@ public class DishSink : InteractableBase
         {
             character.StopWorking();
 
-            if (_gaugePresenter != null)
+            if (_gauge != null)
             {
-                _gaugeFactory.Release(_gaugePresenter);
-                _gaugePresenter = null;
+                _worldUIFactory.Release(PrefabKeys.KitchenGauge, _gauge);
+                _gauge = null;
             }
         }
     }

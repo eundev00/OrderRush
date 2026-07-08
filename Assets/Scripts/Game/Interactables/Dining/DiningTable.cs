@@ -17,8 +17,8 @@ public class DiningTable : InteractableBase, IUpdatable
 
     private List<Plate> _currentPlates = new List<Plate>();
 
-    private TableGaugeFactory _gaugeFactory;
-    private TableGaugePresenter _tableGaugePresenter;
+    private WorldUIFactory _worldUIFactory;
+    private ProgressGauge _tableProgressGauge;
     private IUpdateSubscriptionService _updateService;
     private IGameDataService _gameDataService;
     private IDayProgressService _dayProgressService;
@@ -71,7 +71,7 @@ public class DiningTable : InteractableBase, IUpdatable
 
     [Inject]
     public void Construct(
-        TableGaugeFactory gaugeFactory,
+        WorldUIFactory worldUIFactory,
         IUpdateSubscriptionService updateService,
         IGameDataService gameDataService,
         IDayProgressService dayProgressService,
@@ -81,7 +81,7 @@ public class DiningTable : InteractableBase, IUpdatable
         ISubscriber<DayEndedEvent> dayEndedSubscriber,
         ISubscriber<GameCleanupEvent> gameCleanupSubscriber)
     {
-        _gaugeFactory = gaugeFactory;
+        _worldUIFactory = worldUIFactory;
         _updateService = updateService;
         _gameDataService = gameDataService;
         _dayProgressService = dayProgressService;
@@ -115,13 +115,6 @@ public class DiningTable : InteractableBase, IUpdatable
     private void OnGameCleanup()
     {
         StopWaitGauge();
-
-        if (_tableGaugePresenter != null)
-        {
-            _gaugeFactory.Release(_tableGaugePresenter);
-            _tableGaugePresenter = null;
-        }
-
         _seatedCount = 0;
         _isWaitingForOrder = false;
         _isWaitingFood = false;
@@ -142,10 +135,10 @@ public class DiningTable : InteractableBase, IUpdatable
     {
         _disposables?.Dispose();
 
-        if (_tableGaugePresenter != null)
+        if (_tableProgressGauge != null)
         {
-            _gaugeFactory.Release(_tableGaugePresenter);
-            _tableGaugePresenter = null;
+            _worldUIFactory.Release(PrefabKeys.TableGauge, _tableProgressGauge);
+            _tableProgressGauge = null;
         }
     }
 
@@ -187,9 +180,9 @@ public class DiningTable : InteractableBase, IUpdatable
         float progress = _elapsedWaitTime / _gameDataService.Config.FoodWaitDuration;
 
         // 게이지 업데이트
-        if (_tableGaugePresenter != null)
+        if (_tableProgressGauge != null)
         {
-            _tableGaugePresenter.SetProgress(progress);
+            _tableProgressGauge.SetProgress(progress);
         }
 
         // 시간 초과 시 처리
@@ -206,11 +199,14 @@ public class DiningTable : InteractableBase, IUpdatable
         _isWaitingFood = false;
 
         // 게이지 생성 및 표시
-        if (_tableGaugePresenter == null)
+        if (_tableProgressGauge == null)
         {
-            _tableGaugePresenter = _gaugeFactory.Create(transform, new Vector3(0, 1.5f, 0));
+            _tableProgressGauge = _worldUIFactory.Create<ProgressGauge>(
+                PrefabKeys.TableGauge,
+                transform,
+                new Vector3(0, 1.5f, 0));
         }
-        _tableGaugePresenter.Show();
+        _tableProgressGauge.Show();
 
         // Update 구독
         _updateService.RegisterUpdatable(this);
@@ -222,14 +218,15 @@ public class DiningTable : InteractableBase, IUpdatable
         _isWaitingFood = false;
         _elapsedWaitTime = 0f;
 
-        // 게이지 숨김
-        if (_tableGaugePresenter != null)
-        {
-            _tableGaugePresenter.Hide();
-        }
-
         // Update 구독 해제
         _updateService.UnregisterUpdatable(this);
+
+        // 게이지 반납
+        if (_tableProgressGauge != null)
+        {
+            _worldUIFactory.Release(PrefabKeys.TableGauge, _tableProgressGauge);
+            _tableProgressGauge = null;
+        }
     }
 
     private void ExtendGaugeTime()
@@ -243,7 +240,7 @@ public class DiningTable : InteractableBase, IUpdatable
         float recoverAmount = _gameDataService.Config.FoodWaitDuration * _gameDataService.Config.PatienceRecoveryAmount;
         _elapsedWaitTime = Mathf.Max(0, _elapsedWaitTime - recoverAmount);
         float newProgress = _elapsedWaitTime / _gameDataService.Config.FoodWaitDuration;
-        _tableGaugePresenter?.SetProgress(newProgress);
+        _tableProgressGauge?.SetProgress(newProgress);
     }
 
     private void OnWaitTimeout()
@@ -383,9 +380,9 @@ public class DiningTable : InteractableBase, IUpdatable
         // 음식 대기로 전환 (게이지 리셋)
         _isWaitingFood = true;
         _elapsedWaitTime = 0f;
-        if (_tableGaugePresenter != null)
+        if (_tableProgressGauge != null)
         {
-            _tableGaugePresenter.SetProgress(0f);
+            _tableProgressGauge.SetProgress(0f);
         }
 
         Debug.Log("[DiningTable] Switched to waiting for food. Gauge reset.");

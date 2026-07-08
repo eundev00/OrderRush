@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GaugeView : MonoBehaviour, IUIView
+public class ProgressGauge : MonoBehaviour, IUIView
 {
     [NotNull][SerializeField] private Image _fillImage;
     [SerializeField] private GameObject _warning;

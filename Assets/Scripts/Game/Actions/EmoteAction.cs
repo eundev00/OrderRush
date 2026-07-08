@@ -7,15 +7,15 @@ using UnityEngine;
 public class EmoteAction : IGameAction
 {
     private readonly CharacterBase _character;
-    private readonly CharacterEmoteIconFactory _emoteIconFactory;
-    private CharacterEmoteIconPresenter _emoteIconPresenter;
+    private readonly WorldUIFactory _worldUIFactory;
+    private CharacterEmoteIcon _emoteIcon;
 
     public EmoteAction(
         CharacterBase character,
-        CharacterEmoteIconFactory emoteIconFactory)
+        WorldUIFactory worldUIFactory)
     {
         _character = character;
-        _emoteIconFactory = emoteIconFactory;
+        _worldUIFactory = worldUIFactory;
     }
 
     public async UniTask ExecuteAsync(CancellationToken ct)
@@ -27,17 +27,18 @@ public class EmoteAction : IGameAction
 
         try
         {
-            _emoteIconPresenter = _emoteIconFactory.Create(_character.transform, new Vector3(0, 1.5f, 0));
-            _emoteIconPresenter.Show();
-            await _emoteIconPresenter.PlayPopupAnimation(ct);
+            _emoteIcon = _worldUIFactory.Create<CharacterEmoteIcon>(
+                PrefabKeys.CharacterEmoteIcon,
+                _character.transform,
+                new Vector3(0, 1.5f, 0));
+            await _emoteIcon.PlayPopupAnimation(ct);
         }
         finally
         {
-            if (_emoteIconPresenter != null)
+            if (_emoteIcon != null)
             {
-                _emoteIconPresenter.Hide();
-                _emoteIconFactory.Release(_emoteIconPresenter);
-                _emoteIconPresenter = null;
+                _worldUIFactory.Release(PrefabKeys.CharacterEmoteIcon, _emoteIcon);
+                _emoteIcon = null;
             }
         }
     }

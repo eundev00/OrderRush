@@ -5,14 +5,14 @@ using OrderRush.Services;
 public class WaitForFoodAction : IGameAction
 {
     private readonly CustomerCharacter _character;
-    private readonly OrderIconFactory _orderIconFactory;
+    private readonly WorldUIFactory _worldUIFactory;
     private readonly IGameDataService _gameDataService;
-    private OrderIconPresenter _orderIconPresenter;
+    private OrderIcon _orderIcon;
 
-    public WaitForFoodAction(CustomerCharacter character, OrderIconFactory orderIconFactory, IGameDataService gameDataService)
+    public WaitForFoodAction(CustomerCharacter character, WorldUIFactory worldUIFactory, IGameDataService gameDataService)
     {
         _character = character;
-        _orderIconFactory = orderIconFactory;
+        _worldUIFactory = worldUIFactory;
         _gameDataService = gameDataService;
     }
 
@@ -30,18 +30,20 @@ public class WaitForFoodAction : IGameAction
 
         try
         {
-            _orderIconPresenter = _orderIconFactory.Create(_character.transform, new UnityEngine.Vector3(0, 1.5f, 0));
-            _orderIconPresenter.SetIcon(recipe.Icon);
-            _orderIconPresenter.Show();
+            _orderIcon = _worldUIFactory.Create<OrderIcon>(
+                PrefabKeys.CharacterOrderIcon,
+                _character.transform,
+                new UnityEngine.Vector3(0, 1.5f, 0));
+            _orderIcon.SetIcon(recipe.Icon);
 
             await UniTask.WaitUntilCanceled(ct);
         }
         finally
         {
-            if (_orderIconPresenter != null)
+            if (_orderIcon != null)
             {
-                _orderIconFactory.Release(_orderIconPresenter);
-                _orderIconPresenter = null;
+                _worldUIFactory.Release(PrefabKeys.CharacterOrderIcon, _orderIcon);
+                _orderIcon = null;
             }
         }
     }

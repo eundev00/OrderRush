@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-   public static class PrefabKeys
-   {
+public static class PrefabKeys
+{
     public const string CustomerCharacter1 = "CustomerCharacter1";
     public const string CustomerCharacter2 = "CustomerCharacter2";
     public const string CustomerCharacter3 = "CustomerCharacter3";
@@ -31,6 +31,7 @@ using System.Collections.Generic;
     public const string CharacterOrderIcon = "CharacterOrderIcon";
     public const string KitchenGauge = "KitchenGauge";
     public const string TableGauge = "TableGauge";
+    public const string FloatingCoinFX = "FloatingCoinFX";
 
     public static Dictionary<string, string> PrefabPaths = new Dictionary<string, string>()
     {
@@ -63,14 +64,15 @@ using System.Collections.Generic;
         { CharacterOrderIcon, "Assets/Prefabs/Game/UI/WorldSpace/CharacterOrderIcon.prefab" },
         { KitchenGauge, "Assets/Prefabs/Game/UI/WorldSpace/KitchenGauge.prefab" },
         { TableGauge, "Assets/Prefabs/Game/UI/WorldSpace/TableGauge.prefab" },
+        { FloatingCoinFX, "Assets/Prefabs/Game/UI/WorldSpace/FloatingCoinFX.prefab" },
     };
 
     public static string GetPrefabPath(string tag)
     {
         if (PrefabPaths.TryGetValue(tag, out var path))
         {
-             return path;
-         }
-         return string.Empty;
+            return path;
+        }
+        return string.Empty;
     }
 }
