@@ -4366,6 +4366,7 @@ MonoBehaviour:
   _dayText: {fileID: 221333713}
   _maxText: {fileID: 291517453}
   _timerFill: {fileID: 1932472018}
+  _homeButton: {fileID: 362361044}
 --- !u!1 &1646520009
 GameObject:
   m_ObjectHideFlags: 0

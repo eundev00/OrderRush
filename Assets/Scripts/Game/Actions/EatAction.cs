@@ -32,15 +32,43 @@ public class EatAction : IGameAction
             var recipe = _gameDataService.GetRecipeByID(_customer.OrderedRecipeID);
             if (recipe != null)
             {
-                var coinFX = _worldUIFactory.Create<FloatingCoinFX>(
+                // TODO: 실제로는 CustomerCharacterData.GivesTip 확인 필요
+                bool hasTip = false;
+
+                // 첫 번째 코인 시작
+                var coinFX1 = _worldUIFactory.Create<FloatingCoinFX>(
                     PrefabKeys.FloatingCoinFX,
                     _customer.transform,
                     new Vector3(0, 2f, 0));
+                var task1 = coinFX1.PlayAnimation(ct);
 
-                await coinFX.PlayAnimation(ct);
-
-                _worldUIFactory.Release(PrefabKeys.FloatingCoinFX, coinFX);
                 _paymentPublisher.Publish(new PaymentEvent(recipe.SellPrice, recipe.RecipeName));
+
+                if (hasTip)
+                {
+                    // 시간차를 두고 두 번째 코인 시작
+                    await UniTask.Delay(TimeSpan.FromSeconds(0.2f), cancellationToken: ct);
+
+                    var coinFX2 = _worldUIFactory.Create<FloatingCoinFX>(
+                        PrefabKeys.FloatingCoinFX,
+                        _customer.transform,
+                        new Vector3(0, 2f, 0));
+                    var task2 = coinFX2.PlayAnimation(ct);
+
+                    // TODO: 팁 PaymentEvent 발행
+
+                    // 둘 다 끝날 때까지 대기
+                    await UniTask.WhenAll(task1, task2);
+
+                    _worldUIFactory.Release(PrefabKeys.FloatingCoinFX, coinFX1);
+                    _worldUIFactory.Release(PrefabKeys.FloatingCoinFX, coinFX2);
+                }
+                else
+                {
+                    // 팁이 없으면 첫 번째 코인만 대기
+                    await task1;
+                    _worldUIFactory.Release(PrefabKeys.FloatingCoinFX, coinFX1);
+                }
             }
         }
     }

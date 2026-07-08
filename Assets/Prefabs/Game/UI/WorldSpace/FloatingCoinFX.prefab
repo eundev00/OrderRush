@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FloatingCoinFX
   _coinRect: {fileID: 7881508872586184775}
-  riseHeight: 1
+  riseHeight: 80
   riseDuration: 0.35
   riseEase: 27
   holdDuration: 0.2

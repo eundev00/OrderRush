@@ -30,4 +30,10 @@ public class HudView : MonoBehaviour
         _timerFill.fillAmount = ratio;
     }
 
+    public void SetHomeButtonListener(System.Action onClickAction)
+    {
+        _homeButton.onClick.RemoveAllListeners();
+        _homeButton.onClick.AddListener(() => onClickAction?.Invoke());
+    }
+
 }
