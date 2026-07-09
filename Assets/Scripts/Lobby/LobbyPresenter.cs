@@ -1,8 +1,7 @@
 using System;
-using OrderRush.Data;
+using Cysharp.Threading.Tasks;
 using OrderRush.Services;
 using UniRx;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer.Unity;
 
@@ -32,24 +31,33 @@ public class LobbyPresenter : IStartable, IDisposable
             .Subscribe(coins => _view.SetCoins(coins))
             .AddTo(_disposable);
 
-        _view.StartButton
+        _view.NewGameButton
             .OnClickAsObservable()
-            .Subscribe(_ => OnStartButtonClicked())
+            .Subscribe(_ => OnNewGameButtonClicked())
             .AddTo(_disposable);
 
-        _view.ResetButton
+        _view.ContinueButton
             .OnClickAsObservable()
-            .Subscribe(_ => OnResetButtonClicked())
+            .Subscribe(_ => OnContinueButtonClicked())
             .AddTo(_disposable);
+
+        _view.CanContinue = CanContinue();
     }
 
-    private void OnResetButtonClicked()
+    private bool CanContinue()
+    {
+        return _accountService.Account.CurrentDay > 1;
+    }
+
+    private void OnNewGameButtonClicked()
     {
         _accountService.ResetAll();
         _view.SetDay(_accountService.Account.CurrentDay);
+        SceneManager.UnloadSceneAsync("LobbyScene");
+        SceneManager.LoadSceneAsync("GameplayScene", LoadSceneMode.Additive);
     }
 
-    private void OnStartButtonClicked()
+    private void OnContinueButtonClicked()
     {
         SceneManager.UnloadSceneAsync("LobbyScene");
         SceneManager.LoadSceneAsync("GameplayScene", LoadSceneMode.Additive);
