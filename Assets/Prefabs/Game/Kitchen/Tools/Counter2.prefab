@@ -65,6 +65,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72517d6d8ab864f609508617b61f4492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  _tintStrength: 0.1
 --- !u!1 &6375359281576562875
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,6 +320,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3676022518089944652, guid: 72b6c0b036834dc498934cb613496027, type: 3}
       insertIndex: -1
       addedObject: {fileID: 451276314964368784}
+    - targetCorrespondingSourceObject: {fileID: 3676022518089944652, guid: 72b6c0b036834dc498934cb613496027, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1004502849412775299}
   m_SourcePrefab: {fileID: 100100000, guid: 72b6c0b036834dc498934cb613496027, type: 3}
 --- !u!1 &2362986215332342794 stripped
 GameObject:
@@ -353,6 +357,27 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.27, z: -0.025}
   m_TimeToStationary: 0.5
+--- !u!65 &1004502849412775299
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2362986215332342794}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.5391055, z: 0.9496529}
+  m_Center: {x: 0, y: 0.26955274, z: -0.02517356}
 --- !u!4 &3134738290762528432 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4055504299481289974, guid: 72b6c0b036834dc498934cb613496027, type: 3}

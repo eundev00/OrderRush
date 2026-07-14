@@ -8,6 +8,7 @@ namespace OrderRush.Services
     {
         GameConfig Config { get; }
         DaysData Days { get; }
+        DayNightSettings DayNightSettings { get; }
 
         RecipeData GetRecipeByID(int recipeID);
         int GetMatchedRecipeID(List<IngredientData> ingredients);

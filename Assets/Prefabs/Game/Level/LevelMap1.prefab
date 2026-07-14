@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 523808167417830795}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 3.3, y: 0.16, z: -3.55}
+  m_LocalPosition: {x: 3.3, y: 0.2, z: -3.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2271,6 +2271,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: ddcfbaa4ee6d4624b8bc856c341967fd, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: ddcfbaa4ee6d4624b8bc856c341967fd, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7c851ac700fdac648a7db3b9986ba2d4, type: 2}
@@ -2278,6 +2282,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: db89b1f67a4c5564ba6ffc85dad8ec74, type: 2}
+    - target: {fileID: -7511558181221131132, guid: ddcfbaa4ee6d4624b8bc856c341967fd, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 351bc33280ba6437e9c95c01682c2f88, type: 2}
     - target: {fileID: 919132149155446097, guid: ddcfbaa4ee6d4624b8bc856c341967fd, type: 3}
       propertyPath: m_Name
       value: Wall_Window_Top

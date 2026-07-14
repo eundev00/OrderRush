@@ -9,6 +9,7 @@ public class GameInitiator : IStartable
 {
     private readonly ILevelContextPresenter _levelPresenter;
     private readonly IDayProgressService _dayProgressService;
+    private readonly IDayNightService _dayNightService;
     private readonly ICustomerService _customerService;
     private readonly IAccountService _accountService;
     private readonly CardEffectApplier _cardEffectApplier;
@@ -17,6 +18,7 @@ public class GameInitiator : IStartable
     public GameInitiator(
         ILevelContextPresenter levelPresenter,
         IDayProgressService dayProgressService,
+        IDayNightService dayNightService,
         ICustomerService customerService,
         IAccountService accountService,
         CardEffectApplier cardEffectApplier,
@@ -24,6 +26,7 @@ public class GameInitiator : IStartable
     {
         _levelPresenter = levelPresenter;
         _dayProgressService = dayProgressService;
+        _dayNightService = dayNightService;
         _customerService = customerService;
         _accountService = accountService;
         _cardEffectApplier = cardEffectApplier;
@@ -35,6 +38,7 @@ public class GameInitiator : IStartable
         Debug.Log("GameInitiator: Initializing game...");
 
         await _dayProgressService.Initialize();
+        await _dayNightService.Initialize();
 
         int currentDay = _accountService.Account.CurrentDay;
         _dayProgressService.StartDay(currentDay);

@@ -13,6 +13,7 @@ public class GameLifetimeScope : LifetimeScope
 
         // Services
         builder.Register<IDayProgressService, DayProgressService>(Lifetime.Scoped);
+        builder.Register<IDayNightService, DayNightService>(Lifetime.Scoped);
         builder.Register<CustomerService>(Lifetime.Singleton).AsImplementedInterfaces();
         builder.Register<StaffManager>(Lifetime.Singleton);
         builder.Register<IShopService, ShopService>(Lifetime.Scoped);

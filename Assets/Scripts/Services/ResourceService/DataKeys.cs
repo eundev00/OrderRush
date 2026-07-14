@@ -18,6 +18,7 @@ public static class DataKeys
     public const string UpgradCardData_Grade2 = "UpgradCardData_Grade2";
     public const string CustomerTrait_Normal = "CustomerTrait_Normal";
     public const string CustomerTrait_Tipper = "CustomerTrait_Tipper";
+    public const string DayNightSettings = "DayNightSettings";
     public const string GameConfig = "GameConfig";
     public const string GrilledMushroom = "GrilledMushroom";
     public const string Mushroom = "Mushroom";
@@ -49,6 +50,7 @@ public static class DataKeys
         { UpgradCardData_Grade2, "Assets/Data/Card/UpgradCardData_Grade2.asset" },
         { CustomerTrait_Normal, "Assets/Data/CustomerTrait/CustomerTrait_Normal.asset" },
         { CustomerTrait_Tipper, "Assets/Data/CustomerTrait/CustomerTrait_Tipper.asset" },
+        { DayNightSettings, "Assets/Data/DayNightSettings.asset" },
         { GameConfig, "Assets/Data/GameConfig.asset" },
         { GrilledMushroom, "Assets/Data/Ingredient/Mushroom/GrilledMushroom.asset" },
         { Mushroom, "Assets/Data/Ingredient/Mushroom/Mushroom.asset" },

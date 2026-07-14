@@ -12,6 +12,7 @@ namespace OrderRush.Services
         public RecipesData Recipes { get; private set; }
         public CardsData Cards { get; private set; }
         public DaysData Days { get; private set; }
+        public DayNightSettings DayNightSettings { get; private set; }
 
         public GameDataService(IResourcesLoaderService resourcesLoader)
         {
@@ -24,6 +25,7 @@ namespace OrderRush.Services
             Recipes = await _resourcesLoader.LoadAsync<RecipesData>(DataKeys.GetDataPath(DataKeys.RecipesData));
             Cards = await _resourcesLoader.LoadAsync<CardsData>(DataKeys.GetDataPath(DataKeys.CardsData));
             Days = await _resourcesLoader.LoadAsync<DaysData>(DataKeys.GetDataPath(DataKeys.Run1_Days));
+            DayNightSettings = await _resourcesLoader.LoadAsync<DayNightSettings>(DataKeys.GetDataPath(DataKeys.DayNightSettings));
         }
 
         public RecipeData GetRecipeByID(int recipeID)

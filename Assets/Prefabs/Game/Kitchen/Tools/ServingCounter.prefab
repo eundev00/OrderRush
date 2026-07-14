@@ -67,6 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72517d6d8ab864f609508617b61f4492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  _tintStrength: 0.1
 --- !u!1 &7543240275628764589
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,6 +279,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1474024520874488205, guid: f3a20f011d4a0254690b8f36fdedd70c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6194768074426937799}
+    - targetCorrespondingSourceObject: {fileID: 1474024520874488205, guid: f3a20f011d4a0254690b8f36fdedd70c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4065197092298781063}
   m_SourcePrefab: {fileID: 100100000, guid: f3a20f011d4a0254690b8f36fdedd70c, type: 3}
 --- !u!1 &3885615807332007071 stripped
 GameObject:
@@ -312,6 +316,27 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.27, z: 0}
   m_TimeToStationary: 0.5
+--- !u!65 &4065197092298781063
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3885615807332007071}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.8778069, y: 0.5391054, z: 0.8778066}
+  m_Center: {x: 0, y: 0.2695527, z: -0.000000029802322}
 --- !u!4 &4514764420409910821 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2251546725997095735, guid: f3a20f011d4a0254690b8f36fdedd70c, type: 3}
@@ -384,6 +409,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6943413632815848166, guid: 6ff65515d11a4c74ca86c52abb3b8348, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3842570629978578459}
+    - targetCorrespondingSourceObject: {fileID: 6943413632815848166, guid: 6ff65515d11a4c74ca86c52abb3b8348, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8321358271161565138}
   m_SourcePrefab: {fileID: 100100000, guid: 6ff65515d11a4c74ca86c52abb3b8348, type: 3}
 --- !u!1 &4754811855629126613 stripped
 GameObject:
@@ -402,6 +430,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0feb85ec530d4169815d4a47b0ce33d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
+--- !u!65 &8321358271161565138
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4754811855629126613}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.21089453, z: 1}
+  m_Center: {x: 0, y: 0.6445527, z: 0}
 --- !u!4 &5383961667005010287 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7714707143494434908, guid: 6ff65515d11a4c74ca86c52abb3b8348, type: 3}

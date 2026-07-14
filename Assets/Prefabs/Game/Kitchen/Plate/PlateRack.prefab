@@ -199,6 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72517d6d8ab864f609508617b61f4492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  _tintStrength: 0.1
 --- !u!1 &8058729140994610254
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,6 +624,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8118915839966017965, guid: 4bd371d1fcd685e40b68731898445df7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3424731112054993286}
+    - targetCorrespondingSourceObject: {fileID: 8118915839966017965, guid: 4bd371d1fcd685e40b68731898445df7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3281779774033112881}
   m_SourcePrefab: {fileID: 100100000, guid: 4bd371d1fcd685e40b68731898445df7, type: 3}
 --- !u!1 &2311550534612611803 stripped
 GameObject:
@@ -641,6 +645,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0feb85ec530d4169815d4a47b0ce33d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
+--- !u!65 &3281779774033112881
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2311550534612611803}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.5391055, z: 0.9496529}
+  m_Center: {x: 0, y: 0.26955274, z: -0.02517356}
 --- !u!4 &3125381981140068449 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8928384458730971927, guid: 4bd371d1fcd685e40b68731898445df7, type: 3}
@@ -784,6 +809,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6943413632815848166, guid: 6ff65515d11a4c74ca86c52abb3b8348, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4306808453954382434}
+    - targetCorrespondingSourceObject: {fileID: 6943413632815848166, guid: 6ff65515d11a4c74ca86c52abb3b8348, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8822503693908283111}
   m_SourcePrefab: {fileID: 100100000, guid: 6ff65515d11a4c74ca86c52abb3b8348, type: 3}
 --- !u!1 &1645702217618734194 stripped
 GameObject:
@@ -802,6 +830,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0feb85ec530d4169815d4a47b0ce33d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
+--- !u!65 &8822503693908283111
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645702217618734194}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.21089453, z: 1}
+  m_Center: {x: 0, y: 0.6445527, z: 0}
 --- !u!4 &2133973802827966152 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7714707143494434908, guid: 6ff65515d11a4c74ca86c52abb3b8348, type: 3}

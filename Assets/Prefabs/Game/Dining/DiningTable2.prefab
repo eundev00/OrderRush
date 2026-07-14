@@ -396,6 +396,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4229594387723082056, guid: 039540095f915d94482220c79b0dd2ef, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8370580248843109393}
+    - targetCorrespondingSourceObject: {fileID: 4229594387723082056, guid: 039540095f915d94482220c79b0dd2ef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6294890861834662592}
   m_SourcePrefab: {fileID: 100100000, guid: 039540095f915d94482220c79b0dd2ef, type: 3}
 --- !u!4 &5909687464528259157 stripped
 Transform:
@@ -431,6 +434,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72517d6d8ab864f609508617b61f4492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  _tintStrength: 0.1
+--- !u!65 &6294890861834662592
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6433600823283512047}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.3345144, y: 0.57421887, z: 1.3310419}
+  m_Center: {x: 0.00054967403, y: 0.28710943, z: 0.00029557943}
 --- !u!1001 &8051091170640725546
 PrefabInstance:
   m_ObjectHideFlags: 0
