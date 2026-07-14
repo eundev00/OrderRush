@@ -143,9 +143,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: eb09cb6d3f2b0d34db65189860a4f945, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: eb09cb6d3f2b0d34db65189860a4f945, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 577f160b9cb80954686fa951a0084e16, type: 2}
+    - target: {fileID: -7511558181221131132, guid: eb09cb6d3f2b0d34db65189860a4f945, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 351bc33280ba6437e9c95c01682c2f88, type: 2}
     - target: {fileID: 919132149155446097, guid: eb09cb6d3f2b0d34db65189860a4f945, type: 3}
       propertyPath: m_Name
       value: Chair_02
@@ -153,8 +161,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: eb09cb6d3f2b0d34db65189860a4f945, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3294109808798170950}
   m_SourcePrefab: {fileID: 100100000, guid: eb09cb6d3f2b0d34db65189860a4f945, type: 3}
+--- !u!1 &3973792722021335063 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: eb09cb6d3f2b0d34db65189860a4f945, type: 3}
+  m_PrefabInstance: {fileID: 4315810449411046726}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3294109808798170950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3973792722021335063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0feb85ec530d4169815d4a47b0ce33d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!4 &4354540767347022509 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: eb09cb6d3f2b0d34db65189860a4f945, type: 3}

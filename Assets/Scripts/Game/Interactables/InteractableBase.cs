@@ -6,8 +6,10 @@ using UnityEngine;
 
 public class InteractableBase : MonoBehaviour, IInteractable
 {
-    [NotNull][SerializeField] protected InteractableHighlight _platesHighlight;
+    [SerializeField] protected InteractableHighlight _highlight;
     [NotNull][SerializeField] protected Transform[] _interactPoints;
+
+
 
     public Transform[] GetInteractPointsSortedByDistance(Vector3 fromPosition)
     {
@@ -23,7 +25,7 @@ public class InteractableBase : MonoBehaviour, IInteractable
 
     public void SetHighlight(bool highlight)
     {
-        _platesHighlight.SetHighlight(highlight);
+        if (_highlight) _highlight.SetSelected(highlight);
     }
 
 
