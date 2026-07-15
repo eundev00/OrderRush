@@ -1287,6 +1287,10 @@ PrefabInstance:
       value: Body_City_Dress_04
       objectReference: {fileID: 0}
     - target: {fileID: 6256858087821952173, guid: c926a3f8a476007419edb6d467b7f666, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6256858087821952173, guid: c926a3f8a476007419edb6d467b7f666, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1332,6 +1336,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7166329158967189608}
     m_Modifications:
+    - target: {fileID: 4852903610821432416, guid: 536e68f4257637948b0ccb3059da06ee, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4852903610821432416, guid: 536e68f4257637948b0ccb3059da06ee, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
@@ -1491,6 +1499,10 @@ PrefabInstance:
       value: Hair_City_Short_Fade_01
       objectReference: {fileID: 0}
     - target: {fileID: 6099292585460090928, guid: eec6f57679715894b88dfa0b2918586d, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6099292585460090928, guid: eec6f57679715894b88dfa0b2918586d, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1593,6 +1605,10 @@ PrefabInstance:
       value: Arm_City_LSleeve_Blue_01_R
       objectReference: {fileID: 0}
     - target: {fileID: 8471056653574710798, guid: aa1f2395fb4377049b1e9cdf9bd833fc, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8471056653574710798, guid: aa1f2395fb4377049b1e9cdf9bd833fc, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1693,6 +1709,10 @@ PrefabInstance:
     - target: {fileID: 7698066097313892961, guid: c604b1330ef8d9344baf3436d1caf6df, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8835546286842229006, guid: c604b1330ef8d9344baf3436d1caf6df, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8835546286842229006, guid: c604b1330ef8d9344baf3436d1caf6df, type: 3}
       propertyPath: m_Materials.Array.size

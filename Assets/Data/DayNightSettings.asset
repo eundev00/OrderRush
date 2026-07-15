@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5075fc2d36bea49b6810d6593fc36ea3, type: 3}
   m_Name: DayNightSettings
   m_EditorClassIdentifier: Assembly-CSharp::DayNightSettings
-  day:
-    lightColor: {r: 1, g: 1, b: 1, a: 1}
+  outdoorDay:
+    color: {r: 0.894, g: 0.835, b: 0.718, a: 1}
     intensity: 1
-    postExposure: 0
-    volumeFilter: {r: 1, g: 1, b: 1, a: 1}
-    indoorIntensity: 0
-  night:
-    lightColor: {r: 0.84, g: 0.97, b: 1, a: 1}
+  outdoorNight:
+    color: {r: 0.19446424, g: 0.3271326, b: 0.3584906, a: 1}
     intensity: 0.7
-    postExposure: -0.3
-    volumeFilter: {r: 0.84, g: 0.97, b: 1, a: 1}
-    indoorIntensity: 1
+  indoorDay:
+    color: {r: 0.894, g: 0.835, b: 0.718, a: 1}
+    intensity: 1
+  indoorNight:
+    color: {r: 0.894, g: 0.835, b: 0.718, a: 1}
+    intensity: 1

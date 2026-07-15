@@ -65,6 +65,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72517d6d8ab864f609508617b61f4492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  _tintStrength: 0.1
 --- !u!1 &6375359281576562875
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,6 +213,10 @@ PrefabInstance:
       value: Counter_01
       objectReference: {fileID: 0}
     - target: {fileID: 1516088714051497737, guid: 55c0474e97b112b4a95560e2578b7185, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1516088714051497737, guid: 55c0474e97b112b4a95560e2578b7185, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -276,6 +281,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1073494878870338680}
     m_Modifications:
+    - target: {fileID: 200888361180568989, guid: ad67a1bb91b937148a32b1da41e025b6, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 200888361180568989, guid: ad67a1bb91b937148a32b1da41e025b6, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2

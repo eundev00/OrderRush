@@ -3,32 +3,37 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DayNightSettings", menuName = "Order Rush/Day Night Settings")]
 public class DayNightSettings : ScriptableObject
 {
-    public DayNightProfile day = new DayNightProfile
+    [Header("Default Layer (Outdoor)")]
+    public LightState outdoorDay = new LightState
     {
-        lightColor = Color.white,
+        // 베이지 톤 (#E4D5B7), 실내 Day 값과 동일
+        color = new Color(0.894f, 0.835f, 0.718f),
         intensity = 1f,
-        postExposure = 0f,
-        volumeFilter = Color.white,
-        indoorIntensity = 0f,
+    };
+    public LightState outdoorNight = new LightState
+    {
+        color = new Color(0.84f, 0.97f, 1f),
+        intensity = 0.7f,
     };
 
-    public DayNightProfile night = new DayNightProfile
+    [Header("Indoor Layer")]
+    public LightState indoorDay = new LightState
     {
-        lightColor = new Color(0.84f, 0.97f, 1f),
-        intensity = 0.7f,
-        postExposure = -0.3f,
-        volumeFilter = new Color(0.84f, 0.97f, 1f),
-        indoorIntensity = 1,
+        // Outdoor Day와 동일한 베이지 톤
+        color = new Color(0.894f, 0.835f, 0.718f),
+        intensity = 1f,
+    };
+    public LightState indoorNight = new LightState
+    {
+        // 밤에는 색상 유지, 밝기만 살짝 낮춤 (실외 대비 변화폭 작게)
+        color = new Color(0.894f, 0.835f, 0.718f),
+        intensity = 0.75f,
     };
 }
 
 [System.Serializable]
-public class DayNightProfile
+public class LightState
 {
-    public Color lightColor;
+    public Color color;
     public float intensity;
-    public float postExposure;
-    public Color volumeFilter;
-    public float indoorIntensity;
-
 }

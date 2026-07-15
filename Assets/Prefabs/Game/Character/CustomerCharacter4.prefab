@@ -1234,6 +1234,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 3792192401385796446}
     m_Modifications:
     - target: {fileID: 2409196402828931578, guid: 6e779884e6d017a43add03e58f0ab5ce, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2409196402828931578, guid: 6e779884e6d017a43add03e58f0ab5ce, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1392,6 +1396,10 @@ PrefabInstance:
       value: Body_City_Dress_02
       objectReference: {fileID: 0}
     - target: {fileID: 3476288594732099487, guid: f7471283febb87141877827757281b2f, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3476288594732099487, guid: f7471283febb87141877827757281b2f, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1437,6 +1445,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3792192401385796446}
     m_Modifications:
+    - target: {fileID: 4808364980714966251, guid: 5e3048ec50c519347b37c3702dade6bd, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4808364980714966251, guid: 5e3048ec50c519347b37c3702dade6bd, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
@@ -1540,6 +1552,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 3792192401385796446}
     m_Modifications:
     - target: {fileID: 7866320171017087874, guid: 8025f92b38f617b449e8c97f415276fb, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7866320171017087874, guid: 8025f92b38f617b449e8c97f415276fb, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1641,6 +1657,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6508325059658969943}
     m_Modifications:
+    - target: {fileID: 770222265987427421, guid: 88cd82ae6ad228c4f9f22fa5942b3982, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 770222265987427421, guid: 88cd82ae6ad228c4f9f22fa5942b3982, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
@@ -1744,6 +1764,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 3493643275072769853}
     m_Modifications:
     - target: {fileID: 2953803196021980587, guid: f789035033b8f5d418964676b6d984d6, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953803196021980587, guid: f789035033b8f5d418964676b6d984d6, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1845,6 +1869,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3792192401385796446}
     m_Modifications:
+    - target: {fileID: 5620829186206399765, guid: d5afa2f534a41dc49ac8fee8cc283558, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5620829186206399765, guid: d5afa2f534a41dc49ac8fee8cc283558, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
@@ -2002,6 +2030,10 @@ PrefabInstance:
     - target: {fileID: 612228482840245956, guid: 9df282c30b1d69e4699747ab5be17035, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1744087482255691179, guid: 9df282c30b1d69e4699747ab5be17035, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1744087482255691179, guid: 9df282c30b1d69e4699747ab5be17035, type: 3}
       propertyPath: m_Materials.Array.size

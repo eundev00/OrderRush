@@ -3,8 +3,6 @@ using Cysharp.Threading.Tasks;
 using OrderRush.Models;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 
 namespace OrderRush.Services
 {
@@ -14,9 +12,8 @@ namespace OrderRush.Services
         private readonly IDayProgressService _dayProgressService;
 
         private DayNightSettings _settings;
-        private Light _directionalLight;
-        private Volume _globalVolume;
-        private ColorAdjustments _colorAdjustments;
+        private Light _outdoorLight;
+        private Light _indoorLight;
         private IDisposable _timeBarSubscription;
 
         public DayNightService(
@@ -37,24 +34,24 @@ namespace OrderRush.Services
                 return;
             }
 
-            _directionalLight = GameObject.Find("Directional Light")?.GetComponent<Light>();
-            if (_directionalLight == null)
+            var outdoorLightObj = GameObject.Find("Directional Light");
+            if (outdoorLightObj != null)
             {
-                Debug.LogError("[DayNightService] Directional Light not found");
-                return;
+                _outdoorLight = outdoorLightObj.GetComponent<Light>();
+            }
+            else
+            {
+                Debug.LogError("[DayNightService] Outdoor Light not found");
             }
 
-            _globalVolume = GameObject.Find("Global Volume")?.GetComponent<Volume>();
-            if (_globalVolume == null)
+            var indoorLightObj = GameObject.Find("Indoor Light");
+            if (indoorLightObj != null)
             {
-                Debug.LogError("[DayNightService] Global Volume not found");
-                return;
+                _indoorLight = indoorLightObj.GetComponent<Light>();
             }
-
-            if (!_globalVolume.profile.TryGet(out _colorAdjustments))
+            else
             {
-                Debug.LogError("[DayNightService] ColorAdjustments not found in Global Volume");
-                return;
+                Debug.LogWarning("[DayNightService] Indoor Light not found");
             }
 
             _timeBarSubscription = _dayProgressService.CurrentDayContext.TimeBarElapsed
@@ -75,46 +72,39 @@ namespace OrderRush.Services
 
             float progress = elapsed / duration;
 
-            DayNightProfile targetProfile;
-
+            float t;
             if (progress < 2f / 3f)
             {
-                targetProfile = _settings.day;
+                t = 0f;
             }
             else
             {
-                float transitionProgress = (progress - 2f / 3f) / (1f / 3f);
-                transitionProgress = Mathf.Clamp01(transitionProgress);
-                targetProfile = LerpProfiles(_settings.day, _settings.night, transitionProgress);
+                t = (progress - 2f / 3f) / (1f / 3f);
+                t = Mathf.Clamp01(t);
             }
 
-            ApplyProfile(targetProfile);
+            Apply(t);
         }
 
-        private DayNightProfile LerpProfiles(DayNightProfile from, DayNightProfile to, float t)
+        private void Apply(float t)
         {
-            return new DayNightProfile
-            {
-                lightColor = Color.Lerp(from.lightColor, to.lightColor, t),
-                intensity = Mathf.Lerp(from.intensity, to.intensity, t),
-                postExposure = Mathf.Lerp(from.postExposure, to.postExposure, t),
-                volumeFilter = Color.Lerp(from.volumeFilter, to.volumeFilter, t),
-                indoorIntensity = Mathf.Lerp(from.indoorIntensity, to.indoorIntensity, t)
-            };
-        }
+            if (_settings == null)
+                return;
 
-        private void ApplyProfile(DayNightProfile profile)
-        {
-            if (_directionalLight != null)
+            if (_outdoorLight != null)
             {
-                _directionalLight.color = profile.lightColor;
-                _directionalLight.intensity = profile.intensity;
+                _outdoorLight.color = Color.Lerp(_settings.outdoorDay.color, _settings.outdoorNight.color, t);
+                _outdoorLight.intensity = Mathf.Lerp(_settings.outdoorDay.intensity, _settings.outdoorNight.intensity, t);
             }
 
-            if (_colorAdjustments != null)
+            Color ambientColor = Color.Lerp(_settings.outdoorDay.color, _settings.outdoorNight.color, t);
+            float ambientIntensity = Mathf.Lerp(_settings.outdoorDay.intensity, _settings.outdoorNight.intensity, t);
+            RenderSettings.ambientLight = ambientColor * ambientIntensity;
+
+            if (_indoorLight != null)
             {
-                _colorAdjustments.postExposure.value = profile.postExposure;
-                _colorAdjustments.colorFilter.value = profile.volumeFilter;
+                _indoorLight.color = Color.Lerp(_settings.indoorDay.color, _settings.indoorNight.color, t);
+                _indoorLight.intensity = Mathf.Lerp(_settings.indoorDay.intensity, _settings.indoorNight.intensity, t);
             }
         }
 

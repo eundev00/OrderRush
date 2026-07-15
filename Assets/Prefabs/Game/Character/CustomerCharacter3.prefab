@@ -1290,6 +1290,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6708197477420291283, guid: a908d4539f5392441a3ef39f148089b6, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6708197477420291283, guid: a908d4539f5392441a3ef39f148089b6, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1390,6 +1394,10 @@ PrefabInstance:
     - target: {fileID: 3116137445915100746, guid: f7471283febb87141877827757281b2f, type: 3}
       propertyPath: m_Name
       value: Body_City_Dress_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 3476288594732099487, guid: f7471283febb87141877827757281b2f, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3476288594732099487, guid: f7471283febb87141877827757281b2f, type: 3}
       propertyPath: m_Materials.Array.size
@@ -1494,6 +1502,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6694038952159836163, guid: d9e23e862e0e556419c7f9f7151107af, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6694038952159836163, guid: d9e23e862e0e556419c7f9f7151107af, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1539,6 +1551,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3792192401385796446}
     m_Modifications:
+    - target: {fileID: 7866320171017087874, guid: 8025f92b38f617b449e8c97f415276fb, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7866320171017087874, guid: 8025f92b38f617b449e8c97f415276fb, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
@@ -1642,6 +1658,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 6508325059658969943}
     m_Modifications:
     - target: {fileID: 770222265987427421, guid: 88cd82ae6ad228c4f9f22fa5942b3982, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 770222265987427421, guid: 88cd82ae6ad228c4f9f22fa5942b3982, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1743,6 +1763,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3493643275072769853}
     m_Modifications:
+    - target: {fileID: 2953803196021980587, guid: f789035033b8f5d418964676b6d984d6, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2953803196021980587, guid: f789035033b8f5d418964676b6d984d6, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
@@ -1902,6 +1926,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1744087482255691179, guid: 9df282c30b1d69e4699747ab5be17035, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1744087482255691179, guid: 9df282c30b1d69e4699747ab5be17035, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1947,6 +1975,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3792192401385796446}
     m_Modifications:
+    - target: {fileID: 1050189572275897521, guid: 54929640a06f4ae4182c2197a24a9b87, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1050189572275897521, guid: 54929640a06f4ae4182c2197a24a9b87, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2

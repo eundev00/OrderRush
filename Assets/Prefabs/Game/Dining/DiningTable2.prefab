@@ -335,6 +335,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 7853011496070804261}
     m_Modifications:
     - target: {fileID: 2428132752002381981, guid: 039540095f915d94482220c79b0dd2ef, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2428132752002381981, guid: 039540095f915d94482220c79b0dd2ef, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}

@@ -1291,6 +1291,10 @@ PrefabInstance:
       value: Body_Prop_City_Neck_Scarf_01
       objectReference: {fileID: 0}
     - target: {fileID: 8102794648299727310, guid: cbf2cd320775a384cbb6274d07c31209, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102794648299727310, guid: cbf2cd320775a384cbb6274d07c31209, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1393,6 +1397,10 @@ PrefabInstance:
       value: Eyes_D_Female_01_C02
       objectReference: {fileID: 0}
     - target: {fileID: 8187254422164592894, guid: 735be3dc5ac105b4da498a8ce27f759b, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187254422164592894, guid: 735be3dc5ac105b4da498a8ce27f759b, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1438,6 +1446,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6334074398370909582}
     m_Modifications:
+    - target: {fileID: 705786236451842458, guid: 618eb3975127ffe4eab2d70e3411c2cb, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 705786236451842458, guid: 618eb3975127ffe4eab2d70e3411c2cb, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
@@ -1541,6 +1553,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1790076352721062472}
     m_Modifications:
     - target: {fileID: 5349787602893672033, guid: 5ab609e74f074394ca4b192acb676ad0, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5349787602893672033, guid: 5ab609e74f074394ca4b192acb676ad0, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1642,6 +1658,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1790076352721062472}
     m_Modifications:
+    - target: {fileID: 1067096457356427891, guid: 68fd254f6a8a85345a84adfd4bd4bb90, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1067096457356427891, guid: 68fd254f6a8a85345a84adfd4bd4bb90, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
@@ -1801,6 +1821,10 @@ PrefabInstance:
       value: Arm_City_LSleeve_Pink_01_R
       objectReference: {fileID: 0}
     - target: {fileID: 3523467568086989075, guid: c5915351ba1092b4daeccb5cf96e9db3, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3523467568086989075, guid: c5915351ba1092b4daeccb5cf96e9db3, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1846,6 +1870,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3613878011633513475}
     m_Modifications:
+    - target: {fileID: 770222265987427421, guid: 88cd82ae6ad228c4f9f22fa5942b3982, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 770222265987427421, guid: 88cd82ae6ad228c4f9f22fa5942b3982, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
@@ -2005,6 +2033,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6708197477420291283, guid: a908d4539f5392441a3ef39f148089b6, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6708197477420291283, guid: a908d4539f5392441a3ef39f148089b6, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -2050,6 +2082,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1510717680469586993}
     m_Modifications:
+    - target: {fileID: 1104963449009019602, guid: 7cd5ea36dd2831c45acce74b8de59051, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1104963449009019602, guid: 7cd5ea36dd2831c45acce74b8de59051, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2

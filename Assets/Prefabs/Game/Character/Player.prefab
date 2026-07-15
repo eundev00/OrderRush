@@ -1293,6 +1293,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8313362386549794050, guid: a3b9a3f5735933449add42e4ec933a49, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8313362386549794050, guid: a3b9a3f5735933449add42e4ec933a49, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1338,6 +1342,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6162417688176407056}
     m_Modifications:
+    - target: {fileID: 4808364980714966251, guid: 5e3048ec50c519347b37c3702dade6bd, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4808364980714966251, guid: 5e3048ec50c519347b37c3702dade6bd, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
@@ -1505,6 +1513,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8336876199948904445, guid: 0221a459b8965fc4794a54c83e6e777c, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8336876199948904445, guid: 0221a459b8965fc4794a54c83e6e777c, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1550,6 +1562,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1627291082907143087}
     m_Modifications:
+    - target: {fileID: 740702723667817588, guid: 368482456666cbd4984f8c5827daec87, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 740702723667817588, guid: 368482456666cbd4984f8c5827daec87, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
@@ -1721,6 +1737,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8442931471419204600, guid: 14ec9575a31c00c45b706be56ffae63e, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8442931471419204600, guid: 14ec9575a31c00c45b706be56ffae63e, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1827,6 +1847,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3600210531295204557, guid: 8d02f74d47acdbe4bac5891ceff364bf, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600210531295204557, guid: 8d02f74d47acdbe4bac5891ceff364bf, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1872,6 +1896,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 56213090804319989}
     m_Modifications:
+    - target: {fileID: 4982102827259418019, guid: 8adbaed0f2948fd44af8234495626c8e, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4982102827259418019, guid: 8adbaed0f2948fd44af8234495626c8e, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
