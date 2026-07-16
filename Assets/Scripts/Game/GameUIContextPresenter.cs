@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using MessagePipe;
 using OrderRush.Services;
 using UniRx;
@@ -9,37 +10,31 @@ public class GameUIContextPresenter : IStartable, IDisposable
     private readonly GameUIContext _gameUIContext;
     private readonly IDayProgressService _dayProgressService;
     private readonly ISubscriber<DayEndedEvent> _dayEndedSubscriber;
-    private readonly IShopService _shopService;
-    private readonly IAccountService _accountService;
+    private readonly IPopupService _popupService;
     private readonly CompositeDisposable _disposable = new();
 
     private PopupCompletedPresenter _popupCompletedPresenter;
     private PopupFailedPresenter _popupFailedPresenter;
-    private PopupCardShopPresenter _popupCardShopPresenter;
 
     public GameUIContextPresenter(
         GameUIContext gameUIContext,
         IDayProgressService dayProgressService,
         ISubscriber<DayEndedEvent> dayEndedSubscriber,
-        IShopService cardService,
-        IAccountService accountService)
+        IPopupService popupService)
     {
         _gameUIContext = gameUIContext;
         _dayProgressService = dayProgressService;
         _dayEndedSubscriber = dayEndedSubscriber;
-        _shopService = cardService;
-        _accountService = accountService;
+        _popupService = popupService;
     }
 
     public void Start()
     {
-        _popupCardShopPresenter = new PopupCardShopPresenter(_gameUIContext.PopupCardShop, _shopService, _accountService, _dayProgressService);
         _popupCompletedPresenter = new PopupCompletedPresenter(_gameUIContext.PopupCompleted, _dayProgressService, ShowCardShop);
         _popupFailedPresenter = new PopupFailedPresenter(_gameUIContext.PopupDayFailed, _dayProgressService);
 
         _popupCompletedPresenter.Start();
         _popupFailedPresenter.Start();
-        _popupCardShopPresenter.Start();
 
         _dayEndedSubscriber
             .Subscribe(_ => OnDayEnded())
@@ -60,9 +55,9 @@ public class GameUIContextPresenter : IStartable, IDisposable
         }
     }
 
-    public void ShowCardShop()
+    private async void ShowCardShop()
     {
-        _popupCardShopPresenter.ShowPopup();
+        await _popupService.Open<PopupCardShopPresenter>(PrefabKeys.PopupCardShop);
     }
 
     public void Dispose()
@@ -70,6 +65,5 @@ public class GameUIContextPresenter : IStartable, IDisposable
         _disposable?.Dispose();
         _popupCompletedPresenter?.Dispose();
         _popupFailedPresenter?.Dispose();
-        _popupCardShopPresenter?.Dispose();
     }
 }

@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PopupCardShop : MonoBehaviour
+public class PopupCardShop : PopupViewBase
 {
     [NotNull][SerializeField] private CardItemView[] _cardItems;
     [NotNull][SerializeField] private Button _skipButton;
@@ -37,15 +37,5 @@ public class PopupCardShop : MonoBehaviour
     {
         _refreshCostText.text = $"{cost}";
         _refreshButton.interactable = canAfford;
-    }
-
-    public void Show()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public void Hide()
-    {
-        gameObject.SetActive(false);
     }
 }

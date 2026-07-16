@@ -1,9 +1,8 @@
-using System;
 using Cysharp.Threading.Tasks;
 using OrderRush.Services;
-using VContainer.Unity;
+using UniRx;
 
-public class PopupCardShopPresenter : IStartable, IDisposable
+public class PopupCardShopPresenter : PopupPresenterBase
 {
     private readonly PopupCardShop _view;
     private readonly IShopService _shopService;
@@ -14,7 +13,7 @@ public class PopupCardShopPresenter : IStartable, IDisposable
         PopupCardShop view,
         IShopService shopService,
         IAccountService accountService,
-        IDayProgressService dayProgressService)
+        IDayProgressService dayProgressService) : base(view)
     {
         _view = view;
         _shopService = shopService;
@@ -22,14 +21,19 @@ public class PopupCardShopPresenter : IStartable, IDisposable
         _dayProgressService = dayProgressService;
     }
 
-    public void Start()
+    protected override void OnBind()
     {
-        _view.Hide();
         _view.SkipButton.onClick.AddListener(OnSkipButtonClicked);
         _view.RefreshButton.onClick.AddListener(OnRefreshButtonClicked);
+
+        Disposables.Add(Disposable.Create(() =>
+        {
+            _view.SkipButton.onClick.RemoveListener(OnSkipButtonClicked);
+            _view.RefreshButton.onClick.RemoveListener(OnRefreshButtonClicked);
+        }));
     }
 
-    public void ShowPopup()
+    protected override void OnShow()
     {
         var randomCards = _shopService.GetRandomCardsForSelection(3);
         int currentCoins = _accountService.Account.Coins.Value;
@@ -38,8 +42,6 @@ public class PopupCardShopPresenter : IStartable, IDisposable
 
         int refreshCost = _shopService.GetRefreshCost();
         _view.SetupRefreshButton(refreshCost, currentCoins >= refreshCost);
-
-        _view.Show();
     }
 
     private async void OnCardClicked(CardData card)
@@ -47,7 +49,7 @@ public class PopupCardShopPresenter : IStartable, IDisposable
         bool success = await _shopService.TryPurchaseCard(card);
         if (success)
         {
-            _view.Hide();
+            Close();
             _dayProgressService.NextDay();
         }
     }
@@ -66,13 +68,7 @@ public class PopupCardShopPresenter : IStartable, IDisposable
 
     private void OnSkipButtonClicked()
     {
-        _view.Hide();
+        Close();
         _dayProgressService.NextDay();
-    }
-
-    public void Dispose()
-    {
-        _view.SkipButton.onClick.RemoveListener(OnSkipButtonClicked);
-        _view.RefreshButton.onClick.RemoveListener(OnRefreshButtonClicked);
     }
 }

@@ -5,23 +5,37 @@ using UnityEngine.UI;
 
 public class CardItemView : MonoBehaviour
 {
+    [NotNull][SerializeField] private Image _iconImage;
     [NotNull][SerializeField] private TMP_Text _nameText;
     [NotNull][SerializeField] private TMP_Text _descriptionText;
     [NotNull][SerializeField] private TMP_Text _costText;
-    [NotNull][SerializeField] private Button _button;
+    [NotNull][SerializeField] private GameObject _descView;
+    [NotNull][SerializeField] private Button _buyButton;
+    [NotNull][SerializeField] private Button _moreButton;
+    [NotNull][SerializeField] private Button _moreCloseButton;
 
     private CardData _cardData;
     private Action<CardData> _onCardClicked;
 
 
+    private void Awake()
+    {
+        _descView.SetActive(false);
+    }
+
+
     private void OnEnable()
     {
-        _button.onClick.AddListener(OnButtonClicked);
+        _buyButton.onClick.AddListener(OnBuyButtonClicked);
+        _moreButton.onClick.AddListener(OnMoreButtonClicked);
+        _moreCloseButton.onClick.AddListener(OnMoreCloseButtonClicked);
     }
 
     private void OnDisable()
     {
-        _button.onClick.RemoveAllListeners();
+        _buyButton.onClick.RemoveAllListeners();
+        _moreButton.onClick.RemoveAllListeners();
+        _moreCloseButton.onClick.RemoveAllListeners();
     }
 
     public void Setup(CardData cardData, bool canPurchase, Action<CardData> onCardClicked)
@@ -33,12 +47,21 @@ public class CardItemView : MonoBehaviour
         _descriptionText.text = cardData.Description;
         _costText.text = cardData.Cost.ToString();
 
-        _button.interactable = canPurchase;
+        _buyButton.interactable = canPurchase;
     }
 
-    private void OnButtonClicked()
+    private void OnBuyButtonClicked()
     {
         _onCardClicked?.Invoke(_cardData);
     }
 
+    private void OnMoreButtonClicked()
+    {
+        _descView.SetActive(true);
+    }
+
+    private void OnMoreCloseButtonClicked()
+    {
+        _descView.SetActive(false);
+    }
 }

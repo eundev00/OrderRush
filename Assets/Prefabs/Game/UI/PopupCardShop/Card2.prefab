@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 8678764769494257456}
   - component: {fileID: 1858739869346683533}
   m_Layer: 5
-  m_Name: Card
+  m_Name: Card2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 97bdee2b314504f27bf940f1f067b97c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dd58b8cb6c67443b4a15bb093b073bda, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -213,10 +213,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ecc453721b94528ad2435718f89c05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardItemView
+  _iconImage: {fileID: 9150810786537333349}
   _nameText: {fileID: 612714671880372740}
   _descriptionText: {fileID: 3747933652531560036}
   _costText: {fileID: 7040940375187040783}
-  _button: {fileID: 8678764769494257456}
+  _descView: {fileID: 9174775114236762185}
+  _buyButton: {fileID: 8678764769494257456}
+  _moreButton: {fileID: 4744861720579692572}
+  _moreCloseButton: {fileID: 1946039318737640192}
 --- !u!1 &2210086099179517695
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,7 +371,7 @@ GameObject:
   - component: {fileID: 6508327735583359238}
   - component: {fileID: 1946039318737640192}
   m_Layer: 5
-  m_Name: CloseBugtton
+  m_Name: CloseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -895,7 +899,7 @@ GameObject:
   - component: {fileID: 7209244156913214719}
   - component: {fileID: 3747933652531560036}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: DescText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

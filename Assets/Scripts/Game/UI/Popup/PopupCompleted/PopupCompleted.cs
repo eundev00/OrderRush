@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PopupCompleted : MonoBehaviour
+public class PopupCompleted : PopupViewBase
 {
     [NotNull][SerializeField] private TMP_Text _earnedText;
     [NotNull][SerializeField] private Button _nextButton;
@@ -10,16 +10,6 @@ public class PopupCompleted : MonoBehaviour
 
     public Button NextButton => _nextButton;
     public Button ExitButton => _exitButton;
-
-    public void Show()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public void Hide()
-    {
-        gameObject.SetActive(false);
-    }
 
     public void SetEarnedCoins(int coins)
     {
