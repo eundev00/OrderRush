@@ -67,6 +67,7 @@ using System.Collections.Generic;
         { Card2, "Assets/Prefabs/Game/UI/PopupCardShop/Card2.prefab" },
         { Card3, "Assets/Prefabs/Game/UI/PopupCardShop/Card3.prefab" },
         { PopupCardShop, "Assets/Prefabs/Game/UI/PopupCardShop/PopupCardShop.prefab" },
+        { PopupCompleted, "Assets/Prefabs/Game/UI/PopupCompleted/PopupCompleted.prefab" },
         { CharacterEmoteIcon, "Assets/Prefabs/Game/UI/WorldSpace/CharacterEmoteIcon.prefab" },
         { CharacterOrderIcon, "Assets/Prefabs/Game/UI/WorldSpace/CharacterOrderIcon.prefab" },
         { FloatingCoinFX, "Assets/Prefabs/Game/UI/WorldSpace/FloatingCoinFX.prefab" },
