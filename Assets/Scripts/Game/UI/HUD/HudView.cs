@@ -17,12 +17,12 @@ public class HudView : MonoBehaviour
 
     public void SetDay(int dayNumber)
     {
-        _dayText.text = $"Day {dayNumber}";
+        _dayText.text = dayNumber.ToString();
     }
 
     public void SetMaxCustomers(int maxCustomers)
     {
-        _maxText.text = $"Max {maxCustomers}";
+        _maxText.text = maxCustomers.ToString();
     }
 
     public void SetTimeGauge(float ratio)

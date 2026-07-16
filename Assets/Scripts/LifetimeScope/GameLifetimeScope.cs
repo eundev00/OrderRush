@@ -7,13 +7,17 @@ public class GameLifetimeScope : LifetimeScope
 {
     [NotNull][SerializeField] Transform _root;
     [NotNull][SerializeField] RectTransform _gaugeContainer;
+    [NotNull][SerializeField] Light _outdoorLight;
+    [NotNull][SerializeField] Light _indoorLight;
 
     protected override void Configure(IContainerBuilder builder)
     {
 
         // Services
         builder.Register<IDayProgressService, DayProgressService>(Lifetime.Scoped);
-        builder.Register<IDayNightService, DayNightService>(Lifetime.Scoped);
+        builder.Register<IDayNightService, DayNightService>(Lifetime.Scoped)
+            .WithParameter("outdoorLight", _outdoorLight)
+            .WithParameter("indoorLight", _indoorLight);
         builder.Register<CustomerService>(Lifetime.Singleton).AsImplementedInterfaces();
         builder.Register<StaffManager>(Lifetime.Singleton);
         builder.Register<IShopService, ShopService>(Lifetime.Scoped);

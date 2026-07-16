@@ -10,18 +10,22 @@ namespace OrderRush.Services
     {
         private readonly IGameDataService _gameDataService;
         private readonly IDayProgressService _dayProgressService;
+        private readonly Light _outdoorLight;
+        private readonly Light _indoorLight;
 
         private DayNightSettings _settings;
-        private Light _outdoorLight;
-        private Light _indoorLight;
         private IDisposable _timeBarSubscription;
 
         public DayNightService(
             IGameDataService gameDataService,
-            IDayProgressService dayProgressService)
+            IDayProgressService dayProgressService,
+            Light outdoorLight,
+            Light indoorLight)
         {
             _gameDataService = gameDataService;
             _dayProgressService = dayProgressService;
+            _outdoorLight = outdoorLight;
+            _indoorLight = indoorLight;
         }
 
         public async UniTask Initialize()
@@ -32,26 +36,6 @@ namespace OrderRush.Services
             {
                 Debug.LogError("[DayNightService] DayNightSettings not found");
                 return;
-            }
-
-            var outdoorLightObj = GameObject.Find("Directional Light");
-            if (outdoorLightObj != null)
-            {
-                _outdoorLight = outdoorLightObj.GetComponent<Light>();
-            }
-            else
-            {
-                Debug.LogError("[DayNightService] Outdoor Light not found");
-            }
-
-            var indoorLightObj = GameObject.Find("Indoor Light");
-            if (indoorLightObj != null)
-            {
-                _indoorLight = indoorLightObj.GetComponent<Light>();
-            }
-            else
-            {
-                Debug.LogWarning("[DayNightService] Indoor Light not found");
             }
 
             _timeBarSubscription = _dayProgressService.CurrentDayContext.TimeBarElapsed
@@ -73,14 +57,18 @@ namespace OrderRush.Services
             float progress = elapsed / duration;
 
             float t;
-            if (progress < 2f / 3f)
+            if (progress < 1f / 3f)
             {
                 t = 0f;
             }
+            else if (progress < 2f / 3f)
+            {
+                t = (progress - 1f / 3f) / (1f / 3f);
+                t = Mathf.Clamp01(t);
+            }
             else
             {
-                t = (progress - 2f / 3f) / (1f / 3f);
-                t = Mathf.Clamp01(t);
+                t = 1f;
             }
 
             Apply(t);
