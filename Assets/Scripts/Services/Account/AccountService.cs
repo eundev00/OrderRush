@@ -35,13 +35,19 @@ namespace OrderRush.Services
             Account.OwnedRecipeIDs.AddRange(_gameDataService.GetDefaultRecipeIDs());
             Load();
 
-            _paymentSubscriber
-                .Subscribe(evt => AddCoins(evt.Amount))
-                .AddTo(_disposables);
-
             _dayEndedSubscriber
-                .Subscribe(evt => SetCurrentProgress(evt.NextDay))
+                .Subscribe(OnDayEnded)
                 .AddTo(_disposables);
+        }
+
+        private void OnDayEnded(DayEndedEvent evt)
+        {
+            SetCurrentProgress(evt.NextDay);
+
+            if (evt.IsCompleted)
+            {
+                AddCoins(evt.EarnedCoins);
+            }
         }
 
         public void AddCoins(int amount)

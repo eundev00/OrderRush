@@ -84,14 +84,20 @@ namespace OrderRush.Services
             _isDayActive = false;
             _currentDayContext.IsCompleted = true;
 
-            _dayEndedPublisher.Publish(new DayEndedEvent(_currentDayContext.DayNumber + 1));
+            _dayEndedPublisher.Publish(new DayEndedEvent(
+                _currentDayContext.DayNumber + 1,
+                true,
+                _currentDayContext.EarnedCoins.Value));
         }
 
         public void FailDay()
         {
             _isDayActive = false;
             _currentDayContext.IsCompleted = false;
-            _dayEndedPublisher.Publish(new DayEndedEvent(_currentDayContext.DayNumber));
+            _dayEndedPublisher.Publish(new DayEndedEvent(
+                _currentDayContext.DayNumber,
+                false,
+                _currentDayContext.EarnedCoins.Value));
         }
 
         public void RestartDay()

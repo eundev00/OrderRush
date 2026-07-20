@@ -21,6 +21,8 @@ public class ProjectLifetimeScope : LifetimeScope
                .As<IGameDataService>();
         builder.Register<AccountService>(Lifetime.Singleton)
                .As<IAccountService>();
+        builder.Register<PopupService>(Lifetime.Singleton)
+               .As<IPopupService>();
         builder.RegisterEntryPoint<AppBootstrap>();
     }
 

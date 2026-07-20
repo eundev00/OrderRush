@@ -1,55 +1,45 @@
-using System;
 using OrderRush.Services;
+using UniRx;
 using UnityEngine.SceneManagement;
-using VContainer.Unity;
 
-public class PopupFailedPresenter : IStartable, IDisposable
+// 하루 실패 팝업 Presenter — 코인 미획득 → 다시하기/나가기.
+//   다시하기 = 팝업 닫고 하루 재시작.
+//   나가기   = 팝업 닫고 로비 씬으로 전환.
+public class PopupFailedPresenter : PopupPresenterBase
 {
-    private readonly PopupDayFailed _popup;
+    private readonly PopupDayFailed _view;
     private readonly IDayProgressService _dayProgressService;
 
     public PopupFailedPresenter(
-        PopupDayFailed popup,
-        IDayProgressService dayProgressService)
+        PopupDayFailed view,
+        IDayProgressService dayProgressService) : base(view)
     {
-        _popup = popup;
+        _view = view;
         _dayProgressService = dayProgressService;
     }
 
-    public void Start()
+    protected override void OnBind()
     {
-        _popup.Hide();
-        _popup.RestartButton.onClick.AddListener(OnRestartButtonClicked);
-        _popup.ExitButton.onClick.AddListener(OnExitButtonClicked);
+        _view.RestartButton.onClick.AddListener(OnRestartButtonClicked);
+        _view.ExitButton.onClick.AddListener(OnExitButtonClicked);
+
+        Disposables.Add(Disposable.Create(() =>
+        {
+            _view.RestartButton.onClick.RemoveListener(OnRestartButtonClicked);
+            _view.ExitButton.onClick.RemoveListener(OnExitButtonClicked);
+        }));
     }
 
-    public void ShowPopup()
+    private void OnRestartButtonClicked()
     {
-        var earnedCoins = _dayProgressService.CurrentDayContext.EarnedCoins.Value;
-        _popup.SetEarnedCoins(earnedCoins);
-        _popup.Show();
-    }
-
-    public void HidePopup()
-    {
-        _popup.Hide();
-    }
-
-    public void OnRestartButtonClicked()
-    {
-        _popup.Hide();
+        Close();
         _dayProgressService.RestartDay();
     }
 
-    public void OnExitButtonClicked()
+    private void OnExitButtonClicked()
     {
+        Close();
         SceneManager.UnloadSceneAsync("GameplayScene");
         SceneManager.LoadSceneAsync("LobbyScene", LoadSceneMode.Additive);
-    }
-
-    public void Dispose()
-    {
-        _popup.RestartButton.onClick.RemoveListener(OnRestartButtonClicked);
-        _popup.ExitButton.onClick.RemoveListener(OnExitButtonClicked);
     }
 }

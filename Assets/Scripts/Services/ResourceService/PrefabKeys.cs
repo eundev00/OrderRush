@@ -26,11 +26,13 @@ using System.Collections.Generic;
     public const string Stove = "Stove";
     public const string TrashCan = "TrashCan";
     public const string LevelMap1 = "LevelMap1";
+    public const string MessagePopup = "MessagePopup";
     public const string Card1 = "Card1";
     public const string Card2 = "Card2";
     public const string Card3 = "Card3";
     public const string PopupCardShop = "PopupCardShop";
     public const string PopupCompleted = "PopupCompleted";
+    public const string PopupFailed = "PopupFailed";
     public const string CharacterEmoteIcon = "CharacterEmoteIcon";
     public const string CharacterOrderIcon = "CharacterOrderIcon";
     public const string FloatingCoinFX = "FloatingCoinFX";
@@ -63,11 +65,13 @@ using System.Collections.Generic;
         { Stove, "Assets/Prefabs/Game/Kitchen/Tools/Stove.prefab" },
         { TrashCan, "Assets/Prefabs/Game/Kitchen/Tools/TrashCan.prefab" },
         { LevelMap1, "Assets/Prefabs/Game/Level/LevelMap1.prefab" },
+        { MessagePopup, "Assets/Prefabs/Game/UI/MessagePopup.prefab" },
         { Card1, "Assets/Prefabs/Game/UI/PopupCardShop/Card1.prefab" },
         { Card2, "Assets/Prefabs/Game/UI/PopupCardShop/Card2.prefab" },
         { Card3, "Assets/Prefabs/Game/UI/PopupCardShop/Card3.prefab" },
         { PopupCardShop, "Assets/Prefabs/Game/UI/PopupCardShop/PopupCardShop.prefab" },
-        { PopupCompleted, "Assets/Prefabs/Game/UI/PopupCompleted/PopupCompleted.prefab" },
+        { PopupCompleted, "Assets/Prefabs/Game/UI/PopupCompleted.prefab" },
+        { PopupFailed, "Assets/Prefabs/Game/UI/PopupFailed.prefab" },
         { CharacterEmoteIcon, "Assets/Prefabs/Game/UI/WorldSpace/CharacterEmoteIcon.prefab" },
         { CharacterOrderIcon, "Assets/Prefabs/Game/UI/WorldSpace/CharacterOrderIcon.prefab" },
         { FloatingCoinFX, "Assets/Prefabs/Game/UI/WorldSpace/FloatingCoinFX.prefab" },

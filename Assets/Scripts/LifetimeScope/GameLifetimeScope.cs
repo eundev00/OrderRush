@@ -38,8 +38,14 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<HudView>();
         builder.RegisterEntryPoint<HudPresenter>();
 
-        // Game UI
+        // Game UI — 게임 씬 팝업을 게임 리졸버로 등록(팝업 Presenter 가 게임 서비스를 주입받도록)
         builder.RegisterComponentInHierarchy<GameUIContext>();
+        builder.RegisterInstance(new ScenePopupKeys(
+            PrefabKeys.PopupCompleted,
+            PrefabKeys.PopupCardShop,
+            PrefabKeys.PopupFailed
+        ));
+        builder.RegisterEntryPoint<ScenePopupRegistrar>();
         builder.RegisterEntryPoint<GameUIContextPresenter>();
 
         // Level

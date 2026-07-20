@@ -1,20 +1,26 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
 // =====================================================================
-//  전역 팝업 서비스 구현 — 동적 로드 + 자식 스코프 주입 + 딤/모달 + 스택.
+//  전역 팝업 서비스 구현 — 부모 리졸버 카탈로그 + 동적 로드 + 딤/모달 + 스택.
 // ---------------------------------------------------------------------
 //  흐름(Open):
-//   1) Presenter 타입의 [PopupPrefabKey] 로 프리팹 키 조회
-//   2) IResourcesLoaderService 로 프리팹 로드 → 팝업 캔버스 아래 Instantiate
-//   3) 자식 스코프 생성(RegisterInstance(view) + Register<TPresenter>) → Presenter resolve
-//      (View + Project 스코프 서비스 주입. Game 스코프 서비스는 주입 불가 → Args 로)
-//   4) 스택 push + 딤 갱신 → await presenter.ShowAsync(args)  (Close 호출 시 완료)
+//   1) 카탈로그에서 팝업 키의 "부모 리졸버" 조회 (RegisterPopup 으로 등록해 둔 것)
+//   2) 키(PrefabKeys)로 프리팹 로드 → 팝업 캔버스 아래 Instantiate
+//   3) 부모 리졸버의 자식 스코프 생성(RegisterInstance(view)+Register<TPresenter>) → resolve
+//      → 팝업 Presenter 가 그 부모(+상위) 스코프 서비스까지 주입받는다.
+//   4) 스택 push(Owner=부모 기록) + 딤 갱신 → await presenter.ShowAsync(args)
 //   5) finally: 스택 pop → 자식 스코프 Dispose(Presenter Dispose) → 팝업 GO Destroy → 딤 갱신
+//
+//  ▷ 스코프: 호출자가 scope 를 넘기지 않는다. "누가 이 팝업을 등록했는가"(부모 리졸버)를
+//    카탈로그가 기억하므로, 게임에서 등록한 팝업은 게임 스코프의 자식으로,
+//    공통 팝업은 Root 의 자식으로 생성된다. 팝업이 다른 팝업을 열어도 부모는 항상
+//    "등록 스코프"라 서로 형제로 독립 생성된다(체이닝 안전).
 //
 //  캔버스는 DontDestroyOnLoad 로 코드 생성(SoundService 호스트 방식) → 씬 의존 없음.
 //  ⚠ 씬에 EventSystem 이 있어야 버튼 입력이 동작한다(기존 HUD 등이 이미 사용 중).
@@ -24,9 +30,10 @@ public class PopupService : IPopupService, IDisposable
     private const int PopupSortingOrder = 1000; // HUD 등 위에 표시
     private static readonly Color DimColor = new Color(0f, 0f, 0f, 0.6f);
 
-    private readonly IObjectResolver _resolver;
     private readonly IResourcesLoaderService _loader;
 
+    // 키 → 그 팝업 Presenter 가 태어날 부모 스코프.
+    private readonly Dictionary<string, IObjectResolver> _catalog = new();
     private readonly List<PopupEntry> _stack = new();
 
     private RectTransform _canvasRoot;
@@ -36,9 +43,8 @@ public class PopupService : IPopupService, IDisposable
 
     public bool HasOpenPopup => _stack.Count > 0;
 
-    public PopupService(IObjectResolver resolver, IResourcesLoaderService loader)
+    public PopupService(IResourcesLoaderService loader)
     {
-        _resolver = resolver;
         _loader = loader;
     }
 
@@ -47,9 +53,60 @@ public class PopupService : IPopupService, IDisposable
         if (_initialized)
             return UniTask.CompletedTask;
 
-        CreateCanvas();
+        if (_canvasRoot == null)
+            CreateCanvas();
+
         _initialized = true;
         return UniTask.CompletedTask;
+    }
+
+    public void SetCanvasRoot(RectTransform canvasRoot)
+    {
+        if (canvasRoot == null)
+        {
+            Debug.LogError("[PopupService] SetCanvasRoot called with null.");
+            return;
+        }
+
+        _canvasRoot = canvasRoot;
+
+        if (_dim == null)
+            CreateDim();
+    }
+
+    // ---------------------------------------------------------------
+    //  카탈로그
+    // ---------------------------------------------------------------
+    public void RegisterPopup(string popupKey, IObjectResolver parent)
+    {
+        if (string.IsNullOrEmpty(popupKey))
+        {
+            Debug.LogError("[PopupService] RegisterPopup with empty key.");
+            return;
+        }
+        if (parent == null)
+        {
+            Debug.LogError($"[PopupService] RegisterPopup with null parent: {popupKey}");
+            return;
+        }
+
+        _catalog[popupKey] = parent; // 같은 키 재등록 시 최신 부모로 갱신(씬 재진입 대비)
+    }
+
+    public void UnregisterPopup(string popupKey)
+    {
+        _catalog.Remove(popupKey);
+    }
+
+    public void CloseOwnedBy(IObjectResolver parent)
+    {
+        if (parent == null)
+            return;
+
+        // 스냅샷으로 순회 — RequestClose 가 각 Open 의 finally 를 태워 CloseEntry 로 정리한다.
+        var owned = _stack.Where(e => e.Owner == parent).ToList();
+        foreach (var entry in owned)
+            entry.Presenter.RequestClose();
     }
 
     // ---------------------------------------------------------------
@@ -113,10 +170,8 @@ public class PopupService : IPopupService, IDisposable
     public void CloseAll()
     {
         // 위에서부터 닫기 (스냅샷으로 순회 — 정리는 각 Open finally 담당)
-        for (int i = _stack.Count - 1; i >= 0; i--)
-        {
-            _stack[i].Presenter.RequestClose();
-        }
+        foreach (var entry in _stack.ToList())
+            entry.Presenter.RequestClose();
     }
 
     // ---------------------------------------------------------------
@@ -128,6 +183,12 @@ public class PopupService : IPopupService, IDisposable
         if (string.IsNullOrEmpty(popupKey))
         {
             Debug.LogError("[PopupService] Open called with empty popup key.");
+            return null;
+        }
+
+        if (!_catalog.TryGetValue(popupKey, out var parent) || parent == null)
+        {
+            Debug.LogError($"[PopupService] Popup not registered (call RegisterPopup first): {popupKey}");
             return null;
         }
 
@@ -147,23 +208,24 @@ public class PopupService : IPopupService, IDisposable
             return null;
         }
 
-        // 자식 스코프: 이 팝업 인스턴스(View)와 Presenter 만 등록.
-        var scope = _resolver.CreateScope(builder =>
+        // 자식 스코프: 등록 당시 부모(parent)의 자식으로 만들어 이 팝업 인스턴스(View)와 Presenter 만 등록.
+        // → Presenter 는 parent(+상위) 서비스 + 자기 View 를 주입받는다.
+        var childScope = parent.CreateScope(builder =>
         {
             builder.RegisterInstance(view).As(view.GetType());
             builder.Register<TPresenter>(Lifetime.Scoped);
         });
 
-        var presenter = scope.Resolve<TPresenter>();
+        var presenter = childScope.Resolve<TPresenter>();
 
-        var entry = new PopupEntry(presenter, scope, go);
+        var entry = new PopupEntry(presenter, childScope, go, parent);
         _stack.Add(entry);
         return entry;
     }
 
     private void CloseEntry(PopupEntry entry)
     {
-        if (!_stack.Remove(entry))
+        if (!_stack.Remove(entry)) // 이미 정리됨 → 이중 Dispose 방지
             return;
 
         entry.Scope.Dispose();       // Presenter.Dispose() → 리스너/구독 해제
@@ -230,6 +292,7 @@ public class PopupService : IPopupService, IDisposable
     {
         CloseAll();
         _stack.Clear();
+        _catalog.Clear();
 
         if (_host != null)
         {
@@ -244,12 +307,14 @@ public class PopupService : IPopupService, IDisposable
         public readonly IPopupPresenter Presenter;
         public readonly IScopedObjectResolver Scope;
         public readonly GameObject Go;
+        public readonly IObjectResolver Owner; // 이 팝업을 만든 부모 스코프(씬 정리 기준)
 
-        public PopupEntry(IPopupPresenter presenter, IScopedObjectResolver scope, GameObject go)
+        public PopupEntry(IPopupPresenter presenter, IScopedObjectResolver scope, GameObject go, IObjectResolver owner)
         {
             Presenter = presenter;
             Scope = scope;
             Go = go;
+            Owner = owner;
         }
     }
 }
