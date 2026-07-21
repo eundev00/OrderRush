@@ -44,6 +44,12 @@ public class LevelContextPresenter : ILevelContextPresenter, IDisposable
 
     public async UniTask AddTableFromEffect(TableAdditionEffect effect)
     {
+        if (_view == null)
+        {
+            Debug.LogError("[LevelContextPresenter] Cannot add table: Level context not loaded");
+            return;
+        }
+
         Transform spawnPoint = _view.GetNextTableSpawnPoint();
         if (spawnPoint == null)
         {

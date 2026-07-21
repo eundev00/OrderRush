@@ -14,13 +14,13 @@ public class GameLifetimeScope : LifetimeScope
     {
 
         // Services
-        builder.Register<IDayProgressService, DayProgressService>(Lifetime.Scoped);
+        builder.Register<IDayProgressService, DayProgressService>(Lifetime.Singleton);
         builder.Register<IDayNightService, DayNightService>(Lifetime.Scoped)
             .WithParameter("outdoorLight", _outdoorLight)
             .WithParameter("indoorLight", _indoorLight);
         builder.Register<CustomerService>(Lifetime.Singleton).AsImplementedInterfaces();
         builder.Register<StaffManager>(Lifetime.Singleton);
-        builder.Register<IShopService, ShopService>(Lifetime.Scoped);
+        builder.Register<IShopService, ShopService>(Lifetime.Singleton);
         builder.Register<IKitchenStatService, KitchenStatService>(Lifetime.Scoped);
         builder.Register<CardEffectApplier>(Lifetime.Scoped);
 

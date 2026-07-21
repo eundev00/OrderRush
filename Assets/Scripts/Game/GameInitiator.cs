@@ -35,7 +35,7 @@ public class GameInitiator : IStartable
 
     public async void Start()
     {
-        Debug.Log("GameInitiator: Initializing game...");
+        Debug.Log($"[GameInitiator] Start() called - DayProgressService instance: {_dayProgressService.GetHashCode()}");
 
         await _dayProgressService.Initialize();
         await _dayNightService.Initialize();

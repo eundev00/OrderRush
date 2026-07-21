@@ -2,9 +2,6 @@ using OrderRush.Services;
 using UniRx;
 using UnityEngine.SceneManagement;
 
-// 하루 실패 팝업 Presenter — 코인 미획득 → 다시하기/나가기.
-//   다시하기 = 팝업 닫고 하루 재시작.
-//   나가기   = 팝업 닫고 로비 씬으로 전환.
 public class PopupFailedPresenter : PopupPresenterBase
 {
     private readonly PopupDayFailed _view;

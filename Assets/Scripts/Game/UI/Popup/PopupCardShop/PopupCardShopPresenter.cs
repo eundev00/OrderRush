@@ -59,6 +59,9 @@ public class PopupCardShopPresenter : PopupPresenterBase
         var newCards = await _shopService.Refresh();
         if (newCards == null) return;
 
+        if (View == null)
+            return;
+
         int currentCoins = _accountService.Account.Coins.Value;
         _view.SetupCards(newCards, currentCoins, OnCardClicked);
 

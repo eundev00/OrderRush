@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 8867715524599564913}
   - component: {fileID: 8678764769494257456}
   - component: {fileID: 1858739869346683533}
+  - component: {fileID: 59969149611625499}
   m_Layer: 5
   m_Name: Card2
   m_TagString: Untagged
@@ -176,7 +177,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -221,6 +222,28 @@ MonoBehaviour:
   _buyButton: {fileID: 8678764769494257456}
   _moreButton: {fileID: 4744861720579692572}
   _moreCloseButton: {fileID: 1946039318737640192}
+--- !u!95 &59969149611625499
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2051707188989624054}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ad6d0fc3fcb08471bb79dbccfb6c3be6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2210086099179517695
 GameObject:
   m_ObjectHideFlags: 0

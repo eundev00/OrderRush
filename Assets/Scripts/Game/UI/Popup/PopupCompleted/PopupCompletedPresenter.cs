@@ -1,55 +1,47 @@
-using System;
-using OrderRush.Services;
+using Cysharp.Threading.Tasks;
+using UniRx;
 using UnityEngine.SceneManagement;
-using VContainer.Unity;
 
-public class PopupCompletedPresenter : IStartable, IDisposable
+public class PopupCompletedPresenter : PopupPresenterBase<int>
 {
-    private readonly PopupCompleted _popup;
-    private readonly IDayProgressService _dayProgressService;
-    private readonly Action _onNext;
+    private readonly PopupCompleted _view;
+    private readonly IPopupService _popupService;
 
-    public PopupCompletedPresenter(PopupCompleted popup, IDayProgressService dayProgressService, Action onNext)
+    public PopupCompletedPresenter(
+        PopupCompleted view,
+        IPopupService popupService) : base(view)
     {
-        _popup = popup;
-        _dayProgressService = dayProgressService;
-        _onNext = onNext;
+        _view = view;
+        _popupService = popupService;
     }
 
-    public void Start()
+    protected override void OnBind()
     {
-        _popup.Hide();
-        _popup.NextButton.onClick.AddListener(OnNextButtonClicked);
-        _popup.ExitButton.onClick.AddListener(OnExitButtonClicked);
+        _view.NextButton.onClick.AddListener(OnNextButtonClicked);
+        _view.ExitButton.onClick.AddListener(OnExitButtonClicked);
+
+        Disposables.Add(Disposable.Create(() =>
+        {
+            _view.NextButton.onClick.RemoveListener(OnNextButtonClicked);
+            _view.ExitButton.onClick.RemoveListener(OnExitButtonClicked);
+        }));
     }
 
-    public void ShowPopup()
+    protected override void OnShow(int earnedCoins)
     {
-        var earnedCoins = _dayProgressService.CurrentDayContext.EarnedCoins.Value;
-        _popup.SetEarnedCoins(earnedCoins);
-        _popup.Show();
+        _view.SetEarnedCoins(earnedCoins);
     }
 
-    public void HidePopup()
+    private void OnNextButtonClicked()
     {
-        _popup.Hide();
+        _popupService.Open<PopupCardShopPresenter>(PrefabKeys.PopupCardShop).Forget();
+        Close();
     }
 
-    public void OnNextButtonClicked()
+    private void OnExitButtonClicked()
     {
-        _popup.Hide();
-        _onNext?.Invoke();
-    }
-
-    public void OnExitButtonClicked()
-    {
+        Close();
         SceneManager.UnloadSceneAsync("GameplayScene");
         SceneManager.LoadSceneAsync("LobbyScene", LoadSceneMode.Additive);
-    }
-
-    public void Dispose()
-    {
-        _popup.NextButton.onClick.RemoveListener(OnNextButtonClicked);
-        _popup.ExitButton.onClick.RemoveListener(OnExitButtonClicked);
     }
 }

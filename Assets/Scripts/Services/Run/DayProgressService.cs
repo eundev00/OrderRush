@@ -42,6 +42,7 @@ namespace OrderRush.Services
 
         public async UniTask Initialize()
         {
+            Debug.Log($"[DayProgressService] Initialize() - instance: {GetHashCode()}");
             _currentRun = 1;
             _currentDaysData = _gameDataService.Days;
             _updateService.RegisterUpdatable(this);
@@ -59,6 +60,18 @@ namespace OrderRush.Services
 
         public void StartDay(int dayNumber)
         {
+            if (_currentDaysData == null)
+            {
+                Debug.LogError("[DayProgressService] StartDay failed: _currentDaysData is null. Re-initializing...");
+                _currentDaysData = _gameDataService.Days;
+
+                if (_currentDaysData == null)
+                {
+                    Debug.LogError("[DayProgressService] GameDataService.Days is also null!");
+                    return;
+                }
+            }
+
             _currentDayContext.DayNumber = dayNumber;
             _currentDayContext.TimeBarDuration = _currentDaysData.GetTimeBarDuration(dayNumber);
             _isDayActive = true;
@@ -116,6 +129,7 @@ namespace OrderRush.Services
 
         public void NextDay()
         {
+            Debug.Log($"[DayProgressService] NextDay() - instance: {GetHashCode()}");
             if (_currentDayContext == null)
                 return;
 
