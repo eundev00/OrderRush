@@ -1403,6 +1403,10 @@ PrefabInstance:
       value: Head_Prop_Cooking_Toque_01
       objectReference: {fileID: 0}
     - target: {fileID: 5940181747023294711, guid: c7a5abaa1b719354eb1fe92ea298c356, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5940181747023294711, guid: c7a5abaa1b719354eb1fe92ea298c356, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
