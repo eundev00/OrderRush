@@ -11,23 +11,27 @@ public class AppBootstrap : IAsyncStartable
     private readonly IGameDataService _gameDataService;
     private readonly IAccountService _accountService;
     private readonly IPopupService _popupService;
+    private readonly ISoundService _soundService;
     private readonly IObjectResolver _resolver; // Root 리졸버 — 공통 팝업의 부모
 
     public AppBootstrap(
         IGameDataService gameDataService,
         IAccountService accountService,
         IPopupService popupService,
+        ISoundService soundService,
         IObjectResolver resolver)
     {
         _gameDataService = gameDataService;
         _accountService = accountService;
         _popupService = popupService;
+        _soundService = soundService;
         _resolver = resolver;
     }
 
     public async UniTask StartAsync(CancellationToken cancellation)
     {
         await _gameDataService.Initialize();
+        await _soundService.Initialize();
         _accountService.Initialize();
 
         await _popupService.Initialize();

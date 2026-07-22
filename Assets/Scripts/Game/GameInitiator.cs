@@ -12,6 +12,7 @@ public class GameInitiator : IStartable
     private readonly IDayNightService _dayNightService;
     private readonly ICustomerService _customerService;
     private readonly IAccountService _accountService;
+    private readonly ISoundService _soundService;
     private readonly CardEffectApplier _cardEffectApplier;
     private readonly StaffManager _staffManager;
 
@@ -21,6 +22,7 @@ public class GameInitiator : IStartable
         IDayNightService dayNightService,
         ICustomerService customerService,
         IAccountService accountService,
+        ISoundService soundService,
         CardEffectApplier cardEffectApplier,
         StaffManager staffManager)
     {
@@ -29,6 +31,7 @@ public class GameInitiator : IStartable
         _dayNightService = dayNightService;
         _customerService = customerService;
         _accountService = accountService;
+        _soundService = soundService;
         _cardEffectApplier = cardEffectApplier;
         _staffManager = staffManager;
     }
@@ -36,6 +39,8 @@ public class GameInitiator : IStartable
     public async void Start()
     {
         Debug.Log($"[GameInitiator] Start() called - DayProgressService instance: {_dayProgressService.GetHashCode()}");
+
+        _soundService.PlayBgm(AudioKeys.Bgm2);
 
         await _dayProgressService.Initialize();
         await _dayNightService.Initialize();

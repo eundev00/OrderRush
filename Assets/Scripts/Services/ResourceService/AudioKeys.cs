@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public static class AudioKeys
 {
+    public const string GameAudioMixer = "GameAudioMixer";
     public const string Bgm1 = "Bgm1";
     public const string Bgm2 = "Bgm2";
     public const string Bgm3 = "Bgm3";
@@ -26,6 +27,7 @@ public static class AudioKeys
 
     public static Dictionary<string, string> AudioPaths = new Dictionary<string, string>()
     {
+        { GameAudioMixer, "Assets/Audio/GameAudioMixer.mixer" },
         { Bgm1, "Assets/Audio/Bgm/Bgm1.mp3" },
         { Bgm2, "Assets/Audio/Bgm/Bgm2.mp3" },
         { Bgm3, "Assets/Audio/Bgm/Bgm3.mp3" },

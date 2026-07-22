@@ -23,6 +23,8 @@ public class ProjectLifetimeScope : LifetimeScope
                .As<IAccountService>();
         builder.Register<PopupService>(Lifetime.Singleton)
                .As<IPopupService>();
+        builder.Register<SoundService>(Lifetime.Singleton)
+               .As<ISoundService>();
         builder.RegisterEntryPoint<AppBootstrap>();
     }
 

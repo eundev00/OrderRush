@@ -10,21 +10,26 @@ public class LobbyPresenter : IStartable, IDisposable
     private readonly LobbyView _view;
     private readonly IResourcesLoaderService _resourcesLoaderService;
     private readonly IAccountService _accountService;
+    private readonly ISoundService _soundService;
     private readonly CompositeDisposable _disposable = new();
 
     public LobbyPresenter(
         LobbyView view,
         IResourcesLoaderService resourcesLoaderService,
-        IAccountService accountService)
+        IAccountService accountService,
+        ISoundService soundService)
     {
         _view = view;
         _resourcesLoaderService = resourcesLoaderService;
         _accountService = accountService;
+        _soundService = soundService;
     }
 
 
     public void Start()
     {
+        _soundService.PlayBgm(AudioKeys.Bgm1);
+
         _view.SetDay(_accountService.Account.CurrentDay);
 
         _accountService.Account.Coins

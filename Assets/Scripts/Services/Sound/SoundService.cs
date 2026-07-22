@@ -120,33 +120,33 @@ public class SoundService : ISoundService, IDisposable
 
     private async UniTask LoadMixer()
     {
-        // _mixer = await _loader.LoadAsync<AudioMixer>(AudioKeys.GetAudioPath(AudioKeys.GameAudioMixer));
-        // if (_mixer == null)
-        // {
-        //     Debug.LogWarning("[SoundService] AudioMixer load failed. Volume control disabled.");
-        //     return;
-        // }
+        _mixer = await _loader.LoadAsync<AudioMixer>(AudioKeys.GetAudioPath(AudioKeys.GameAudioMixer));
+        if (_mixer == null)
+        {
+            Debug.LogWarning("[SoundService] AudioMixer load failed. Volume control disabled.");
+            return;
+        }
 
-        // var bgmGroups = _mixer.FindMatchingGroups("BGM");
-        // var sfxGroups = _mixer.FindMatchingGroups("SFX");
-        // _bgmGroup = bgmGroups.Length > 0 ? bgmGroups[0] : null;
-        // _sfxGroup = sfxGroups.Length > 0 ? sfxGroups[0] : null;
+        var bgmGroups = _mixer.FindMatchingGroups("BGM");
+        var sfxGroups = _mixer.FindMatchingGroups("SFX");
+        _bgmGroup = bgmGroups.Length > 0 ? bgmGroups[0] : null;
+        _sfxGroup = sfxGroups.Length > 0 ? sfxGroups[0] : null;
     }
 
     private async UniTask PreloadClips()
     {
-        // foreach (var kvp in AudioKeys.AudioPaths)
-        // {
-        //     // 믹서는 클립이 아니므로 선로딩 대상에서 제외 (LoadMixer 에서 별도 로드)
-        //     if (kvp.Key == AudioKeys.GameAudioMixer)
-        //         continue;
+        foreach (var kvp in AudioKeys.AudioPaths)
+        {
+            // 믹서는 클립이 아니므로 선로딩 대상에서 제외 (LoadMixer 에서 별도 로드)
+            if (kvp.Key == AudioKeys.GameAudioMixer)
+                continue;
 
-        //     var clip = await _loader.LoadAsync<AudioClip>(kvp.Value);
-        //     if (clip != null)
-        //         _clips[kvp.Key] = clip;
-        //     else
-        //         Debug.LogWarning($"[SoundService] Clip load failed: {kvp.Key}");
-        // }
+            var clip = await _loader.LoadAsync<AudioClip>(kvp.Value);
+            if (clip != null)
+                _clips[kvp.Key] = clip;
+            else
+                Debug.LogWarning($"[SoundService] Clip load failed: {kvp.Key}");
+        }
     }
 
     private void RouteSourcesToMixer()
