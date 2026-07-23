@@ -5,7 +5,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterEmoteIcon : MonoBehaviour, IUIView
+public class CharacterEmoteIcon : MonoBehaviour
 {
     [NotNull][SerializeField] private Image _iconImage;
 
@@ -16,16 +16,6 @@ public class CharacterEmoteIcon : MonoBehaviour, IUIView
             _iconImage.sprite = sprite;
             _iconImage.gameObject.SetActive(sprite != null);
         }
-    }
-
-    public void Show()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public void Hide()
-    {
-        gameObject.SetActive(false);
     }
 
     public async UniTask PlayPopupAnimation(CancellationToken ct)

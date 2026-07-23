@@ -6,29 +6,22 @@ using Cysharp.Threading.Tasks;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
-using Services.UpdateService;
 using UniRx;
 
-public class DiningTable : InteractableBase, IUpdatable
+public class DiningTable : InteractableBase
 {
     [NotNull][SerializeField] Transform[] _plateSlots;
     [NotNull][SerializeField] DiningSeat[] _seats;
+    [NotNull][SerializeField] TableGauge _tableGauge;
 
     private List<Plate> _currentPlates = new List<Plate>();
 
-    private WorldUIFactory _worldUIFactory;
-    private ProgressGauge _tableProgressGauge;
-    private IUpdateSubscriptionService _updateService;
-    private IGameDataService _gameDataService;
     private IDayProgressService _dayProgressService;
     private ICustomerService _customerService;
-    private ISoundService _soundService;
     private IPublisher<OrderNeededEvent> _orderNeededPublisher;
     private IPublisher<DirtyPlateEvent> _dirtyPlatePublisher;
 
     private int _seatedCount = 0;
-    private float _elapsedWaitTime = 0f;
-
     private bool _isWaitingForOrder = false;
     private bool _isWaitingFood = false;
 
@@ -71,23 +64,15 @@ public class DiningTable : InteractableBase, IUpdatable
 
     [Inject]
     public void Construct(
-        WorldUIFactory worldUIFactory,
-        IUpdateSubscriptionService updateService,
-        IGameDataService gameDataService,
         IDayProgressService dayProgressService,
         ICustomerService customerService,
-        ISoundService soundService,
         IPublisher<OrderNeededEvent> orderNeededPublisher,
         IPublisher<DirtyPlateEvent> dirtyPlatePublisher,
         ISubscriber<DayEndedEvent> dayEndedSubscriber,
         ISubscriber<GameCleanupEvent> gameCleanupSubscriber)
     {
-        _worldUIFactory = worldUIFactory;
-        _updateService = updateService;
-        _gameDataService = gameDataService;
         _dayProgressService = dayProgressService;
         _customerService = customerService;
-        _soundService = soundService;
         _orderNeededPublisher = orderNeededPublisher;
         _dirtyPlatePublisher = dirtyPlatePublisher;
 
@@ -107,20 +92,22 @@ public class DiningTable : InteractableBase, IUpdatable
             _seats[i].Init(this, i);
             _currentPlates.Add(null);
         }
+
+        _tableGauge.OnTimeout += OnWaitTimeout;
+        _tableGauge.Hide();
     }
 
     private void OnDayEnded()
     {
-        StopWaitGauge();
+        _tableGauge.StopGauge();
     }
 
     private void OnGameCleanup()
     {
-        StopWaitGauge();
+        _tableGauge.StopGauge();
         _seatedCount = 0;
         _isWaitingForOrder = false;
         _isWaitingFood = false;
-        _elapsedWaitTime = 0f;
 
         for (int i = 0; i < _currentPlates.Count; i++)
         {
@@ -137,10 +124,9 @@ public class DiningTable : InteractableBase, IUpdatable
     {
         _disposables?.Dispose();
 
-        if (_tableProgressGauge != null)
+        if (_tableGauge != null)
         {
-            _worldUIFactory.Release(PrefabKeys.TableGauge, _tableProgressGauge);
-            _tableProgressGauge = null;
+            _tableGauge.OnTimeout -= OnWaitTimeout;
         }
     }
 
@@ -174,77 +160,23 @@ public class DiningTable : InteractableBase, IUpdatable
     }
 
 
-    public void ManagedUpdate()
+    private void StartWaitGauge()
     {
-        if (!_isWaitingForOrder) return;
-
-        _elapsedWaitTime += Time.deltaTime;
-        float progress = _elapsedWaitTime / _gameDataService.Config.FoodWaitDuration;
-
-        // 게이지 업데이트
-        if (_tableProgressGauge != null)
-        {
-            _tableProgressGauge.SetProgress(progress);
-        }
-
-        // 시간 초과 시 처리
-        if (_elapsedWaitTime >= _gameDataService.Config.FoodWaitDuration)
-        {
-            OnWaitTimeout();
-        }
-    }
-
-    public void StartWaitGauge()
-    {
-        _elapsedWaitTime = 0f;
         _isWaitingForOrder = true;
         _isWaitingFood = false;
-
-        _soundService?.PlaySfx(AudioKeys.bell1);
-
-        // 게이지 생성 및 표시
-        if (_tableProgressGauge == null)
-        {
-            _tableProgressGauge = _worldUIFactory.Create<ProgressGauge>(
-                PrefabKeys.TableGauge,
-                transform,
-                new Vector3(0, 1.5f, 0));
-        }
-        _tableProgressGauge.Show();
-
-        // Update 구독
-        _updateService.RegisterUpdatable(this);
+        _tableGauge.StartGauge();
     }
 
-    public void StopWaitGauge()
+    private void StopWaitGauge()
     {
         _isWaitingForOrder = false;
         _isWaitingFood = false;
-        _elapsedWaitTime = 0f;
-
-        // Update 구독 해제
-        _updateService.UnregisterUpdatable(this);
-
-        // 게이지 반납
-        if (_tableProgressGauge != null)
-        {
-            _worldUIFactory.Release(PrefabKeys.TableGauge, _tableProgressGauge);
-            _tableProgressGauge = null;
-        }
+        _tableGauge.StopGauge();
     }
 
     private void ExtendGaugeTime()
     {
-        if (!_isWaitingFood)
-        {
-            Debug.LogWarning("[DiningTable] Cannot extend gauge during order waiting phase");
-            return;
-        }
-
-        float recoverAmount = _gameDataService.Config.FoodWaitDuration * _gameDataService.Config.PatienceRecoveryAmount;
-        _elapsedWaitTime = Mathf.Max(0, _elapsedWaitTime - recoverAmount);
-        float newProgress = _elapsedWaitTime / _gameDataService.Config.FoodWaitDuration;
-        _tableProgressGauge?.SetProgress(newProgress);
+        _tableGauge.ExtendTime();
     }
 
     private void OnWaitTimeout()
@@ -257,7 +189,7 @@ public class DiningTable : InteractableBase, IUpdatable
             }
         }
 
-        StopWaitGauge();
+        _tableGauge.StopGauge();
         _dayProgressService.FailDay();
     }
 
@@ -374,11 +306,7 @@ public class DiningTable : InteractableBase, IUpdatable
     private void TakeOrders()
     {
         _isWaitingFood = true;
-        _elapsedWaitTime = 0f;
-        if (_tableProgressGauge != null)
-        {
-            _tableProgressGauge.SetProgress(0f);
-        }
+        _tableGauge.SwitchToFoodWaiting();
 
         foreach (var seat in _seats)
         {
@@ -387,8 +315,6 @@ public class DiningTable : InteractableBase, IUpdatable
                 seat.CurrentCustomer.EnqueueTakeOrder();
             }
         }
-
-        // 음식 대기로 전환 (게이지 리셋)
 
         Debug.Log("[DiningTable] Switched to waiting for food. Gauge reset.");
     }

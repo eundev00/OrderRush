@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using VContainer;
 
-public class FloatingCoinFX : MonoBehaviour, IUIView
+public class FloatingCoinFX : MonoBehaviour
 {
     [NotNull][SerializeField] private RectTransform _coinRect;
 
@@ -34,16 +34,6 @@ public class FloatingCoinFX : MonoBehaviour, IUIView
     [SerializeField] private float rotationAnglePerPhase = 360f;
 
     private Sequence _sequence;
-
-    public void Show()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public void Hide()
-    {
-        gameObject.SetActive(false);
-    }
 
     public async UniTask PlayAnimation(CancellationToken ct = default)
     {

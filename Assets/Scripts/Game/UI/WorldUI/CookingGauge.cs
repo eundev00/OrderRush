@@ -1,15 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ProgressGauge : MonoBehaviour, IUIView
+public class CookingGauge : MonoBehaviour
 {
     [NotNull][SerializeField] private Image _fillImage;
     [SerializeField] private GameObject _warning;
-
-    private void Awake()
-    {
-        SetWarning(false);
-    }
 
     public void SetProgress(float value)
     {
@@ -20,7 +15,6 @@ public class ProgressGauge : MonoBehaviour, IUIView
     {
         if (_warning) _warning.SetActive(isShow);
     }
-
 
     public void Show()
     {
@@ -33,7 +27,5 @@ public class ProgressGauge : MonoBehaviour, IUIView
     {
         SetWarning(false);
         gameObject.SetActive(false);
-
     }
-
 }

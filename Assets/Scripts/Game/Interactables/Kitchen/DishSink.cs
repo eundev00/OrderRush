@@ -7,17 +7,20 @@ using VContainer;
 public class DishSink : InteractableBase
 {
     [NotNull][SerializeField] Transform _plateSlot;
+    [NotNull][SerializeField] CookingGauge _cookingGauge;
 
     private Plate _currentPlate;
     private IKitchenStatService _kitchenStatService;
-    private WorldUIFactory _worldUIFactory;
-    private ProgressGauge _gauge;
 
     [Inject]
-    public void Construct(IKitchenStatService kitchenStatService, WorldUIFactory worldUIFactory)
+    public void Construct(IKitchenStatService kitchenStatService)
     {
         _kitchenStatService = kitchenStatService;
-        _worldUIFactory = worldUIFactory;
+    }
+
+    void Awake()
+    {
+        _cookingGauge.Hide();
     }
 
 
@@ -80,16 +83,7 @@ public class DishSink : InteractableBase
 
     private async UniTask StartWashing(CharacterBase character, CancellationToken ct)
     {
-        if (_gauge == null)
-        {
-            _gauge = _worldUIFactory.Create<ProgressGauge>(
-                PrefabKeys.KitchenGauge,
-                transform,
-                new Vector3(0, 0.5f, 0));
-        }
-
-        _gauge.Show();
-        _gauge.SetProgress(0f);
+        _cookingGauge.Show();
 
         float elapsedTime = 0f;
         float washDuration = _kitchenStatService.GetModifiedDuration();
@@ -104,7 +98,7 @@ public class DishSink : InteractableBase
                 elapsedTime += Time.deltaTime;
 
                 float progress = elapsedTime / washDuration;
-                _gauge.SetProgress(progress);
+                _cookingGauge.SetProgress(progress);
             }
 
             // 설거지 완료
@@ -114,12 +108,7 @@ public class DishSink : InteractableBase
         finally
         {
             character.StopWorking();
-
-            if (_gauge != null)
-            {
-                _worldUIFactory.Release(PrefabKeys.KitchenGauge, _gauge);
-                _gauge = null;
-            }
+            _cookingGauge.Hide();
         }
     }
 

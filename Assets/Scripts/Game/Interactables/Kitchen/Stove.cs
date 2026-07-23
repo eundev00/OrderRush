@@ -7,11 +7,13 @@ using VContainer;
 public class Stove : CookingToolBase
 {
     private IKitchenStatService _kitchenStatService;
+    private ISoundService _soundService;
 
     [Inject]
-    public void ConstructStove(IKitchenStatService kitchenStatService)
+    public void ConstructStove(IKitchenStatService kitchenStatService, ISoundService soundService)
     {
         _kitchenStatService = kitchenStatService;
+        _soundService = soundService;
     }
 
     private CancellationTokenSource _cookingCts;
@@ -42,6 +44,7 @@ public class Stove : CookingToolBase
             _cookingElapsedTime = 0f;
 
             ShowCookingGauge();
+            _soundService?.PlaySfx(AudioKeys.cooking1);
 
             float cookDuration = _kitchenStatService.GetModifiedDuration();
             while (_cookingElapsedTime < cookDuration)
@@ -59,7 +62,7 @@ public class Stove : CookingToolBase
             _cookingElapsedTime = 0f;
 
             // 오버쿡
-            _gaugeView?.SetWarning(true);
+            _cookingGauge?.SetWarning(true);
 
             float overcookDuration = _kitchenStatService.GetOvercookDuration();
             while (_cookingElapsedTime < overcookDuration)

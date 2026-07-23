@@ -66,26 +66,22 @@ public class HudPresenter : IStartable, IDisposable
         Debug.Log("[HudPresenter] TEST: Creating FloatingCoinFX above player (with tip - 2 coins)");
 
         // 첫 번째 코인 시작
-        var coinFX1 = _worldUIFactory.Create<FloatingCoinFX>(
-            PrefabKeys.FloatingCoinFX,
-            player.transform,
-            new Vector3(0, 2f, 0));
+        var coinObj1 = _worldUIFactory.Create(PrefabKeys.FloatingCoinFX);
+        var coinFX1 = coinObj1.GetComponent<FloatingCoinFX>();
         var task1 = coinFX1.PlayAnimation(CancellationToken.None);
 
         // 시간차를 두고 두 번째 코인 시작
         await UniTask.Delay(System.TimeSpan.FromSeconds(0.2f));
 
-        var coinFX2 = _worldUIFactory.Create<FloatingCoinFX>(
-            PrefabKeys.FloatingCoinFX,
-            player.transform,
-            new Vector3(0, 2f, 0));
+        var coinObj2 = _worldUIFactory.Create(PrefabKeys.FloatingCoinFX);
+        var coinFX2 = coinObj2.GetComponent<FloatingCoinFX>();
         var task2 = coinFX2.PlayAnimation(CancellationToken.None);
 
         // 둘 다 끝날 때까지 대기
         await UniTask.WhenAll(task1, task2);
 
-        _worldUIFactory.Release(PrefabKeys.FloatingCoinFX, coinFX1);
-        _worldUIFactory.Release(PrefabKeys.FloatingCoinFX, coinFX2);
+        _worldUIFactory.Release(PrefabKeys.FloatingCoinFX, coinObj1);
+        _worldUIFactory.Release(PrefabKeys.FloatingCoinFX, coinObj2);
 
         Debug.Log("[HudPresenter] TEST: FloatingCoinFX test complete (2 coins played)");
     }

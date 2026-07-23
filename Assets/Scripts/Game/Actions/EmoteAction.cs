@@ -8,7 +8,7 @@ public class EmoteAction : IGameAction
 {
     private readonly CharacterBase _character;
     private readonly WorldUIFactory _worldUIFactory;
-    private CharacterEmoteIcon _emoteIcon;
+    private GameObject _emoteObj;
 
     public EmoteAction(
         CharacterBase character,
@@ -27,18 +27,16 @@ public class EmoteAction : IGameAction
 
         try
         {
-            _emoteIcon = _worldUIFactory.Create<CharacterEmoteIcon>(
-                PrefabKeys.CharacterEmoteIcon,
-                _character.transform,
-                new Vector3(0, 1.5f, 0));
-            await _emoteIcon.PlayPopupAnimation(ct);
+            _emoteObj = _worldUIFactory.Create(PrefabKeys.CharacterEmoteIcon);
+            var emoteIcon = _emoteObj.GetComponent<CharacterEmoteIcon>();
+            await emoteIcon.PlayPopupAnimation(ct);
         }
         finally
         {
-            if (_emoteIcon != null)
+            if (_emoteObj != null)
             {
-                _worldUIFactory.Release(PrefabKeys.CharacterEmoteIcon, _emoteIcon);
-                _emoteIcon = null;
+                _worldUIFactory.Release(PrefabKeys.CharacterEmoteIcon, _emoteObj);
+                _emoteObj = null;
             }
         }
     }
