@@ -10,14 +10,13 @@ public class PopupCardShop : PopupViewBase
     [NotNull][SerializeField] private Button _skipButton;
     [NotNull][SerializeField] private Button _refreshButton;
     [NotNull][SerializeField] private TMP_Text _refreshCostText;
-    [NotNull][SerializeField] private TMP_Text _coinsText;
+
 
     public Button SkipButton => _skipButton;
     public Button RefreshButton => _refreshButton;
 
     public void SetupCards(List<CardData> cards, int currentCoins, Action<CardData> onCardClicked)
     {
-        _coinsText.text = $"{currentCoins}";
         for (int i = 0; i < _cardItems.Length; i++)
         {
             if (i < cards.Count)

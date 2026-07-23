@@ -9,6 +9,7 @@ public class CardItemView : MonoBehaviour
     [NotNull][SerializeField] private TMP_Text _nameText;
     [NotNull][SerializeField] private TMP_Text _descriptionText;
     [NotNull][SerializeField] private TMP_Text _costText;
+    [NotNull][SerializeField] private TMP_Text _costTextDisabled;
     [NotNull][SerializeField] private GameObject _descView;
     [NotNull][SerializeField] private Button _buyButton;
     [NotNull][SerializeField] private Button _moreButton;
@@ -45,7 +46,19 @@ public class CardItemView : MonoBehaviour
 
         _nameText.text = cardData.CardName;
         _descriptionText.text = cardData.Description;
-        _costText.text = cardData.Cost.ToString();
+
+        if (canPurchase)
+        {
+            _costText.text = cardData.Cost.ToString();
+            _costText.gameObject.SetActive(true);
+            _costTextDisabled.gameObject.SetActive(false);
+        }
+        else
+        {
+            _costTextDisabled.text = cardData.Cost.ToString();
+            _costTextDisabled.gameObject.SetActive(true);
+            _costText.gameObject.SetActive(false);
+        }
 
         _buyButton.interactable = canPurchase;
     }
