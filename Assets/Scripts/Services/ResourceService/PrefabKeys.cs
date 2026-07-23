@@ -36,7 +36,7 @@ using System.Collections.Generic;
     public const string PopupMessage = "PopupMessage";
     public const string PopupStory = "PopupStory";
     public const string CharacterEmoteIcon = "CharacterEmoteIcon";
-    public const string CharacterOrderIcon = "CharacterOrderIcon";
+    public const string OrderBubble = "OrderBubble";
     public const string FloatingCoinFX = "FloatingCoinFX";
     public const string KitchenGauge = "KitchenGauge";
     public const string TableGauge = "TableGauge";
@@ -77,7 +77,7 @@ using System.Collections.Generic;
         { PopupMessage, "Assets/Prefabs/Game/UI/PopupMessage.prefab" },
         { PopupStory, "Assets/Prefabs/Game/UI/PopupStory.prefab" },
         { CharacterEmoteIcon, "Assets/Prefabs/Game/UI/WorldSpace/CharacterEmoteIcon.prefab" },
-        { CharacterOrderIcon, "Assets/Prefabs/Game/UI/WorldSpace/CharacterOrderIcon.prefab" },
+        { OrderBubble, "Assets/Prefabs/Game/UI/WorldSpace/OrderBubble.prefab" },
         { FloatingCoinFX, "Assets/Prefabs/Game/UI/WorldSpace/FloatingCoinFX.prefab" },
         { KitchenGauge, "Assets/Prefabs/Game/UI/WorldSpace/KitchenGauge.prefab" },
         { TableGauge, "Assets/Prefabs/Game/UI/WorldSpace/TableGauge.prefab" },

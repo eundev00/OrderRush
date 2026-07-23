@@ -9,13 +9,19 @@ public class CharacterEmoteIcon : MonoBehaviour
 {
     [NotNull][SerializeField] private Image _iconImage;
 
-    public void SetIcon(Sprite sprite)
+    private void Awake()
     {
-        if (_iconImage != null)
-        {
-            _iconImage.sprite = sprite;
-            _iconImage.gameObject.SetActive(sprite != null);
-        }
+        Hide();
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
     }
 
     public async UniTask PlayPopupAnimation(CancellationToken ct)

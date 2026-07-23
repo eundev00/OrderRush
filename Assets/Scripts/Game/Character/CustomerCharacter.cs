@@ -6,6 +6,12 @@ using VContainer;
 
 public class CustomerCharacter : CharacterBase
 {
+    [SerializeField] private CharacterEmoteIcon _emoteIcon;
+    [SerializeField] private OrderBubble _orderBubble;
+
+    public CharacterEmoteIcon EmoteIcon => _emoteIcon;
+    public OrderBubble OrderBubble => _orderBubble;
+
     public int OrderedRecipeID { get; set; } = -1;
     public float OrderedTime { get; set; }
     public DiningTable AssignedTable { get; private set; }
@@ -104,13 +110,13 @@ public class CustomerCharacter : CharacterBase
         }
 
         EnqueueAction(new OrderAction(this, _accountService));
-        EnqueueAction(new WaitForFoodAction(this, _worldUIFactory, _gameDataService));
+        EnqueueAction(new WaitForFoodAction(this, _gameDataService));
     }
 
     public void EnqueueLeaveAngry()
     {
         ClearActions();
-        EnqueueAction(new EmoteAction(this, _worldUIFactory));
+        EnqueueAction(new EmoteAction(this));
         EnqueueAction(new LeaveAction(this, _spawnPosition, _mover, _animator, _customerRemovedPublisher));
     }
 

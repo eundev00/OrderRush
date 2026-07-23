@@ -6,16 +6,11 @@ using UnityEngine;
 
 public class EmoteAction : IGameAction
 {
-    private readonly CharacterBase _character;
-    private readonly WorldUIFactory _worldUIFactory;
-    private GameObject _emoteObj;
+    private readonly CustomerCharacter _character;
 
-    public EmoteAction(
-        CharacterBase character,
-        WorldUIFactory worldUIFactory)
+    public EmoteAction(CustomerCharacter character)
     {
         _character = character;
-        _worldUIFactory = worldUIFactory;
     }
 
     public async UniTask ExecuteAsync(CancellationToken ct)
@@ -27,17 +22,12 @@ public class EmoteAction : IGameAction
 
         try
         {
-            _emoteObj = _worldUIFactory.Create(PrefabKeys.CharacterEmoteIcon);
-            var emoteIcon = _emoteObj.GetComponent<CharacterEmoteIcon>();
-            await emoteIcon.PlayPopupAnimation(ct);
+            _character.EmoteIcon.Show();
+            await _character.EmoteIcon.PlayPopupAnimation(ct);
         }
         finally
         {
-            if (_emoteObj != null)
-            {
-                _worldUIFactory.Release(PrefabKeys.CharacterEmoteIcon, _emoteObj);
-                _emoteObj = null;
-            }
+            _character.EmoteIcon.Hide();
         }
     }
 }
