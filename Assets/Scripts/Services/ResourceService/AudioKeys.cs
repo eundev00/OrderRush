@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 public static class AudioKeys
 {
-    public const string GameAudioMixer = "GameAudioMixer";
     public const string Bgm1 = "Bgm1";
     public const string Bgm2 = "Bgm2";
     public const string Bgm3 = "Bgm3";
     public const string Bgm4 = "Bgm4";
+    public const string GameAudioMixer = "GameAudioMixer";
     public const string bell1 = "bell1";
     public const string bell2 = "bell2";
-    public const string button1 = "button1";
     public const string chopping1 = "chopping1";
     public const string chopping2 = "chopping2";
     public const string coin_drop1 = "coin_drop1";
+    public const string commonbutton = "commonbutton";
     public const string cooking1 = "cooking1";
     public const string correct = "correct";
     public const string rain_calming = "rain_calming";
@@ -27,17 +27,17 @@ public static class AudioKeys
 
     public static Dictionary<string, string> AudioPaths = new Dictionary<string, string>()
     {
-        { GameAudioMixer, "Assets/Audio/GameAudioMixer.mixer" },
         { Bgm1, "Assets/Audio/Bgm/Bgm1.mp3" },
         { Bgm2, "Assets/Audio/Bgm/Bgm2.mp3" },
         { Bgm3, "Assets/Audio/Bgm/Bgm3.mp3" },
         { Bgm4, "Assets/Audio/Bgm/Bgm4.mp3" },
+        { GameAudioMixer, "Assets/Audio/GameAudioMixer.mixer" },
         { bell1, "Assets/Audio/Sfx/bell1.mp3" },
         { bell2, "Assets/Audio/Sfx/bell2.mp3" },
-        { button1, "Assets/Audio/Sfx/button1.mp3" },
         { chopping1, "Assets/Audio/Sfx/chopping1.mp3" },
         { chopping2, "Assets/Audio/Sfx/chopping2.mp3" },
         { coin_drop1, "Assets/Audio/Sfx/coin_drop1.mp3" },
+        { commonbutton, "Assets/Audio/Sfx/commonbutton.mp3" },
         { cooking1, "Assets/Audio/Sfx/cooking1.mp3" },
         { correct, "Assets/Audio/Sfx/correct.mp3" },
         { rain_calming, "Assets/Audio/Sfx/rain_calming.mp3" },

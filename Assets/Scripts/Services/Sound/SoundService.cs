@@ -5,39 +5,6 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Audio;
 
-// =====================================================================
-//  사운드 서비스 (BGM + SFX) — 순수 재생 엔진, 앱 전역 Singleton 용도
-// ---------------------------------------------------------------------
-//  책임: 재생/정지/볼륨/믹서 라우팅만. 게임 이벤트는 전혀 모른다.
-//   - "어떤 이벤트가 어떤 소리를 내는가"는 별도 GameAudioBinder(게임 스코프)가
-//     이 서비스를 주입받아 PlaySfx()로 호출한다. (다음 단계)
-//   - UI 클릭/조리/픽업 등 자연 이벤트 없는 것은 호출부에서 직접 PlaySfx().
-//   - 리소스 참조는 DataKeys/PrefabKeys 방식(문자열 키 + Addressables 경로),
-//     클립은 기존 IResourcesLoaderService 로 로드(캐싱됨).
-//   - 볼륨은 AudioMixer 2그룹(BGM/SFX) + 노출 파라미터로 제어.
-//
-//  ⚠ 볼륨 저장 키는 아직 이 파일에 임시 상수로 둠 → 정식 단계에서 LocalStorageKeys 로 이동.
-//     또한 ProjectLifetimeScope 등록 + AppBootstrap 에서 Initialize() 호출은 이후 단계.
-// =====================================================================
-public interface ISoundService
-{
-    UniTask Initialize();
-
-    void PlayBgm(string audioKey, bool loop = true);
-    void StopBgm(float fadeDuration = 0.5f);
-
-    void PlaySfx(string audioKey);
-    void PlaySfxAt(string audioKey, Vector3 worldPosition);
-
-    void SetBgmVolume(float volume01);
-    void SetSfxVolume(float volume01);
-    void SetMuted(bool muted);
-
-    float BgmVolume { get; }
-    float SfxVolume { get; }
-    bool IsMuted { get; }
-}
-
 public class SoundService : ISoundService, IDisposable
 {
     private const int SfxSourceCount = 8;      // 동시 재생 SFX 소스 풀 크기
@@ -65,8 +32,8 @@ public class SoundService : ISoundService, IDisposable
     private CancellationTokenSource _bgmFadeCts;
     private string _currentBgmKey;
 
-    private float _bgmVolume = 1f;
-    private float _sfxVolume = 1f;
+    private float _bgmVolume = 0.4f;
+    private float _sfxVolume = 0.4f;
     private bool _muted;
     private bool _initialized;
 
@@ -324,8 +291,8 @@ public class SoundService : ISoundService, IDisposable
 
     private void LoadVolumeSettings()
     {
-        _bgmVolume = _storage.LoadFloat(BgmVolumeKey, 1f);
-        _sfxVolume = _storage.LoadFloat(SfxVolumeKey, 1f);
+        _bgmVolume = _storage.LoadFloat(BgmVolumeKey, 0.4f);
+        _sfxVolume = _storage.LoadFloat(SfxVolumeKey, 0.4f);
         _muted = _storage.LoadBool(MutedKey, false);
 
         ApplyMixerVolume("BgmVol", _bgmVolume);

@@ -1,4 +1,3 @@
-using OrderRush.Services;
 using UniRx;
 using UnityEngine.SceneManagement;
 
@@ -6,13 +5,16 @@ public class PopupFailedPresenter : PopupPresenterBase
 {
     private readonly PopupDayFailed _view;
     private readonly IDayProgressService _dayProgressService;
+    private readonly ISoundService _soundService;
 
     public PopupFailedPresenter(
         PopupDayFailed view,
-        IDayProgressService dayProgressService) : base(view)
+        IDayProgressService dayProgressService,
+        ISoundService soundService) : base(view)
     {
         _view = view;
         _dayProgressService = dayProgressService;
+        _soundService = soundService;
     }
 
     protected override void OnBind()
@@ -29,12 +31,14 @@ public class PopupFailedPresenter : PopupPresenterBase
 
     private void OnRestartButtonClicked()
     {
+        _soundService.PlaySfx(AudioKeys.commonbutton);
         Close();
         _dayProgressService.RestartDay();
     }
 
     private void OnExitButtonClicked()
     {
+        _soundService.PlaySfx(AudioKeys.commonbutton);
         Close();
         SceneManager.UnloadSceneAsync("GameplayScene");
         SceneManager.LoadSceneAsync("LobbyScene", LoadSceneMode.Additive);

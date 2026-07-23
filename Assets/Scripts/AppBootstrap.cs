@@ -1,6 +1,5 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using OrderRush.Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;
@@ -44,7 +43,7 @@ public class AppBootstrap : IAsyncStartable
     // 공통 팝업: 부모 = Root 리졸버 → 어느 씬이 열든 씬 전환에도 살아남는다(로딩 등).
     private void RegisterCommonPopups()
     {
-        _popupService.RegisterPopup(PrefabKeys.MessagePopup, _resolver);
+        _popupService.RegisterPopup(PrefabKeys.PopupCompleted, _resolver);
         // TODO: Loading/Alert/Confirm 등 공통 팝업 추가 시 여기에 등록.
     }
 }

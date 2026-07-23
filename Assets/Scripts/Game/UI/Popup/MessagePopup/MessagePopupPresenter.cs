@@ -5,22 +5,30 @@ using UniRx;
 public class MessagePopupPresenter : PopupPresenterBase<MessageArgs>
 {
     private readonly MessagePopupView _view;
+    private readonly ISoundService _soundService;
 
-    public MessagePopupPresenter(MessagePopupView view) : base(view)
+    public MessagePopupPresenter(MessagePopupView view, ISoundService soundService) : base(view)
     {
         _view = view;
+        _soundService = soundService;
     }
 
     protected override void OnBind()
     {
-        _view.ConfirmButton.onClick.AddListener(Close);
+        _view.ConfirmButton.onClick.AddListener(OnConfirmButtonClicked);
         Disposables.Add(Disposable.Create(
-            () => _view.ConfirmButton.onClick.RemoveListener(Close)));
+            () => _view.ConfirmButton.onClick.RemoveListener(OnConfirmButtonClicked)));
     }
 
     protected override void OnShow(MessageArgs args)
     {
         _view.SetMessage(args.Message);
+    }
+
+    private void OnConfirmButtonClicked()
+    {
+        _soundService.PlaySfx(AudioKeys.commonbutton);
+        Close();
     }
 }
 

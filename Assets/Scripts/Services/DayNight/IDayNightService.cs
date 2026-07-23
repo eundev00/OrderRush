@@ -1,10 +1,7 @@
 using Cysharp.Threading.Tasks;
 
-namespace OrderRush.Services
+public interface IDayNightService
 {
-    public interface IDayNightService
-    {
-        UniTask Initialize();
-        void Dispose();
-    }
+    UniTask Initialize();
+    void Dispose();
 }

@@ -1,6 +1,5 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using OrderRush.Services;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -40,7 +39,7 @@ public class GameInitiator : IStartable
     {
         Debug.Log($"[GameInitiator] Start() called - DayProgressService instance: {_dayProgressService.GetHashCode()}");
 
-        _soundService.PlayBgm(AudioKeys.Bgm2);
+        _soundService.PlayBgm(AudioKeys.Bgm4);
 
         await _dayProgressService.Initialize();
         await _dayNightService.Initialize();

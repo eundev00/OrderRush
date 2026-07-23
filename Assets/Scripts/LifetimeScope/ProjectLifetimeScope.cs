@@ -3,7 +3,6 @@ using VContainer;
 using VContainer.Unity;
 using MessagePipe;
 using Services.UpdateService;
-using OrderRush.Services;
 
 public class ProjectLifetimeScope : LifetimeScope
 {

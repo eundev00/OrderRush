@@ -27,6 +27,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba48052e36f414ea2b0888ebf200b915
+    m_Address: Assets/Audio
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 02cf403b2c5644f9ba2d3f5b76001f8c, type: 2}
   m_SchemaSet:

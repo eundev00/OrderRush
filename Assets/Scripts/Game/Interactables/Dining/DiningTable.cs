@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
-using OrderRush.Services;
 using UnityEngine;
 using VContainer;
 using Services.UpdateService;
@@ -23,6 +22,7 @@ public class DiningTable : InteractableBase, IUpdatable
     private IGameDataService _gameDataService;
     private IDayProgressService _dayProgressService;
     private ICustomerService _customerService;
+    private ISoundService _soundService;
     private IPublisher<OrderNeededEvent> _orderNeededPublisher;
     private IPublisher<DirtyPlateEvent> _dirtyPlatePublisher;
 
@@ -76,6 +76,7 @@ public class DiningTable : InteractableBase, IUpdatable
         IGameDataService gameDataService,
         IDayProgressService dayProgressService,
         ICustomerService customerService,
+        ISoundService soundService,
         IPublisher<OrderNeededEvent> orderNeededPublisher,
         IPublisher<DirtyPlateEvent> dirtyPlatePublisher,
         ISubscriber<DayEndedEvent> dayEndedSubscriber,
@@ -86,6 +87,7 @@ public class DiningTable : InteractableBase, IUpdatable
         _gameDataService = gameDataService;
         _dayProgressService = dayProgressService;
         _customerService = customerService;
+        _soundService = soundService;
         _orderNeededPublisher = orderNeededPublisher;
         _dirtyPlatePublisher = dirtyPlatePublisher;
 
@@ -197,6 +199,8 @@ public class DiningTable : InteractableBase, IUpdatable
         _elapsedWaitTime = 0f;
         _isWaitingForOrder = true;
         _isWaitingFood = false;
+
+        _soundService?.PlaySfx(AudioKeys.bell1);
 
         // 게이지 생성 및 표시
         if (_tableProgressGauge == null)

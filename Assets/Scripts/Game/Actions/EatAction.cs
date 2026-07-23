@@ -2,7 +2,6 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
-using OrderRush.Services;
 using UnityEngine;
 
 public class EatAction : IGameAction

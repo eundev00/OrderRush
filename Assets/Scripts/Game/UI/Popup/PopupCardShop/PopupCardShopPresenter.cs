@@ -1,5 +1,4 @@
 using Cysharp.Threading.Tasks;
-using OrderRush.Services;
 using UniRx;
 
 public class PopupCardShopPresenter : PopupPresenterBase
@@ -8,17 +7,20 @@ public class PopupCardShopPresenter : PopupPresenterBase
     private readonly IShopService _shopService;
     private readonly IAccountService _accountService;
     private readonly IDayProgressService _dayProgressService;
+    private readonly ISoundService _soundService;
 
     public PopupCardShopPresenter(
         PopupCardShop view,
         IShopService shopService,
         IAccountService accountService,
-        IDayProgressService dayProgressService) : base(view)
+        IDayProgressService dayProgressService,
+        ISoundService soundService) : base(view)
     {
         _view = view;
         _shopService = shopService;
         _accountService = accountService;
         _dayProgressService = dayProgressService;
+        _soundService = soundService;
     }
 
     protected override void OnBind()
@@ -46,6 +48,7 @@ public class PopupCardShopPresenter : PopupPresenterBase
 
     private async void OnCardClicked(CardData card)
     {
+        _soundService.PlaySfx(AudioKeys.commonbutton);
         bool success = await _shopService.TryPurchaseCard(card);
         if (success)
         {
@@ -56,6 +59,7 @@ public class PopupCardShopPresenter : PopupPresenterBase
 
     private async void OnRefreshButtonClicked()
     {
+        _soundService.PlaySfx(AudioKeys.commonbutton);
         var newCards = await _shopService.Refresh();
         if (newCards == null) return;
 
@@ -71,6 +75,7 @@ public class PopupCardShopPresenter : PopupPresenterBase
 
     private void OnSkipButtonClicked()
     {
+        _soundService.PlaySfx(AudioKeys.commonbutton);
         Close();
         _dayProgressService.NextDay();
     }

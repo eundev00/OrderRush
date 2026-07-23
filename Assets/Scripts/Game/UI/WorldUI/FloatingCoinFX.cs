@@ -3,10 +3,19 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using VContainer;
 
 public class FloatingCoinFX : MonoBehaviour, IUIView
 {
     [NotNull][SerializeField] private RectTransform _coinRect;
+
+    private ISoundService _soundService;
+
+    [Inject]
+    public void Construct(ISoundService soundService)
+    {
+        _soundService = soundService;
+    }
 
     [Header("Rise")]
     [SerializeField] private float riseHeight = 100f;
@@ -45,6 +54,8 @@ public class FloatingCoinFX : MonoBehaviour, IUIView
             Debug.LogError("[FloatingCoinFX] _coinRect is null!");
             return;
         }
+
+        _soundService?.PlaySfx(AudioKeys.coin_drop1);
 
         _coinRect.localPosition = Vector3.zero;
         _coinRect.localRotation = Quaternion.identity;
