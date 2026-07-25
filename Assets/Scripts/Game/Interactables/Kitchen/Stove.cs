@@ -44,7 +44,7 @@ public class Stove : CookingToolBase
             _cookingElapsedTime = 0f;
 
             ShowCookingGauge();
-            _soundService?.PlaySfx(AudioKeys.cooking1);
+            _soundService.PlaySfx(AudioKeys.cooking1, isLoop: true);
 
             float cookDuration = _kitchenStatService.GetModifiedDuration();
             while (_cookingElapsedTime < cookDuration)
@@ -97,6 +97,7 @@ public class Stove : CookingToolBase
         _cookingCts?.Dispose();
         _cookingCts = null;
         _cookingElapsedTime = 0;
+        _soundService.StopSfx(AudioKeys.cooking1);
     }
 
 }

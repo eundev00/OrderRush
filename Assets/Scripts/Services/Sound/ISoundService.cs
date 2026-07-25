@@ -8,8 +8,10 @@ public interface ISoundService
     void PlayBgm(string audioKey, bool loop = true);
     void StopBgm(float fadeDuration = 0.5f);
 
-    void PlaySfx(string audioKey);
-    void PlaySfxAt(string audioKey, Vector3 worldPosition);
+    AudioSource PlaySfx(string audioKey, bool isLoop = false);
+    void StopSfx(string audioKey);
+    void StopSfx(AudioSource source);
+    void StopAllSfx();
 
     void SetBgmVolume(float volume01);
     void SetSfxVolume(float volume01);

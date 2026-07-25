@@ -9,6 +9,7 @@ public class LevelContext : MonoBehaviour
     [NotNull][SerializeField] Transform _spawnPoint;
     [NotNull][SerializeField] Transform _waitingPoint;
     [NotNull][SerializeField] Transform[] _staffIdlePoints;
+    [SerializeField] private GameObject _rainRoot;
 
     public List<DiningTable> DiningTables { get; private set; }
     public ServingCounter[] ServingCounters { get; private set; }
@@ -42,5 +43,11 @@ public class LevelContext : MonoBehaviour
     {
         DiningTables.Add(table);
         Debug.Log($" AddDiningTable : {DiningTables.Count} tables");
+    }
+
+    public void SetRain(bool on)
+    {
+        if (_rainRoot != null)
+            _rainRoot.SetActive(on);
     }
 }

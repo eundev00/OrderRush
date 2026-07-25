@@ -47,17 +47,18 @@ SpriteAtlas:
     - 0020616368d21414e881d9d653dc634b: 21300000
     - 7ff5f9b3f569349e6b850bd9526ac445: 21300000
     - 353b3a6475c92428084fe9ceeaee9f1c: 21300000
+    - 61d9a9b4ba1464e9fa1e02ae49616366: 21300000
     - 48e459f55e7204d07ad5727945141909: 21300000
-    - 5925ef06f571049d8986d31e2333506c: 21300000
     - a264824602a964c6d855741d2312f0f2: 21300000
     - 14045b6666aef4252bc0f8a2b16362fc: 21300000
-    - aee04b866a29c4aeeb9a4b6e9eab4b59: 21300000
     - 9d3a6257943a442a2889b870b746ab04: 21300000
     - 1a515a77c6dca48c4b7ac732935b6d93: 21300000
     - 6946f9f7cc8e646b387493ed0aa7cb6d: 21300000
     - 9bb9da1842da5435b91320ee6d14298d: 21300000
+    - db0cfb3884c6344518d43e48f9f68933: 21300000
     - de1af2b805b0847ceb2cd330678e5049: 21300000
     - e8b5e1c9775874e488be83826d29aac8: 21300000
+    - 18544e3a12e6a4de48c9907ae54613a4: 21300000
     - 95050a9a8a27e471ebe0b2230c9e099d: 21300000
     - 97bdee2b314504f27bf940f1f067b97c: 21300000
     - dd58b8cb6c67443b4a15bb093b073bda: 21300000
@@ -83,17 +84,18 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 0020616368d21414e881d9d653dc634b, type: 3}
   - {fileID: 21300000, guid: 7ff5f9b3f569349e6b850bd9526ac445, type: 3}
   - {fileID: 21300000, guid: 353b3a6475c92428084fe9ceeaee9f1c, type: 3}
+  - {fileID: 21300000, guid: 61d9a9b4ba1464e9fa1e02ae49616366, type: 3}
   - {fileID: 21300000, guid: 48e459f55e7204d07ad5727945141909, type: 3}
-  - {fileID: 21300000, guid: 5925ef06f571049d8986d31e2333506c, type: 3}
   - {fileID: 21300000, guid: a264824602a964c6d855741d2312f0f2, type: 3}
   - {fileID: 21300000, guid: 14045b6666aef4252bc0f8a2b16362fc, type: 3}
-  - {fileID: 21300000, guid: aee04b866a29c4aeeb9a4b6e9eab4b59, type: 3}
   - {fileID: 21300000, guid: 9d3a6257943a442a2889b870b746ab04, type: 3}
   - {fileID: 21300000, guid: 1a515a77c6dca48c4b7ac732935b6d93, type: 3}
   - {fileID: 21300000, guid: 6946f9f7cc8e646b387493ed0aa7cb6d, type: 3}
   - {fileID: 21300000, guid: 9bb9da1842da5435b91320ee6d14298d, type: 3}
+  - {fileID: 21300000, guid: db0cfb3884c6344518d43e48f9f68933, type: 3}
   - {fileID: 21300000, guid: de1af2b805b0847ceb2cd330678e5049, type: 3}
   - {fileID: 21300000, guid: e8b5e1c9775874e488be83826d29aac8, type: 3}
+  - {fileID: 21300000, guid: 18544e3a12e6a4de48c9907ae54613a4, type: 3}
   - {fileID: 21300000, guid: 95050a9a8a27e471ebe0b2230c9e099d, type: 3}
   - {fileID: 21300000, guid: 97bdee2b314504f27bf940f1f067b97c, type: 3}
   - {fileID: 21300000, guid: dd58b8cb6c67443b4a15bb093b073bda, type: 3}
@@ -118,17 +120,18 @@ SpriteAtlas:
   - CardDescBg
   - MessageBg
   - TimeBarGauge
+  - CoinBg
   - CheckIcon2
-  - HomeButton2
   - CardShopCloseBtn
   - d3
-  - CoinBg
   - RestartIcon
   - TimeBarBg
   - HomeButton
   - Timer
+  - Time2
   - grey_panel
   - Circle - 256px
+  - Bell
   - InfoBg
   - CaradYellow
   - CardBlue

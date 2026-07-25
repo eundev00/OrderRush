@@ -19,4 +19,21 @@ MonoBehaviour:
   _baseCustomers: 1
   _customerIncrease: 0
   _daysInterval: 3
-  _storyPhases: []
+  _storyDays:
+  - _dayNumber: 1
+    _storyText: Fresh out of culinary school, I sank every last coin into this run-down
+      diner. First day of business.
+    _mood: 
+    _event:
+      _isRainy: 0
+  - _dayNumber: 2
+    _storyText: Made it through day one. Still fumbling with everything, but it's
+      starting to click.
+    _mood: 
+    _event:
+      _isRainy: 0
+  - _dayNumber: 4
+    _storyText: Looks like rain today.
+    _mood: 
+    _event:
+      _isRainy: 1

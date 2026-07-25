@@ -7,15 +7,21 @@ public class PopupCompletedPresenter : PopupPresenterBase<int>
     private readonly PopupCompleted _view;
     private readonly IPopupService _popupService;
     private readonly ISoundService _soundService;
+    private readonly IStoryFlowService _storyFlow;
+    private readonly IDayProgressService _dayProgressService;
 
     public PopupCompletedPresenter(
         PopupCompleted view,
         IPopupService popupService,
-        ISoundService soundService) : base(view)
+        ISoundService soundService,
+        IStoryFlowService storyFlow,
+        IDayProgressService dayProgressService) : base(view)
     {
         _view = view;
         _popupService = popupService;
         _soundService = soundService;
+        _storyFlow = storyFlow;
+        _dayProgressService = dayProgressService;
     }
 
     protected override void OnBind()
@@ -35,9 +41,13 @@ public class PopupCompletedPresenter : PopupPresenterBase<int>
         _view.SetEarnedCoins(earnedCoins);
     }
 
-    private void OnNextButtonClicked()
+    private async void OnNextButtonClicked()
     {
         _soundService.PlaySfx(AudioKeys.commonbutton);
+
+        int enteringDay = _dayProgressService.CurrentDayContext.DayNumber + 1;
+        await _storyFlow.ShowStoryForDayAsync(enteringDay);
+
         _popupService.Open<PopupCardShopPresenter>(PrefabKeys.PopupCardShop).Forget();
         Close();
     }

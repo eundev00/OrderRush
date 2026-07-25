@@ -10,7 +10,6 @@ public class SoundService : ISoundService, IDisposable
     private const int SfxSourceCount = 8;      // 동시 재생 SFX 소스 풀 크기
     private const float MinVolumeDb = -80f;    // 믹서 무음 dB
 
-    // TODO: LocalStorageKeys 로 이동
     private const string BgmVolumeKey = "Sound.BgmVolume";
     private const string SfxVolumeKey = "Sound.SfxVolume";
     private const string MutedKey = "Sound.Muted";
@@ -19,6 +18,7 @@ public class SoundService : ISoundService, IDisposable
     private readonly ILocalStorageService _storage;
 
     private readonly Dictionary<string, AudioClip> _clips = new();
+    private readonly Dictionary<string, AudioSource> _playingSfx = new();
 
     private GameObject _host;
     private AudioSource _bgmSource;
@@ -32,7 +32,7 @@ public class SoundService : ISoundService, IDisposable
     private CancellationTokenSource _bgmFadeCts;
     private string _currentBgmKey;
 
-    private float _bgmVolume = 0.4f;
+    private float _bgmVolume = 0.2f;
     private float _sfxVolume = 0.4f;
     private bool _muted;
     private bool _initialized;
@@ -205,26 +205,69 @@ public class SoundService : ISoundService, IDisposable
     // ---------------------------------------------------------------
     //  SFX
     // ---------------------------------------------------------------
-    public void PlaySfx(string audioKey)
+    public AudioSource PlaySfx(string audioKey, bool isLoop = false)
     {
         if (!TryGetSfxClip(audioKey, out var clip))
-            return;
+            return null;
 
         var src = NextSfxSource();
         src.transform.localPosition = Vector3.zero;
-        src.spatialBlend = 0f; // 2D
-        src.PlayOneShot(clip);
+        src.spatialBlend = 0f;
+
+        if (isLoop)
+        {
+            src.clip = clip;
+            src.loop = true;
+            src.Play();
+            _playingSfx[audioKey] = src;
+        }
+        else
+        {
+            src.PlayOneShot(clip);
+        }
+
+        return src;
     }
 
-    public void PlaySfxAt(string audioKey, Vector3 worldPosition)
+    public void StopSfx(string audioKey)
     {
-        if (!TryGetSfxClip(audioKey, out var clip))
+        if (_playingSfx.TryGetValue(audioKey, out var source))
+        {
+            source.Stop();
+            source.loop = false;
+            source.clip = null;
+            _playingSfx.Remove(audioKey);
+        }
+    }
+
+    public void StopSfx(AudioSource source)
+    {
+        if (source == null)
             return;
 
-        var src = NextSfxSource();
-        src.transform.position = worldPosition;
-        src.spatialBlend = 1f; // 3D
-        src.PlayOneShot(clip);
+        source.Stop();
+        source.loop = false;
+        source.clip = null;
+
+        foreach (var kvp in _playingSfx)
+        {
+            if (kvp.Value == source)
+            {
+                _playingSfx.Remove(kvp.Key);
+                break;
+            }
+        }
+    }
+
+    public void StopAllSfx()
+    {
+        for (int i = 0; i < _sfxSources.Length; i++)
+        {
+            _sfxSources[i].Stop();
+            _sfxSources[i].loop = false;
+            _sfxSources[i].clip = null;
+        }
+        _playingSfx.Clear();
     }
 
     private bool TryGetSfxClip(string audioKey, out AudioClip clip)
@@ -291,7 +334,7 @@ public class SoundService : ISoundService, IDisposable
 
     private void LoadVolumeSettings()
     {
-        _bgmVolume = _storage.LoadFloat(BgmVolumeKey, 0.4f);
+        _bgmVolume = _storage.LoadFloat(BgmVolumeKey, 0.1f);
         _sfxVolume = _storage.LoadFloat(SfxVolumeKey, 0.4f);
         _muted = _storage.LoadBool(MutedKey, false);
 

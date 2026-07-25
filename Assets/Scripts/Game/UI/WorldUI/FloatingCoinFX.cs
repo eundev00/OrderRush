@@ -11,11 +11,7 @@ public class FloatingCoinFX : MonoBehaviour
 
     private ISoundService _soundService;
 
-    [Inject]
-    public void Construct(ISoundService soundService)
-    {
-        _soundService = soundService;
-    }
+
 
     [Header("Rise")]
     [SerializeField] private float riseHeight = 100f;
@@ -34,6 +30,12 @@ public class FloatingCoinFX : MonoBehaviour
     [SerializeField] private float rotationAnglePerPhase = 360f;
 
     private Sequence _sequence;
+
+    [Inject]
+    public void Construct(ISoundService soundService)
+    {
+        _soundService = soundService;
+    }
 
     public async UniTask PlayAnimation(CancellationToken ct = default)
     {
@@ -63,7 +65,6 @@ public class FloatingCoinFX : MonoBehaviour
         _sequence.Append(_coinRect.DOLocalMoveY(0f, fallDuration).SetEase(fallEase));
         _sequence.Join(_coinRect.DOLocalRotate(rotationAxis * rotationAnglePerPhase, fallDuration, RotateMode.LocalAxisAdd));
 
-        _sequence.OnComplete(() => Debug.Log("[FloatingCoinFX] Animation complete"));
 
         ct.Register(() => _sequence?.Kill());
         await _sequence.AsyncWaitForCompletion();

@@ -14,6 +14,8 @@ public class GameInitiator : IStartable
     private readonly ISoundService _soundService;
     private readonly CardEffectApplier _cardEffectApplier;
     private readonly StaffManager _staffManager;
+    private readonly IStoryFlowService _storyFlow;
+    private readonly IDayEventService _dayEventService;
 
     public GameInitiator(
         ILevelContextPresenter levelPresenter,
@@ -23,7 +25,9 @@ public class GameInitiator : IStartable
         IAccountService accountService,
         ISoundService soundService,
         CardEffectApplier cardEffectApplier,
-        StaffManager staffManager)
+        StaffManager staffManager,
+        IStoryFlowService storyFlow,
+        IDayEventService dayEventService)
     {
         _levelPresenter = levelPresenter;
         _dayProgressService = dayProgressService;
@@ -33,6 +37,8 @@ public class GameInitiator : IStartable
         _soundService = soundService;
         _cardEffectApplier = cardEffectApplier;
         _staffManager = staffManager;
+        _storyFlow = storyFlow;
+        _dayEventService = dayEventService;
     }
 
     public async void Start()
@@ -45,12 +51,14 @@ public class GameInitiator : IStartable
         await _dayNightService.Initialize();
 
         int currentDay = _accountService.Account.CurrentDay;
-        _dayProgressService.StartDay(currentDay);
 
         await _levelPresenter.LoadLevelContext(1);
-
         await _cardEffectApplier.ApplyAllPurchasedCards();
 
+        _dayEventService.Initialize(currentDay);
+        await _storyFlow.ShowStoryForDayAsync(currentDay);
+
+        _dayProgressService.StartDay(currentDay);
         _customerService.Initialize();
         _staffManager.Initialize();
 

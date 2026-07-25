@@ -15,4 +15,5 @@ public interface ILevelContextPresenter
 
     UniTask LoadLevelContext(int levelNumber);
     UniTask AddTableFromEffect(TableAdditionEffect effect);
+    void SetRain(bool on);
 }

@@ -22,6 +22,8 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<IShopService, ShopService>(Lifetime.Singleton);
         builder.Register<IKitchenStatService, KitchenStatService>(Lifetime.Scoped);
         builder.Register<CardEffectApplier>(Lifetime.Scoped);
+        builder.Register<IStoryFlowService, StoryFlowService>(Lifetime.Scoped);
+        builder.Register<DayEventService>(Lifetime.Singleton).AsImplementedInterfaces();
 
         // Factories
         builder.Register<SpawnFactory>(Lifetime.Singleton);
@@ -42,7 +44,8 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterInstance(new ScenePopupKeys(
             PrefabKeys.PopupCompleted,
             PrefabKeys.PopupCardShop,
-            PrefabKeys.PopupFailed
+            PrefabKeys.PopupFailed,
+            PrefabKeys.PopupStory
         ));
         builder.RegisterEntryPoint<ScenePopupRegistrar>();
         builder.RegisterEntryPoint<GameUIContextPresenter>();

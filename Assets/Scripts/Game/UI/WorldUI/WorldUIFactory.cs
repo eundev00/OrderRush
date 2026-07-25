@@ -2,19 +2,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.AddressableAssets;
+using VContainer;
+using VContainer.Unity;
 
 public class WorldUIFactory
 {
     private readonly RectTransform _canvasRectTransform;
+    private readonly IObjectResolver _container;
     private readonly Dictionary<string, ObjectPool<GameObject>> _pools = new();
     private readonly Dictionary<string, GameObject> _loadedPrefabs = new();
     private const int MaxPoolSize = 20;
 
     public RectTransform CanvasRectTransform => _canvasRectTransform;
 
-    public WorldUIFactory(RectTransform canvasRectTransform)
+    public WorldUIFactory(RectTransform canvasRectTransform, IObjectResolver container)
     {
         _canvasRectTransform = canvasRectTransform;
+        _container = container;
     }
 
     public GameObject Create(string prefabKey)
@@ -62,6 +66,8 @@ public class WorldUIFactory
 
     private GameObject CreateObject(GameObject prefab)
     {
-        return Object.Instantiate(prefab, _canvasRectTransform);
+        var obj = Object.Instantiate(prefab, _canvasRectTransform);
+        _container.InjectGameObject(obj);
+        return obj;
     }
 }
