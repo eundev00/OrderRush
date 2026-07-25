@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24557a6810ac54611a707288499f3dfe, type: 3}
+  m_Name: SlowBurnCard
+  m_EditorClassIdentifier: Assembly-CSharp::CardData
+  CardID: 20
+  CardName: Slow Burn
+  Description: Extends burn time by 10%.
+  Icon: {fileID: 21300000, guid: 0b0f4eb6832ea4c01abb23c79d9a3713, type: 3}
+  Cost: 10
+  PriceIncrement: 10
+  MaxTier: 3
+  Weight: 50
+  IsOneDayOnly: 0
+  Effect: {fileID: 11400000, guid: 3046ea072d1eefc49a6284d8508cb28a, type: 2}

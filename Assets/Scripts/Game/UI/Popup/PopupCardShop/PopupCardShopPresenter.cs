@@ -1,5 +1,8 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UniRx;
+using UnityEngine;
+using UnityEngine.U2D;
 
 public class PopupCardShopPresenter : PopupPresenterBase
 {
@@ -8,42 +11,55 @@ public class PopupCardShopPresenter : PopupPresenterBase
     private readonly IAccountService _accountService;
     private readonly IDayProgressService _dayProgressService;
     private readonly ISoundService _soundService;
+    private readonly IResourcesLoaderService _resourcesLoader;
 
     public PopupCardShopPresenter(
         PopupCardShop view,
         IShopService shopService,
         IAccountService accountService,
         IDayProgressService dayProgressService,
-        ISoundService soundService) : base(view)
+        ISoundService soundService,
+        IResourcesLoaderService resourcesLoader) : base(view)
     {
         _view = view;
         _shopService = shopService;
         _accountService = accountService;
         _dayProgressService = dayProgressService;
         _soundService = soundService;
+        _resourcesLoader = resourcesLoader;
     }
 
     protected override void OnBind()
     {
         _view.SkipButton.onClick.AddListener(OnSkipButtonClicked);
-        _view.RefreshButton.onClick.AddListener(OnRefreshButtonClicked);
 
         Disposables.Add(Disposable.Create(() =>
         {
             _view.SkipButton.onClick.RemoveListener(OnSkipButtonClicked);
-            _view.RefreshButton.onClick.RemoveListener(OnRefreshButtonClicked);
         }));
     }
 
-    protected override void OnShow()
+    protected override async void OnShow()
     {
-        var randomCards = _shopService.GetRandomCardsForSelection(3);
+        var atlas = await _resourcesLoader.LoadAsync<SpriteAtlas>(AtlasKeys.GetAtlasPath(AtlasKeys.UIAtlas));
+        var offers = _shopService.GetCurrentOffer();
         int currentCoins = _accountService.Account.Coins.Value;
 
-        _view.SetupCards(randomCards, currentCoins, OnCardClicked);
+        var sprites = new List<Sprite>();
+        foreach (var offer in offers)
+        {
+            if (offer != null && !offer.SoldOut && offer.Card != null)
+            {
+                var spriteName = GetSpriteNameFromColor(offer.Color);
+                sprites.Add(atlas.GetSprite(spriteName));
+            }
+            else
+            {
+                sprites.Add(null);
+            }
+        }
 
-        int refreshCost = _shopService.GetRefreshCost();
-        _view.SetupRefreshButton(refreshCost, currentCoins >= refreshCost);
+        _view.SetupOffer(offers, currentCoins, OnCardClicked, sprites);
     }
 
     private async void OnCardClicked(CardData card)
@@ -57,26 +73,21 @@ public class PopupCardShopPresenter : PopupPresenterBase
         }
     }
 
-    private async void OnRefreshButtonClicked()
-    {
-        _soundService.PlaySfx(AudioKeys.commonbutton);
-        var newCards = await _shopService.Refresh();
-        if (newCards == null) return;
-
-        if (View == null)
-            return;
-
-        int currentCoins = _accountService.Account.Coins.Value;
-        _view.SetupCards(newCards, currentCoins, OnCardClicked);
-
-        int refreshCost = _shopService.GetRefreshCost();
-        _view.SetupRefreshButton(refreshCost, currentCoins >= refreshCost);
-    }
-
     private void OnSkipButtonClicked()
     {
         _soundService.PlaySfx(AudioKeys.commonbutton);
         Close();
         _dayProgressService.NextDay();
+    }
+
+    private string GetSpriteNameFromColor(CardColor color)
+    {
+        return color switch
+        {
+            CardColor.Yellow => "CardYellow",
+            CardColor.Green => "CardGreen",
+            CardColor.Blue => "CardBlue",
+            _ => "CardYellow"
+        };
     }
 }

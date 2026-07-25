@@ -1,8 +1,9 @@
 public enum EffectType
 {
-    ToolUpgrade,
+    CookSpeed,
     Menu,
     StaffHire,
     Table,
-    SlowBurn
+    SlowBurn,
+    MoveSpeed,
 }

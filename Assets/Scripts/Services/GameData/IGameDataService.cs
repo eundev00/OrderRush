@@ -14,7 +14,6 @@ public interface IGameDataService
 
     CardData GetCardByID(int cardID);
     List<CardData> GetAllCards();
-    int GetRefreshCost(int refreshCount);
 
     UniTask Initialize();
 }

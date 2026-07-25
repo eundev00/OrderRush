@@ -14,6 +14,8 @@ public class CardItemView : MonoBehaviour
     [NotNull][SerializeField] private Button _buyButton;
     [NotNull][SerializeField] private Button _moreButton;
     [NotNull][SerializeField] private Button _moreCloseButton;
+    [NotNull][SerializeField] private Image _colorFrame;          // 색 프레임 (없으면 색 표시 스킵)
+    [NotNull][SerializeField] private GameObject _soldOutOverlay;  // SOLD OUT 오버레이
 
     private CardData _cardData;
     private Action<CardData> _onCardClicked;
@@ -22,6 +24,7 @@ public class CardItemView : MonoBehaviour
     private void Awake()
     {
         _descView.SetActive(false);
+        _soldOutOverlay.SetActive(false);
     }
 
 
@@ -61,6 +64,54 @@ public class CardItemView : MonoBehaviour
         }
 
         _buyButton.interactable = canPurchase;
+    }
+
+    public void SetupOffer(CardOffer offer, bool canPurchase, Action<CardData> onCardClicked, Sprite backgroundSprite)
+    {
+        bool soldOut = offer == null || offer.SoldOut || offer.Card == null;
+        if (_soldOutOverlay != null)
+            _soldOutOverlay.SetActive(soldOut);
+
+        if (soldOut)
+        {
+            _cardData = null;
+            _onCardClicked = null;
+            _buyButton.interactable = false;
+            return;
+        }
+
+        _cardData = offer.Card;
+        _onCardClicked = onCardClicked;
+
+        _nameText.text = offer.Card.CardName;
+        _descriptionText.text = offer.Card.Description;
+
+        SetBackground(backgroundSprite);
+        SetPrice(offer.Price, canPurchase);
+
+        _buyButton.interactable = canPurchase;
+    }
+
+    private void SetPrice(int price, bool canPurchase)
+    {
+        if (canPurchase)
+        {
+            _costText.text = price.ToString();
+            _costText.gameObject.SetActive(true);
+            _costTextDisabled.gameObject.SetActive(false);
+        }
+        else
+        {
+            _costTextDisabled.text = price.ToString();
+            _costTextDisabled.gameObject.SetActive(true);
+            _costText.gameObject.SetActive(false);
+        }
+    }
+
+    private void SetBackground(Sprite sprite)
+    {
+        if (_colorFrame == null) return;
+        _colorFrame.sprite = sprite;
     }
 
     private void OnBuyButtonClicked()

@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: IconAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 613828a940a444385bc9242edf0b0016, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - 4aab79c093ace49eaa009bfce1066319: 21300000
+    - d4a13c31a1665423790f8149989cf6d8: 21300000
+    - 0be3c4f16f9de416495f6311f2852afd: 21300000
+    - 6e27bcc5d207040f380cd932b1446ee1: 21300000
+    - 0b0f4eb6832ea4c01abb23c79d9a3713: 21300000
+    - 6fa2b8083e3104bf2860cfe72ea914fc: 21300000
+    - 68b5ab5afb5044d269bd32828ef99b2c: 21300000
+    - 71bb7c1b18b3144c4a379a9af1f057b5: 21300000
+    - 44fac72b77a3944a998fb874bb606355: 21300000
+    - ee8a0d6c9c213428eb39f7089234578a: 21300000
+    - 74a0300fa796f48cab710818fe742b43: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 4aab79c093ace49eaa009bfce1066319, type: 3}
+  - {fileID: 21300000, guid: d4a13c31a1665423790f8149989cf6d8, type: 3}
+  - {fileID: 21300000, guid: 0be3c4f16f9de416495f6311f2852afd, type: 3}
+  - {fileID: 21300000, guid: 6e27bcc5d207040f380cd932b1446ee1, type: 3}
+  - {fileID: 21300000, guid: 0b0f4eb6832ea4c01abb23c79d9a3713, type: 3}
+  - {fileID: 21300000, guid: 6fa2b8083e3104bf2860cfe72ea914fc, type: 3}
+  - {fileID: 21300000, guid: 68b5ab5afb5044d269bd32828ef99b2c, type: 3}
+  - {fileID: 21300000, guid: 71bb7c1b18b3144c4a379a9af1f057b5, type: 3}
+  - {fileID: 21300000, guid: 44fac72b77a3944a998fb874bb606355, type: 3}
+  - {fileID: 21300000, guid: ee8a0d6c9c213428eb39f7089234578a, type: 3}
+  - {fileID: 21300000, guid: 74a0300fa796f48cab710818fe742b43, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - CoffeeIcon
+  - SpeedUpIcon
+  - SteakIcon
+  - Beef_Meat_01_Patty_Ready_256
+  - SlowBurnIcon
+  - FishSteakIcon
+  - Beef_Meat_01_256
+  - CoinIcon
+  - UpgradeIcon
+  - Plate_256
+  - TableIcon
+  m_RenderDataMap: {}
+  m_Tag: IconAtlas
+  m_IsVariant: 0

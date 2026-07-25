@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,21 +7,20 @@ public class PopupCardShop : PopupViewBase
 {
     [NotNull][SerializeField] private CardItemView[] _cardItems;
     [NotNull][SerializeField] private Button _skipButton;
-    [NotNull][SerializeField] private Button _refreshButton;
-    [NotNull][SerializeField] private TMP_Text _refreshCostText;
-
 
     public Button SkipButton => _skipButton;
-    public Button RefreshButton => _refreshButton;
 
-    public void SetupCards(List<CardData> cards, int currentCoins, Action<CardData> onCardClicked)
+    public void SetupOffer(List<CardOffer> offers, int currentCoins, Action<CardData> onCardClicked, List<Sprite> backgroundSprites)
     {
         for (int i = 0; i < _cardItems.Length; i++)
         {
-            if (i < cards.Count)
+            if (i < offers.Count)
             {
-                bool canPurchase = currentCoins >= cards[i].Cost;
-                _cardItems[i].Setup(cards[i], canPurchase, onCardClicked);
+                var offer = offers[i];
+                var sprite = i < backgroundSprites.Count ? backgroundSprites[i] : null;
+                bool canPurchase = offer != null && !offer.SoldOut && offer.Card != null
+                                   && currentCoins >= offer.Price;
+                _cardItems[i].SetupOffer(offer, canPurchase, onCardClicked, sprite);
                 _cardItems[i].gameObject.SetActive(true);
             }
             else
@@ -30,11 +28,5 @@ public class PopupCardShop : PopupViewBase
                 _cardItems[i].gameObject.SetActive(false);
             }
         }
-    }
-
-    public void SetupRefreshButton(int cost, bool canAfford)
-    {
-        _refreshCostText.text = $"{cost}";
-        _refreshButton.interactable = canAfford;
     }
 }

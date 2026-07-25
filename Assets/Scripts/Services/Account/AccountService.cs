@@ -107,11 +107,10 @@ public class AccountService : IAccountService, IDisposable
 
     public void AddPurchasedCard(int cardID)
     {
-        if (!Account.PurchasedCardIDs.Contains(cardID))
-        {
-            Account.PurchasedCardIDs.Add(cardID);
-            Save();
-        }
+        // 중복 허용: 같은 카드를 반복 구매하면 여러 번 기록된다.
+        // 보유수(단계) = 리스트 내 등장 횟수. ApplyAllPurchasedCards 가 등장 횟수만큼 재적용 → 버프 누적/테이블 N개.
+        Account.PurchasedCardIDs.Add(cardID);
+        Save();
     }
 
     public List<int> GetPurchasedCardIDs()

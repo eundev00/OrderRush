@@ -15,8 +15,10 @@ MonoBehaviour:
   CardID: 1
   CardName: 2-Seat Table
   Description: Add one 2-seat table to your restauran
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 74a0300fa796f48cab710818fe742b43, type: 3}
   Cost: 10
+  PriceIncrement: 10
+  MaxTier: 4
   Weight: 70
-  IsExpiring: 0
+  IsOneDayOnly: 0
   Effect: {fileID: 11400000, guid: ceb5861f71fc44271bad996e370f62b5, type: 2}

@@ -21,11 +21,21 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 795a3fb95ee1846ff88045d988dd0838
+    m_Address: Assets/Art/Images/UIAtlas.spriteatlas
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8e10a60227c874f5a89858f4297581b2
     m_Address: Assets/Prefabs
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b510d4182eef34fa99a8929518dfbba4
+    m_Address: Assets/Art/Images/IconAtlas.spriteatlas
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ba48052e36f414ea2b0888ebf200b915
     m_Address: Assets/Audio

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
 public class CardEffectApplier
@@ -25,17 +26,26 @@ public class CardEffectApplier
     public async UniTask ApplyAllPurchasedCards()
     {
         var purchasedIDs = _accountService.GetPurchasedCardIDs();
+        var tierCounts = new Dictionary<int, int>();
+
         foreach (var id in purchasedIDs)
         {
-            var card = _gameDataService.GetCardByID(id);
+            if (!tierCounts.ContainsKey(id))
+                tierCounts[id] = 0;
+            tierCounts[id]++;
+        }
+
+        foreach (var kvp in tierCounts)
+        {
+            var card = _gameDataService.GetCardByID(kvp.Key);
             if (card != null)
             {
-                await ApplyEffect(card.Effect);
+                await ApplyEffect(card.Effect, kvp.Value);
             }
         }
     }
 
-    public async UniTask ApplyEffect(CardEffectData effect)
+    public async UniTask ApplyEffect(CardEffectData effect, int tier = 1)
     {
         switch (effect.EffectType)
         {
@@ -45,14 +55,14 @@ public class CardEffectApplier
             case EffectType.Menu:
                 ApplyMenuUnlock((MenuEffect)effect);
                 break;
-            case EffectType.ToolUpgrade:
-                ApplyUpgrade((UpgradeEffect)effect);
+            case EffectType.CookSpeed:
+                ApplyUpgrade((UpgradeEffect)effect, tier);
                 break;
             case EffectType.StaffHire:
                 await ApplyStaffHire((StaffEffect)effect);
                 break;
             case EffectType.SlowBurn:
-                ApplySlowBurnExtend((SlowBurnEffect)effect);
+                ApplySlowBurnExtend((SlowBurnEffect)effect, tier);
                 break;
         }
     }
@@ -70,13 +80,15 @@ public class CardEffectApplier
         _accountService.AddOwnedRecipe(effect.Recipe.RecipeID);
     }
 
-    private void ApplyUpgrade(UpgradeEffect effect)
+    private void ApplyUpgrade(UpgradeEffect effect, int tier)
     {
-        _kitchenStatService.AddDurationReduce(effect.DurationReducePercent);
+        float value = effect.BaseDurationReducePercent + (tier - 1) * effect.DurationReducePercentPerTier;
+        _kitchenStatService.AddDurationReduce(value);
     }
 
-    private void ApplySlowBurnExtend(SlowBurnEffect effect)
+    private void ApplySlowBurnExtend(SlowBurnEffect effect, int tier)
     {
-        _kitchenStatService.AddSlowBurn(effect.ExtendPercent);
+        float value = effect.BaseExtendPercent + (tier - 1) * effect.ExtendPercentPerTier;
+        _kitchenStatService.AddSlowBurn(value);
     }
 }

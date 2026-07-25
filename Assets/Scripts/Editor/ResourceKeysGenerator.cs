@@ -67,6 +67,26 @@ public class ResourceKeysGenerator
         EditorUtility.ClearProgressBar();
     }
 
+    [MenuItem("Tools/ResourceKeysGenerator/CreateAtlasKeys", priority = 3)]
+    public static void CreateAtlasKeys()
+    {
+        EditorUtility.DisplayProgressBar("CreateAtlasKeys", "Working...", 1f);
+        Thread.Sleep(1000);
+
+        try
+        {
+            var path = "Assets/Scripts/Services/ResourceService/AtlasKeys.cs";
+            var contents = CreateAtlasKeyContents();
+            File.WriteAllText(path, contents);
+        }
+        catch (Exception e)
+        {
+            UnityEngine.Debug.LogError(e);
+        }
+
+        EditorUtility.ClearProgressBar();
+    }
+
     private static string CreatePrefabKeyContents()
     {
         var assetGuids = AssetDatabase.FindAssets("t:prefab", new string[] { "Assets/Prefabs", "Assets/Resources" });
@@ -214,5 +234,45 @@ public class ResourceKeysGenerator
             return "Recipe_" + fileName;
         else
             return fileName; // Stage 등 나머지는 접두사 없이
+    }
+
+    private static string CreateAtlasKeyContents()
+    {
+        var assetGuids = AssetDatabase.FindAssets("t:SpriteAtlas", new string[] { "Assets/Art/Images" });
+        string[] assetPathList = Array.ConvertAll<string, string>(assetGuids, AssetDatabase.GUIDToAssetPath);
+
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine("using System.Collections.Generic;");
+        sb.AppendLine("");
+        sb.AppendLine("public static class AtlasKeys");
+        sb.AppendLine("{");
+
+        foreach (var assetPath in assetPathList)
+        {
+            var fileName = Path.GetFileNameWithoutExtension(assetPath);
+            sb.AppendLine($"    public const string {fileName} = \"{fileName}\";");
+        }
+
+        sb.AppendLine("");
+        sb.AppendLine("    public static Dictionary<string, string> AtlasPaths = new Dictionary<string, string>()");
+        sb.AppendLine("    {");
+
+        foreach (var assetPath in assetPathList)
+        {
+            var fileName = Path.GetFileNameWithoutExtension(assetPath);
+            sb.AppendLine("        { " + fileName + ", \"" + assetPath + "\" },");
+        }
+
+        sb.AppendLine("    };");
+        sb.AppendLine("");
+        sb.AppendLine("    public static string GetAtlasPath(string tag)");
+        sb.AppendLine("    {");
+        sb.AppendLine("        if (AtlasPaths.TryGetValue(tag, out var path))");
+        sb.AppendLine("            return path;");
+        sb.AppendLine("        return string.Empty;");
+        sb.AppendLine("    }");
+        sb.AppendLine("}");
+
+        return sb.ToString();
     }
 }

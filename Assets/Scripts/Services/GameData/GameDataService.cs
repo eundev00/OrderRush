@@ -59,5 +59,4 @@ public class GameDataService : IGameDataService
 
     public List<CardData> GetAllCards() => Cards.Cards;
 
-    public int GetRefreshCost(int refreshCount) => Config.GetRefreshCost(refreshCount);
 }
