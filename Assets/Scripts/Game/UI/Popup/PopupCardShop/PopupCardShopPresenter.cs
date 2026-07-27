@@ -9,24 +9,24 @@ public class PopupCardShopPresenter : PopupPresenterBase
     private readonly PopupCardShop _view;
     private readonly IShopService _shopService;
     private readonly IAccountService _accountService;
-    private readonly IDayProgressService _dayProgressService;
     private readonly ISoundService _soundService;
     private readonly IResourcesLoaderService _resourcesLoader;
+    private readonly IDayProgressService _dayProgressService;
 
     public PopupCardShopPresenter(
         PopupCardShop view,
         IShopService shopService,
         IAccountService accountService,
-        IDayProgressService dayProgressService,
         ISoundService soundService,
-        IResourcesLoaderService resourcesLoader) : base(view)
+        IResourcesLoaderService resourcesLoader,
+        IDayProgressService dayProgressService) : base(view)
     {
         _view = view;
         _shopService = shopService;
         _accountService = accountService;
-        _dayProgressService = dayProgressService;
         _soundService = soundService;
         _resourcesLoader = resourcesLoader;
+        _dayProgressService = dayProgressService;
     }
 
     protected override void OnBind()
@@ -69,7 +69,6 @@ public class PopupCardShopPresenter : PopupPresenterBase
         if (success)
         {
             Close();
-            _dayProgressService.NextDay();
         }
     }
 
@@ -77,7 +76,12 @@ public class PopupCardShopPresenter : PopupPresenterBase
     {
         _soundService.PlaySfx(AudioKeys.commonbutton);
         Close();
-        _dayProgressService.NextDay();
+    }
+
+    protected override async void OnClose()
+    {
+        await UniTask.Delay(System.TimeSpan.FromSeconds(1.5f));
+        _dayProgressService.StartDayTimer();
     }
 
     private string GetSpriteNameFromColor(CardColor color)

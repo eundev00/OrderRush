@@ -5813,7 +5813,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1184253576089561925}
   m_Layer: 0
-  m_Name: OutFloor
+  m_Name: OutGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6223,7 +6223,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5812873038614214681}
   m_Layer: 0
-  m_Name: Floor
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

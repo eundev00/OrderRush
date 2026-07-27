@@ -45,11 +45,14 @@ public class PopupCompletedPresenter : PopupPresenterBase<int>
     {
         _soundService.PlaySfx(AudioKeys.commonbutton);
 
-        int enteringDay = _dayProgressService.CurrentDayContext.DayNumber + 1;
+        Close();
+
+        _dayProgressService.SetNextDay();
+
+        int enteringDay = _dayProgressService.CurrentDayContext.DayNumber;
         await _storyFlow.ShowStoryForDayAsync(enteringDay);
 
         _popupService.Open<PopupCardShopPresenter>(PrefabKeys.PopupCardShop).Forget();
-        Close();
     }
 
     private void OnExitButtonClicked()

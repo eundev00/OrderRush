@@ -18,8 +18,9 @@ public class PlayerCharacter : CharacterBase
         _subscription = bag.Build();
     }
 
-    void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         _subscription?.Dispose();
     }
 

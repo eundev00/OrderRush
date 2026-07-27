@@ -459,21 +459,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'New TextNew TextNew TextNew Text
-
-    New TextNew TextNew TextNew Text
-
-
-    New
-    TextNew TextNew TextNew Text
-
-    New TextNew TextNew TextNew Text
-
-    New TextNew
-    TextNew TextNew TextNew TextNew TextNew TextNew Text
-
-    New TextNew TextNew
-    TextNew Text'
+  m_text: First day of business.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 714c26cf9ecd04d48900c5204ab35e02, type: 2}
   m_sharedMaterial: {fileID: -8317124342536347994, guid: 714c26cf9ecd04d48900c5204ab35e02, type: 2}
@@ -558,8 +544,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
   m_IgnoreLayout: 0
-  m_MinWidth: 200
-  m_MinHeight: 100
+  m_MinWidth: 400
+  m_MinHeight: 150
   m_PreferredWidth: -1
   m_PreferredHeight: -1
   m_FlexibleWidth: -1

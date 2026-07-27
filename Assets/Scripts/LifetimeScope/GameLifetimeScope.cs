@@ -35,6 +35,10 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<GameInitiator>();
         builder.RegisterEntryPoint<PlayerInputHandler>();
 
+        // TargetIndicator
+        builder.RegisterComponentInHierarchy<TargetIndicator>()
+               .AsImplementedInterfaces();
+
         // HUD
         builder.RegisterComponentInHierarchy<HudView>();
         builder.RegisterEntryPoint<HudPresenter>();

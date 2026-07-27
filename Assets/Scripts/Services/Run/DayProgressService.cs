@@ -56,11 +56,11 @@ public class DayProgressService : IDayProgressService, IUpdatable
         }
     }
 
-    public void StartDay(int dayNumber)
+    public void InitDay(int dayNumber)
     {
         if (_currentDaysData == null)
         {
-            Debug.LogError("[DayProgressService] StartDay failed: _currentDaysData is null. Re-initializing...");
+            Debug.LogError("[DayProgressService] InitDay failed: _currentDaysData is null. Re-initializing...");
             _currentDaysData = _gameDataService.Days;
 
             if (_currentDaysData == null)
@@ -72,6 +72,11 @@ public class DayProgressService : IDayProgressService, IUpdatable
 
         _currentDayContext.DayNumber = dayNumber;
         _currentDayContext.TimeBarDuration = _currentDaysData.GetTimeBarDuration(dayNumber);
+        _isDayActive = true;
+    }
+
+    public void StartDayTimer()
+    {
         _isDayActive = true;
     }
 
@@ -125,14 +130,15 @@ public class DayProgressService : IDayProgressService, IUpdatable
         _isDayActive = true;
     }
 
-    public void NextDay()
+    public void SetNextDay()
     {
-        Debug.Log($"[DayProgressService] NextDay() - instance: {GetHashCode()}");
+        Debug.Log($"[DayProgressService] SetNextDay() - instance: {GetHashCode()}");
         if (_currentDayContext == null)
             return;
 
         int nextDayNumber = _currentDayContext.DayNumber + 1;
-        StartDay(nextDayNumber);
+        InitDay(nextDayNumber);
+        _isDayActive = false;
 
         _currentDayContext.TimeBarElapsed.Value = 0f;
         _currentDayContext.EarnedCoins.Value = 0;

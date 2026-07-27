@@ -32,7 +32,7 @@ public class SoundService : ISoundService, IDisposable
     private CancellationTokenSource _bgmFadeCts;
     private string _currentBgmKey;
 
-    private float _bgmVolume = 0.2f;
+    private float _bgmVolume = 0.4f;
     private float _sfxVolume = 0.4f;
     private bool _muted;
     private bool _initialized;
@@ -94,8 +94,8 @@ public class SoundService : ISoundService, IDisposable
             return;
         }
 
-        var bgmGroups = _mixer.FindMatchingGroups("BGM");
-        var sfxGroups = _mixer.FindMatchingGroups("SFX");
+        var bgmGroups = _mixer.FindMatchingGroups("Bgm");
+        var sfxGroups = _mixer.FindMatchingGroups("Sfx");
         _bgmGroup = bgmGroups.Length > 0 ? bgmGroups[0] : null;
         _sfxGroup = sfxGroups.Length > 0 ? sfxGroups[0] : null;
     }

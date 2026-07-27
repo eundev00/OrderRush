@@ -9,10 +9,11 @@ public interface IDayProgressService
     DaysData CurrentDaysData { get; }
 
     UniTask Initialize();
-    void StartDay(int dayNumber);
+    void InitDay(int dayNumber);
+    void StartDayTimer();
     void CompleteDay();
     void FailDay();
     void RestartDay();
-    void NextDay();
+    void SetNextDay();
     void CompleteRun();
 }

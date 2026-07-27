@@ -4,6 +4,8 @@ using UnityEngine;
 public class StoryDayData
 {
     [SerializeField] private int _dayNumber;
+
+    [TextArea(1, 10)]
     [SerializeField] private string _storyText;
     [SerializeField] private DayEventData _event = new();
 

@@ -58,7 +58,7 @@ public class GameInitiator : IStartable
         _dayEventService.Initialize(currentDay);
         await _storyFlow.ShowStoryForDayAsync(currentDay);
 
-        _dayProgressService.StartDay(currentDay);
+        _dayProgressService.InitDay(currentDay);
         _customerService.Initialize();
         _staffManager.Initialize();
 

@@ -21,19 +21,29 @@ MonoBehaviour:
   _daysInterval: 3
   _storyDays:
   - _dayNumber: 1
-    _storyText: Fresh out of culinary school, I sank every last coin into this run-down
-      diner. First day of business.
-    _mood: 
+    _storyText: Fresh out of culinary school, \nI sank every last coin into a small
+      diner in town. \n\nNo turning back now, \nit's finally mine. \n\nFirst day
+      of business.
     _event:
       _isRainy: 0
   - _dayNumber: 2
-    _storyText: Made it through day one. Still fumbling with everything, but it's
-      starting to click.
-    _mood: 
+    _storyText: Made it through day one. \nStill fumbling with everything \nburned
+      a steak, dropped a plate. \n\nBut something's starting to click.
+    _event:
+      _isRainy: 0
+  - _dayNumber: 3
+    _storyText: Familiar faces keep showing up. \n\nI've already got a few I'd call
+      regulars.
     _event:
       _isRainy: 0
   - _dayNumber: 4
-    _storyText: Looks like rain today.
-    _mood: 
+    _storyText: Word is it'll rain today. \nRain always seems to make customers a
+      little more impatient.
     _event:
       _isRainy: 1
+  - _dayNumber: 6
+    _storyText: Word's out that a well-known influencer is stopping by today. \n\nThe
+      kitchen feels a little tenser than usual \nsomething tells me it's going to
+      be a busy one.
+    _event:
+      _isRainy: 0

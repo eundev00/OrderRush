@@ -37,7 +37,8 @@ public abstract class PopupPresenterBase<TArgs, TResult> : IPopupPresenter, IDis
         _closed = true;
 
         OnClose();
-        _view.Hide();
+        if (_view != null)
+            _view.Hide();
         _completion.TrySetResult(result);
     }
 

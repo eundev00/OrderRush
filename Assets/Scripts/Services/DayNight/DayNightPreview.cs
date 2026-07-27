@@ -1,7 +1,6 @@
 
 using UnityEngine;
 
-[ExecuteAlways]
 public class DayNightPreview : MonoBehaviour
 {
     [Header("References")]
