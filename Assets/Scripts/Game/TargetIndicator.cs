@@ -32,13 +32,11 @@ public class TargetIndicator : MonoBehaviour, IInitializable
     [Inject]
     public void Construct(ISubscriber<MoveEvent> moveSubscriber)
     {
-        Debug.Log("[TargetIndicator] Construct 호출됨");
         _moveSubscriber = moveSubscriber;
     }
 
     public void Initialize()
     {
-        Debug.Log("[TargetIndicator] Initialize 호출됨");
         _material = _ring.GetComponent<Renderer>().material;
         _color = _material.HasProperty(BaseColorId)
             ? _material.GetColor(BaseColorId)
@@ -56,7 +54,6 @@ public class TargetIndicator : MonoBehaviour, IInitializable
 
     void Show(Vector3 position)
     {
-        Debug.Log($"[TargetIndicator] Show 호출됨 - position: {position}");
         _sequence?.Kill();
 
         transform.position = position + Vector3.up * _groundOffsetY;

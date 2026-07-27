@@ -240,8 +240,6 @@ public class DiningTable : InteractableBase
 
     public override async UniTask InteractAsync(CharacterBase character, CancellationToken ct)
     {
-        Debug.Log($"[DiningTable] InteractAsync START - character: {character.name}, IsHolding: {character.IsHolding}, IsWaitingFood: {_isWaitingFood}");
-
         if (_seatedCount == 0)
         {
             if (!character.IsHolding)
@@ -282,10 +280,6 @@ public class DiningTable : InteractableBase
             {
                 await ServeFood(character);
             }
-            else
-            {
-                Debug.Log("[DiningTable] Waiting for food. Bring a plate!");
-            }
         }
         else
         {
@@ -294,13 +288,7 @@ public class DiningTable : InteractableBase
             {
                 TakeOrders();
             }
-            else
-            {
-                Debug.Log("[DiningTable] Take orders first!");
-            }
         }
-
-        Debug.Log("[DiningTable] InteractAsync END");
     }
 
     private void TakeOrders()
@@ -315,18 +303,13 @@ public class DiningTable : InteractableBase
                 seat.CurrentCustomer.EnqueueTakeOrder();
             }
         }
-
-        Debug.Log("[DiningTable] Switched to waiting for food. Gauge reset.");
     }
 
     private async UniTask ServeFood(CharacterBase character)
     {
         var plate = character.CurrentCarriable as Plate;
         if (plate == null)
-        {
-            Debug.LogWarning("[DiningTable] No plate to serve");
             return;
-        }
 
         if (plate.MatchedRecipeID == -1) return;
 
@@ -347,10 +330,7 @@ public class DiningTable : InteractableBase
         }
 
         if (targetSeat == null)
-        {
-            Debug.Log("[DiningTable] No matching order found for this food");
             return;
-        }
 
         var targetCustomer = targetSeat.CurrentCustomer;
         targetCustomer.IsServed = true;
@@ -359,9 +339,6 @@ public class DiningTable : InteractableBase
 
         await character.PutDown();
         PlacePlate(targetSeat.GetSeatIndex(), plate);
-
-
-        Debug.Log($"[DiningTable] Food served to {targetCustomer.name}");
     }
 
     private bool CheckAllServed()

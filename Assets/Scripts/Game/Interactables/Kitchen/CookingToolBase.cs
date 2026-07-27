@@ -62,7 +62,6 @@ public abstract class CookingToolBase : InteractableBase
             return;
         }
 
-        Debug.Log($"[CookingToolBase] PlaceIngredient - Ingredient: {(ingredient != null ? ingredient.IngredientName : "null")}, IngredientObject: {ingredientObject}");
         CurrentIngredientObject = ingredientObject;
         ingredientObject.SetData(ingredient);
     }
@@ -71,7 +70,6 @@ public abstract class CookingToolBase : InteractableBase
     {
         if (HasIngredient)
         {
-            Debug.Log($"[CookingToolBase] RemoveIngredient - Removing: {CurrentIngredientObject} (Data: {CurrentIngredientData})");
             StopCooking();
             CurrentIngredientObject = null;
         }
@@ -150,13 +148,11 @@ public abstract class CookingToolBase : InteractableBase
 
     protected async UniTask CompleteTransition(IngredientTransition transition)
     {
-        Debug.Log($"[CookingToolBase] CompleteTransition - Before: {CurrentIngredientObject}, Transition to: {transition.Result.IngredientName}");
         Destroy(CurrentIngredientObject.gameObject);
         CurrentIngredientObject = await _factory.Create<IngredientObject>(PrefabKeys.GetPrefabPath(transition.Result.PrefabName));
         CurrentIngredientObject.SetData(transition.Result);
         CurrentIngredientObject.transform.SetParent(_ingredientSlot);
         CurrentIngredientObject.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-        Debug.Log($"[CookingToolBase] CompleteTransition - After: {CurrentIngredientObject} (Data: {CurrentIngredientData})");
 
     }
 }

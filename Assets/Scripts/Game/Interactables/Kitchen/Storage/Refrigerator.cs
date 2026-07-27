@@ -27,26 +27,14 @@ public class Refrigerator : InteractableBase
     public override async UniTask InteractAsync(CharacterBase character, CancellationToken ct)
     {
         if (character == null)
-        {
-            Debug.LogWarning("Character is null");
             return;
-        }
 
-        // 이미 들고 있으면 무시
         if (character.IsHolding)
-        {
-            Debug.Log($"{character.name} is already holding an item");
             return;
-        }
 
-        // 재료가 없으면 무시
         if (IsEmpty)
-        {
-            Debug.Log("No ingredients available");
             return;
-        }
 
-        // Prefab 유효성 검사
         if (_ingredient == null)
         {
             Debug.LogError("IngredientData or Prefab is not assigned!");
@@ -88,11 +76,8 @@ public class Refrigerator : InteractableBase
 
     void OnTriggerExit(Collider other)
     {
-        Debug.Log($"[Refrigerator] OnTriggerExit - Object: {other.name}, Tag: {other.tag}, _isDoorOpen: {_isDoorOpen}");
-
         if (other.CompareTag("Player") && _isDoorOpen)
         {
-            Debug.Log("[Refrigerator] Closing door animation");
             CloseDoorAnimation();
         }
     }

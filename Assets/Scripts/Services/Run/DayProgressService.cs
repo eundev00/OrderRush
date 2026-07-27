@@ -132,7 +132,6 @@ public class DayProgressService : IDayProgressService, IUpdatable
 
     public void SetNextDay()
     {
-        Debug.Log($"[DayProgressService] SetNextDay() - instance: {GetHashCode()}");
         if (_currentDayContext == null)
             return;
 

@@ -62,13 +62,11 @@ public abstract class CharacterBase : MonoBehaviour
 
             await UniTask.Delay(TimeSpan.FromSeconds(length * 0.5f));
         }
-        catch (OperationCanceledException ex)
+        catch (OperationCanceledException)
         {
-            Debug.Log($"PickUp canceled: {ex}");
         }
-        catch (System.Exception ex)
+        catch (System.Exception)
         {
-            Debug.Log($" Error during PickUp: {ex}");
         }
     }
 
@@ -85,13 +83,11 @@ public abstract class CharacterBase : MonoBehaviour
             CurrentCarriable = null;
             await UniTask.Delay(TimeSpan.FromSeconds(length * 0.5f));
         }
-        catch (OperationCanceledException ex)
+        catch (OperationCanceledException)
         {
-            Debug.Log($"PutDown canceled: {ex}");
         }
-        catch (System.Exception ex)
+        catch (System.Exception)
         {
-            Debug.Log($" Error during PutDown: {ex}");
         }
 
         return;
@@ -112,13 +108,11 @@ public abstract class CharacterBase : MonoBehaviour
             await UniTask.Delay(TimeSpan.FromSeconds(length));
             return carriedItem;
         }
-        catch (OperationCanceledException ex)
+        catch (OperationCanceledException)
         {
-            Debug.Log($"PutDown canceled: {ex}");
         }
-        catch (System.Exception ex)
+        catch (System.Exception)
         {
-            Debug.Log($" Error during PutDown: {ex}");
         }
 
         return null;
