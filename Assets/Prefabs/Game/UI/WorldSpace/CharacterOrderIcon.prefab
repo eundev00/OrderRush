@@ -84,7 +84,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7296045020244762036}
-  - component: {fileID: 1001969404821381988}
+  - component: {fileID: 175458561446353265}
   m_Layer: 5
   m_Name: CharacterOrderIcon
   m_TagString: Untagged
@@ -112,7 +112,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1001969404821381988
+--- !u!114 &175458561446353265
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8155053830888051423}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4ad2d36956e44367bc9e370c8295ead, type: 3}
+  m_Script: {fileID: 11500000, guid: 34afc7a5c84c94ff4bab6cf72166775b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OrderIconView
-  _iconImage: {fileID: 4032383048741038343}
+  m_EditorClassIdentifier: Assembly-CSharp::OrderBubble
+  _recipeIcon: {fileID: 4032383048741038343}

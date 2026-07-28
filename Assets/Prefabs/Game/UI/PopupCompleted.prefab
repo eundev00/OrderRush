@@ -924,6 +924,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3273a7195dd9243cabfadc9626fc9d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PopupCompleted
+  _dayText: {fileID: 4841085206471583223}
   _earnedText: {fileID: 2040026407301962735}
   _nextButton: {fileID: 9054032369417033185}
   _exitButton: {fileID: 8782981028278458177}

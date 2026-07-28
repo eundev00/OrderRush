@@ -559,11 +559,39 @@ PrefabInstance:
       propertyPath: m_RenderingLayerMask
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5810445226780963600, guid: c5a15f02e419d7a4eb62718f96f0a566, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5810445226780963600, guid: c5a15f02e419d7a4eb62718f96f0a566, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 351bc33280ba6437e9c95c01682c2f88, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5449959551032562373, guid: c5a15f02e419d7a4eb62718f96f0a566, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7259801890899785536}
   m_SourcePrefab: {fileID: 100100000, guid: c5a15f02e419d7a4eb62718f96f0a566, type: 3}
+--- !u!1 &451313871891791875 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5449959551032562373, guid: c5a15f02e419d7a4eb62718f96f0a566, type: 3}
+  m_PrefabInstance: {fileID: 5611844424479412934}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7259801890899785536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451313871891791875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0feb85ec530d4169815d4a47b0ce33d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!4 &939197609009044153 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4677540145266378879, guid: c5a15f02e419d7a4eb62718f96f0a566, type: 3}

@@ -1,6 +1,6 @@
 using UniRx;
 
-public class PopupCompletedPresenter : PopupPresenterBase<int, DayCompletedAction>
+public class PopupCompletedPresenter : PopupPresenterBase<DayCompletedData, DayCompletedAction>
 {
     private readonly PopupCompleted _view;
     private readonly ISoundService _soundService;
@@ -25,9 +25,10 @@ public class PopupCompletedPresenter : PopupPresenterBase<int, DayCompletedActio
         }));
     }
 
-    protected override void OnShow(int earnedCoins)
+    protected override void OnShow(DayCompletedData data)
     {
-        _view.SetEarnedCoins(earnedCoins);
+        _view.SetDayText(data.DayNumber);
+        _view.SetEarnedCoins(data.EarnedCoins);
     }
 
     private void OnNextButtonClicked()

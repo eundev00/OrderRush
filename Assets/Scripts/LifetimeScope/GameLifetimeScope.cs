@@ -32,10 +32,6 @@ public class GameLifetimeScope : LifetimeScope
         // UI Factories
         builder.Register<WorldUIFactory>(Lifetime.Singleton).WithParameter(_gaugeContainer);
 
-        // Initiators
-        builder.RegisterEntryPoint<GameInitiator>();
-        builder.RegisterEntryPoint<PlayerInputHandler>();
-
         // TargetIndicator
         builder.RegisterComponentInHierarchy<TargetIndicator>()
                .AsImplementedInterfaces();
@@ -58,6 +54,10 @@ public class GameLifetimeScope : LifetimeScope
         ));
         builder.RegisterEntryPoint<ScenePopupRegistrar>();
         builder.RegisterEntryPoint<GameUIContextPresenter>();
+
+        // Initiators — ScenePopupRegistrar 이후에 등록 (팝업 등록 완료 후 게임 시작)
+        builder.RegisterEntryPoint<GameInitiator>();
+        builder.RegisterEntryPoint<PlayerInputHandler>();
 
         // Level
         builder.Register<LevelFactory>(Lifetime.Scoped).WithParameter(_root);

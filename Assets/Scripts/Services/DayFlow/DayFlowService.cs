@@ -63,8 +63,10 @@ public class DayFlowService : IDayFlowService
 
     private async UniTask HandleDayCompletedAsync(DayEndedEvent evt)
     {
-        var action = await _popupService.Open<PopupCompletedPresenter, int, DayCompletedAction>(
-            PrefabKeys.PopupCompleted, evt.EarnedCoins);
+        int completedDay = evt.NextDay - 1;
+        var data = new DayCompletedData(completedDay, evt.EarnedCoins);
+        var action = await _popupService.Open<PopupCompletedPresenter, DayCompletedData, DayCompletedAction>(
+            PrefabKeys.PopupCompleted, data);
 
         switch (action)
         {

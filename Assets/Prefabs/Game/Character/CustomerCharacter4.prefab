@@ -505,7 +505,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3013596478375709333}
-  m_LocalRotation: {x: 0.48906028, y: -0, z: -0, w: 0.87225}
+  m_LocalRotation: {x: 0.4694715, y: -0, z: -0, w: 0.8829476}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1298,7 +1298,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3128144813911428784}
@@ -1359,7 +1359,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8471056231960684319}
-  m_LocalRotation: {x: 0.48906028, y: -0, z: -0, w: 0.87225}
+  m_LocalRotation: {x: 0.4694715, y: -0, z: -0, w: 0.8829476}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1443,10 +1443,10 @@ GameObject:
   - component: {fileID: 4592870810119837228}
   - component: {fileID: 7096822151798818518}
   - component: {fileID: 6251384451303262347}
+  - component: {fileID: -7549131210324772757}
   - component: {fileID: 7130702295909915568}
   - component: {fileID: 727480115667940830}
   - component: {fileID: 5503081512564017102}
-  - component: {fileID: -7549131210324772757}
   m_Layer: 7
   m_Name: CustomerCharacter4
   m_TagString: Player
@@ -1509,6 +1509,24 @@ MonoBehaviour:
   _agent: {fileID: 7096822151798818518}
   _normalSpeed: 3.5
   _slowSpeed: 2.5
+--- !u!114 &-7549131210324772757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9123607777838088661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55f1acf7a2d3f4cf0b4bcc25a4dc00be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerCharacter
+  _itemSlot: {fileID: 9201751460429351839}
+  _actionExecutor: {fileID: 7130702295909915568}
+  _mover: {fileID: 6251384451303262347}
+  _animator: {fileID: 727480115667940830}
+  _emoteIcon: {fileID: 6650480549794096062}
+  _orderBubble: {fileID: 414303432098919301}
 --- !u!114 &7130702295909915568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1557,24 +1575,6 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 1.2, z: 0}
---- !u!114 &-7549131210324772757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9123607777838088661}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55f1acf7a2d3f4cf0b4bcc25a4dc00be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CustomerCharacter
-  _itemSlot: {fileID: 9201751460429351839}
-  _actionExecutor: {fileID: 7130702295909915568}
-  _mover: {fileID: 6251384451303262347}
-  _animator: {fileID: 727480115667940830}
-  _emoteIcon: {fileID: 6650480549794096062}
-  _orderBubble: {fileID: 414303432098919301}
 --- !u!1 &9209755007936498989
 GameObject:
   m_ObjectHideFlags: 0

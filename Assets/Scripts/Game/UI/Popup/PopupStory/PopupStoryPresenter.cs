@@ -20,6 +20,7 @@ public class PopupStoryPresenter : PopupPresenterBase<StoryDayData>
 
     protected override void OnShow(StoryDayData day)
     {
+        _view.SetDayNumber(day.DayNumber);
         _view.SetText(day.StoryText);
     }
 
