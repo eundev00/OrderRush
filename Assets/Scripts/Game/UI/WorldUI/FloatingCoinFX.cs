@@ -51,7 +51,6 @@ public class FloatingCoinFX : MonoBehaviour
 
         _coinRect.localPosition = Vector3.zero;
         _coinRect.localRotation = Quaternion.identity;
-        Debug.Log($"[FloatingCoinFX] Animation start - riseHeight: {riseHeight}, starting localPos: {_coinRect.localPosition}");
 
         _sequence = DOTween.Sequence();
 

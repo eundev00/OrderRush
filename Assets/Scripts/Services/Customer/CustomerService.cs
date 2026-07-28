@@ -248,8 +248,6 @@ public class CustomerService : ICustomerService
             return;
         }
 
-        Debug.Log($"[CustomerService] Seating waiting group ({firstGroup.GroupSize} customers) at available table");
-
         for (int i = 0; i < firstGroup.Members.Count; i++)
         {
             var customer = firstGroup.Members[i];

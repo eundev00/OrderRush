@@ -50,6 +50,11 @@ public class CardItemView : MonoBehaviour
         _nameText.text = cardData.CardName;
         _descriptionText.text = cardData.Description;
 
+        if (_iconImage != null && cardData.Icon != null)
+        {
+            _iconImage.sprite = cardData.Icon;
+        }
+
         if (canPurchase)
         {
             _costText.text = cardData.Cost.ToString();
@@ -85,6 +90,11 @@ public class CardItemView : MonoBehaviour
 
         _nameText.text = offer.Card.CardName;
         _descriptionText.text = offer.Card.Description;
+
+        if (_iconImage != null && offer.Card.Icon != null)
+        {
+            _iconImage.sprite = offer.Card.Icon;
+        }
 
         SetBackground(backgroundSprite);
         SetPrice(offer.Price, canPurchase);
