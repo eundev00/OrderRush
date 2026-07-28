@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   CardID: 20
   CardName: Slow Burn
-  Description: Extends burn time by 10%.
+  Description: Cooked food stays safe longer, giving you more time to react.
   Icon: {fileID: 21300000, guid: 0b0f4eb6832ea4c01abb23c79d9a3713, type: 3}
   Cost: 10
   PriceIncrement: 10

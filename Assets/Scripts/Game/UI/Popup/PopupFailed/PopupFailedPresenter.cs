@@ -1,19 +1,15 @@
 using UniRx;
-using UnityEngine.SceneManagement;
 
-public class PopupFailedPresenter : PopupPresenterBase
+public class PopupFailedPresenter : PopupPresenterBaseNoArgs<DayFailedAction>
 {
     private readonly PopupDayFailed _view;
-    private readonly IDayProgressService _dayProgressService;
     private readonly ISoundService _soundService;
 
     public PopupFailedPresenter(
         PopupDayFailed view,
-        IDayProgressService dayProgressService,
         ISoundService soundService) : base(view)
     {
         _view = view;
-        _dayProgressService = dayProgressService;
         _soundService = soundService;
     }
 
@@ -32,15 +28,12 @@ public class PopupFailedPresenter : PopupPresenterBase
     private void OnRestartButtonClicked()
     {
         _soundService.PlaySfx(AudioKeys.commonbutton);
-        Close();
-        _dayProgressService.RestartDay();
+        Close(DayFailedAction.Restart);
     }
 
     private void OnExitButtonClicked()
     {
         _soundService.PlaySfx(AudioKeys.commonbutton);
-        Close();
-        SceneManager.UnloadSceneAsync("GameplayScene");
-        SceneManager.LoadSceneAsync("LobbyScene", LoadSceneMode.Additive);
+        Close(DayFailedAction.Exit);
     }
 }

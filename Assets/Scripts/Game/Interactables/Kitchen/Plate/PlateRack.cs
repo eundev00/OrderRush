@@ -1,5 +1,7 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MessagePipe;
 using UnityEngine;
 using VContainer;
 
@@ -10,14 +12,26 @@ public class PlateRack : InteractableBase
 
     private SpawnFactory _factory;
     private int _currentPlateIndex;
+    private IDisposable _gameCleanupSubscription;
 
     [Inject]
-    public void Construct(SpawnFactory factory)
+    public void Construct(SpawnFactory factory, ISubscriber<GameCleanupEvent> gameCleanupSubscriber)
     {
         _factory = factory;
+        _gameCleanupSubscription = gameCleanupSubscriber.Subscribe(_ => ResetPlates());
     }
 
     void Start()
+    {
+        ResetPlates();
+    }
+
+    void OnDestroy()
+    {
+        _gameCleanupSubscription?.Dispose();
+    }
+
+    private void ResetPlates()
     {
         _currentPlateIndex = _quantity;
         foreach (var plate in _plates)

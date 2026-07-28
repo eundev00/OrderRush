@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: CookSpeedCard
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   CardID: 10
-  CardName: Cook Speed Up
-  Description: Reduces cooking time
+  CardName: Quick Hands
+  Description: Speeds up kitchen tools
   Icon: {fileID: 21300000, guid: 44fac72b77a3944a998fb874bb606355, type: 3}
   Cost: 10
   PriceIncrement: 10

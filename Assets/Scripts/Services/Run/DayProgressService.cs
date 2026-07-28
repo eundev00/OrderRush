@@ -97,6 +97,7 @@ public class DayProgressService : IDayProgressService, IUpdatable
 
     public void CompleteDay()
     {
+        if (!_isDayActive) return;  // 재진입 가드
         _isDayActive = false;
         _currentDayContext.IsCompleted = true;
 
@@ -108,6 +109,7 @@ public class DayProgressService : IDayProgressService, IUpdatable
 
     public void FailDay()
     {
+        if (!_isDayActive) return;  // 재진입 가드
         _isDayActive = false;
         _currentDayContext.IsCompleted = false;
         _dayEndedPublisher.Publish(new DayEndedEvent(

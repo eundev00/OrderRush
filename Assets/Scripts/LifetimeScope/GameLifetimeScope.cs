@@ -23,6 +23,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<IKitchenStatService, KitchenStatService>(Lifetime.Scoped);
         builder.Register<CardEffectApplier>(Lifetime.Scoped);
         builder.Register<IStoryFlowService, StoryFlowService>(Lifetime.Scoped);
+        builder.Register<IDayFlowService, DayFlowService>(Lifetime.Scoped);
         builder.Register<DayEventService>(Lifetime.Singleton).AsImplementedInterfaces();
 
         // Factories
@@ -37,6 +38,10 @@ public class GameLifetimeScope : LifetimeScope
 
         // TargetIndicator
         builder.RegisterComponentInHierarchy<TargetIndicator>()
+               .AsImplementedInterfaces();
+
+        // Camera Director
+        builder.RegisterComponentInHierarchy<CameraDirector>()
                .AsImplementedInterfaces();
 
         // HUD

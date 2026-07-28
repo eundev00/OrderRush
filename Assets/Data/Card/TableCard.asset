@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TableCard
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   CardID: 1
-  CardName: 2-Seat Table
+  CardName: Table
   Description: Add one 2-seat table to your restauran
   Icon: {fileID: 21300000, guid: 74a0300fa796f48cab710818fe742b43, type: 3}
   Cost: 10

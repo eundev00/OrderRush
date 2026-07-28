@@ -1,7 +1,5 @@
-using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using VContainer;
 using VContainer.Unity;
 
 public class GameInitiator : IStartable
@@ -9,42 +7,34 @@ public class GameInitiator : IStartable
     private readonly ILevelContextPresenter _levelPresenter;
     private readonly IDayProgressService _dayProgressService;
     private readonly IDayNightService _dayNightService;
-    private readonly ICustomerService _customerService;
     private readonly IAccountService _accountService;
     private readonly ISoundService _soundService;
     private readonly CardEffectApplier _cardEffectApplier;
-    private readonly StaffManager _staffManager;
-    private readonly IStoryFlowService _storyFlow;
     private readonly IDayEventService _dayEventService;
+    private readonly IDayFlowService _dayFlowService;
 
     public GameInitiator(
         ILevelContextPresenter levelPresenter,
         IDayProgressService dayProgressService,
         IDayNightService dayNightService,
-        ICustomerService customerService,
         IAccountService accountService,
         ISoundService soundService,
         CardEffectApplier cardEffectApplier,
-        StaffManager staffManager,
-        IStoryFlowService storyFlow,
-        IDayEventService dayEventService)
+        IDayEventService dayEventService,
+        IDayFlowService dayFlowService)
     {
         _levelPresenter = levelPresenter;
         _dayProgressService = dayProgressService;
         _dayNightService = dayNightService;
-        _customerService = customerService;
         _accountService = accountService;
         _soundService = soundService;
         _cardEffectApplier = cardEffectApplier;
-        _staffManager = staffManager;
-        _storyFlow = storyFlow;
         _dayEventService = dayEventService;
+        _dayFlowService = dayFlowService;
     }
 
     public async void Start()
     {
-        Debug.Log($"[GameInitiator] Start() called - DayProgressService instance: {_dayProgressService.GetHashCode()}");
-
         _soundService.PlayBgm(AudioKeys.Bgm4);
 
         await _dayProgressService.Initialize();
@@ -56,12 +46,7 @@ public class GameInitiator : IStartable
         await _cardEffectApplier.ApplyAllPurchasedCards();
 
         _dayEventService.Initialize(currentDay);
-        await _storyFlow.ShowStoryForDayAsync(currentDay);
 
-        _dayProgressService.InitDay(currentDay);
-        _customerService.Initialize();
-        _staffManager.Initialize();
-
-        Debug.Log("GameInitiator: Game initialized!");
+        await _dayFlowService.RunFirstDayAsync(currentDay);
     }
 }
