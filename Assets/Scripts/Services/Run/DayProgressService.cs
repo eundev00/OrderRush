@@ -40,11 +40,14 @@ public class DayProgressService : IDayProgressService, IUpdatable
 
     public async UniTask Initialize()
     {
-        Debug.Log($"[DayProgressService] Initialize() - instance: {GetHashCode()}");
         _currentRun = 1;
         _currentDaysData = _gameDataService.Days;
         _updateService.RegisterUpdatable(this);
         _paymentSubscription = _paymentSubscriber.Subscribe(OnPayment);
+
+        _currentDayContext.Reset();
+        _isDayActive = false;
+
         await UniTask.CompletedTask;
     }
 
@@ -72,7 +75,6 @@ public class DayProgressService : IDayProgressService, IUpdatable
 
         _currentDayContext.DayNumber.Value = dayNumber;
         _currentDayContext.TimeBarDuration = _currentDaysData.GetTimeBarDuration(dayNumber);
-        _isDayActive = true;
     }
 
     public void StartDayTimer()
@@ -97,7 +99,7 @@ public class DayProgressService : IDayProgressService, IUpdatable
 
     public void CompleteDay()
     {
-        if (!_isDayActive) return;  // 재진입 가드
+        if (!_isDayActive) return;
         _isDayActive = false;
         _currentDayContext.IsCompleted = true;
 
@@ -109,7 +111,7 @@ public class DayProgressService : IDayProgressService, IUpdatable
 
     public void FailDay()
     {
-        if (!_isDayActive) return;  // 재진입 가드
+        if (!_isDayActive) return;
         _isDayActive = false;
         _currentDayContext.IsCompleted = false;
         _dayEndedPublisher.Publish(new DayEndedEvent(
@@ -125,10 +127,10 @@ public class DayProgressService : IDayProgressService, IUpdatable
 
         _gameCleanupPublisher.Publish(new GameCleanupEvent());
 
-        _currentDayContext.TimeBarElapsed.Value = 0f;
-        _currentDayContext.EarnedCoins.Value = 0;
-        _currentDayContext.SpawnedCustomers.Value = 0;
-        _currentDayContext.IsCompleted = false;
+        int dayNumber = _currentDayContext.DayNumber.Value;
+        _currentDayContext.Reset();
+        _currentDayContext.DayNumber.Value = dayNumber;
+        _currentDayContext.TimeBarDuration = _currentDaysData.GetTimeBarDuration(dayNumber);
         _isDayActive = true;
     }
 
@@ -138,13 +140,8 @@ public class DayProgressService : IDayProgressService, IUpdatable
             return;
 
         int nextDayNumber = _currentDayContext.DayNumber.Value + 1;
+        _currentDayContext.Reset();
         InitDay(nextDayNumber);
-        _isDayActive = false;
-
-        _currentDayContext.TimeBarElapsed.Value = 0f;
-        _currentDayContext.EarnedCoins.Value = 0;
-        _currentDayContext.SpawnedCustomers.Value = 0;
-        _currentDayContext.IsCompleted = false;
 
         _gameCleanupPublisher.Publish(new GameCleanupEvent());
     }

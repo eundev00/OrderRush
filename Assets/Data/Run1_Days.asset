@@ -32,15 +32,15 @@ MonoBehaviour:
     _event:
       _isRainy: 0
   - _dayNumber: 3
-    _storyText: Familiar faces keep showing up. \n\nI've already got a few I'd call
-      regulars.
-    _event:
-      _isRainy: 0
-  - _dayNumber: 4
     _storyText: Word is it'll rain today. \nRain always seems to make customers a
       little more impatient.
     _event:
       _isRainy: 1
+  - _dayNumber: 4
+    _storyText: Familiar faces keep showing up. \n\nI've already got a few I'd call
+      regulars.
+    _event:
+      _isRainy: 0
   - _dayNumber: 6
     _storyText: Word's out that a well-known influencer is stopping by today. \n\nThe
       kitchen feels a little tenser than usual \nsomething tells me it's going to

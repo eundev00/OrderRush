@@ -29,6 +29,10 @@ public class DayFlowService : IDayFlowService
 
     public async UniTask RunFirstDayAsync(int dayNumber)
     {
+        _dayProgressService.InitDay(dayNumber);
+        _customerService.Initialize();
+        _staffManager.Initialize();
+
         try
         {
             await _storyFlowService.ShowStoryForDayAsync(dayNumber);
@@ -39,9 +43,7 @@ public class DayFlowService : IDayFlowService
             return;
         }
 
-        _dayProgressService.InitDay(dayNumber);
-        _customerService.Initialize();
-        _staffManager.Initialize();
+        _dayProgressService.StartDayTimer();
     }
 
     public async UniTask HandleDayEndedAsync(DayEndedEvent evt)

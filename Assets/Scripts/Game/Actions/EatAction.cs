@@ -34,7 +34,10 @@ public class EatAction : IGameAction
                 // TODO: 실제로는 CustomerCharacterData.GivesTip 확인 필요
                 bool hasTip = false;
 
+                var headPosition = _customer.transform.position + Vector3.up * 2f;
+
                 var coinObj1 = _worldUIFactory.Create(PrefabKeys.FloatingCoinFX);
+                coinObj1.transform.position = headPosition;
                 var coinFX1 = coinObj1.GetComponent<FloatingCoinFX>();
                 var task1 = coinFX1.PlayAnimation(ct);
 
@@ -45,6 +48,7 @@ public class EatAction : IGameAction
                     await UniTask.Delay(TimeSpan.FromSeconds(0.2f), cancellationToken: ct);
 
                     var coinObj2 = _worldUIFactory.Create(PrefabKeys.FloatingCoinFX);
+                    coinObj2.transform.position = headPosition;
                     var coinFX2 = coinObj2.GetComponent<FloatingCoinFX>();
                     var task2 = coinFX2.PlayAnimation(ct);
 

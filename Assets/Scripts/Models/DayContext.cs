@@ -11,5 +11,14 @@ namespace OrderRush.Models
         public ReactiveProperty<int> SpawnedCustomers { get; } = new(0);
         public bool IsCompleted { get; set; }
 
+        public void Reset()
+        {
+            DayNumber.Value = 0;
+            TimeBarElapsed.Value = 0f;
+            TimeBarDuration = 0f;
+            EarnedCoins.Value = 0;
+            SpawnedCustomers.Value = 0;
+            IsCompleted = false;
+        }
     }
 }
