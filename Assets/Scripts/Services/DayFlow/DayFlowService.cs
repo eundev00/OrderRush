@@ -99,7 +99,7 @@ public class DayFlowService : IDayFlowService
     private async UniTask StartNextDayAsync()
     {
         _dayProgressService.SetNextDay();
-        int enteringDay = _dayProgressService.CurrentDayContext.DayNumber;
+        int enteringDay = _dayProgressService.CurrentDayContext.DayNumber.Value;
 
         await _storyFlowService.ShowStoryForDayAsync(enteringDay);
         await _popupService.Open<PopupCardShopPresenter>(PrefabKeys.PopupCardShop);

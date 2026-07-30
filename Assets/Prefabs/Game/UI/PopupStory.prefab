@@ -54,12 +54,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
   m_Padding:
-    m_Left: 40
-    m_Right: 40
+    m_Left: 50
+    m_Right: 50
     m_Top: 20
     m_Bottom: 15
   m_ChildAlignment: 4
-  m_Spacing: 5
+  m_Spacing: 15
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -393,7 +393,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PopupStoryView
   _dayText: {fileID: 1932646112117679692}
-  _storyText: {fileID: 1932646112117679692}
+  _storyText: {fileID: 2830658436095597547}
   _continueButton: {fileID: 9033485346786191005}
 --- !u!1 &3449929231486654580
 GameObject:

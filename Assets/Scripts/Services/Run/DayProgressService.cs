@@ -70,7 +70,7 @@ public class DayProgressService : IDayProgressService, IUpdatable
             }
         }
 
-        _currentDayContext.DayNumber = dayNumber;
+        _currentDayContext.DayNumber.Value = dayNumber;
         _currentDayContext.TimeBarDuration = _currentDaysData.GetTimeBarDuration(dayNumber);
         _isDayActive = true;
     }
@@ -102,7 +102,7 @@ public class DayProgressService : IDayProgressService, IUpdatable
         _currentDayContext.IsCompleted = true;
 
         _dayEndedPublisher.Publish(new DayEndedEvent(
-            _currentDayContext.DayNumber + 1,
+            _currentDayContext.DayNumber.Value + 1,
             true,
             _currentDayContext.EarnedCoins.Value));
     }
@@ -113,7 +113,7 @@ public class DayProgressService : IDayProgressService, IUpdatable
         _isDayActive = false;
         _currentDayContext.IsCompleted = false;
         _dayEndedPublisher.Publish(new DayEndedEvent(
-            _currentDayContext.DayNumber,
+            _currentDayContext.DayNumber.Value,
             false,
             _currentDayContext.EarnedCoins.Value));
     }
@@ -137,7 +137,7 @@ public class DayProgressService : IDayProgressService, IUpdatable
         if (_currentDayContext == null)
             return;
 
-        int nextDayNumber = _currentDayContext.DayNumber + 1;
+        int nextDayNumber = _currentDayContext.DayNumber.Value + 1;
         InitDay(nextDayNumber);
         _isDayActive = false;
 

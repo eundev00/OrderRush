@@ -48,7 +48,7 @@ public class CustomerService : ICustomerService
         var currentDay = _dayProgressService.CurrentDayContext;
         var daysData = _dayProgressService.CurrentDaysData;
 
-        int dayNumber = currentDay.DayNumber;
+        int dayNumber = currentDay.DayNumber.Value;
         _timeBarDuration = daysData.GetTimeBarDuration(dayNumber);
         _maxCustomers = daysData.GetMaxCustomers(dayNumber);
 
@@ -94,7 +94,7 @@ public class CustomerService : ICustomerService
         var currentDay = _dayProgressService.CurrentDayContext;
         var daysData = _dayProgressService.CurrentDaysData;
 
-        int dayNumber = currentDay.DayNumber;
+        int dayNumber = currentDay.DayNumber.Value;
         _timeBarDuration = daysData.GetTimeBarDuration(dayNumber);
         _maxCustomers = daysData.GetMaxCustomers(dayNumber);
         _spawnClusterStrength = _gameDataService.Config.DefaultSpawnClusterStrength;

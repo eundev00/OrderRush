@@ -16,7 +16,7 @@ public class DayEventService : IDayEventService, IDisposable
         _dayProgressService = dayProgressService;
         _levelPresenter = levelPresenter;
 
-        cleanup.Subscribe(_ => Apply(_dayProgressService.CurrentDayContext.DayNumber))
+        cleanup.Subscribe(_ => Apply(_dayProgressService.CurrentDayContext.DayNumber.Value))
             .AddTo(_disposable);
     }
 

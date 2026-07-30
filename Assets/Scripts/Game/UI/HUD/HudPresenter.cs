@@ -1,7 +1,4 @@
 using System;
-using System.Threading;
-using Cysharp.Threading.Tasks;
-using MessagePipe;
 using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,7 +9,6 @@ public class HudPresenter : IStartable, IDisposable
     readonly IDayProgressService _dayProgressService;
     readonly IAccountService _accountService;
     readonly ISoundService _soundService;
-    readonly ISubscriber<GameCleanupEvent> _gameCleanupSubscriber;
     readonly HudView _hudView;
     readonly CompositeDisposable _disposable = new();
 
@@ -20,13 +16,11 @@ public class HudPresenter : IStartable, IDisposable
         IDayProgressService dayProgressService,
         IAccountService accountService,
         ISoundService soundService,
-        ISubscriber<GameCleanupEvent> gameCleanupSubscriber,
         HudView hudView)
     {
         _dayProgressService = dayProgressService;
         _accountService = accountService;
         _soundService = soundService;
-        _gameCleanupSubscriber = gameCleanupSubscriber;
         _hudView = hudView;
     }
 
@@ -51,8 +45,18 @@ public class HudPresenter : IStartable, IDisposable
             .Subscribe(coins => _hudView.SetCoin(coins))
             .AddTo(_disposable);
 
-        _gameCleanupSubscriber
-            .Subscribe(_ => UpdateDayInfo())
+        dayContext.DayNumber
+            .Subscribe(dayNumber =>
+            {
+                if (dayNumber <= 0)
+                    return;
+
+                var daysData = _dayProgressService.CurrentDaysData;
+                int maxCustomers = daysData.GetMaxCustomers(dayNumber);
+
+                _hudView.SetDay(dayNumber);
+                _hudView.SetMaxCustomers(maxCustomers);
+            })
             .AddTo(_disposable);
 
         _hudView.SetHomeButtonListener(OnHomeButtonClicked);
@@ -63,22 +67,6 @@ public class HudPresenter : IStartable, IDisposable
         _soundService.PlaySfx(AudioKeys.commonbutton);
         SceneManager.UnloadSceneAsync("GameplayScene");
         SceneManager.LoadSceneAsync("LobbyScene", LoadSceneMode.Additive);
-    }
-
-    private void UpdateDayInfo()
-    {
-        var dayContext = _dayProgressService.CurrentDayContext;
-        var daysData = _dayProgressService.CurrentDaysData;
-
-        int dayNumber = dayContext.DayNumber;
-
-        if (dayNumber <= 0)
-            return;
-
-        int maxCustomers = daysData.GetMaxCustomers(dayNumber);
-
-        _hudView.SetDay(dayNumber);
-        _hudView.SetMaxCustomers(maxCustomers);
     }
 
     public void Dispose()
