@@ -2,9 +2,8 @@ using System;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
 using UniRx;
-using VContainer.Unity;
 
-public class GameUIContextPresenter : IStartable, IDisposable
+public class GameUIContextPresenter : IDisposable
 {
     private readonly GameUIContext _uiContext;
     private readonly ISubscriber<DayEndedEvent> _dayEndedSubscriber;
@@ -24,7 +23,7 @@ public class GameUIContextPresenter : IStartable, IDisposable
         _dayFlowService = dayFlowService;
     }
 
-    public void Start()
+    public void Initialize()
     {
         _popupService.SetCanvasRoot(_uiContext.PopupRoot);
 

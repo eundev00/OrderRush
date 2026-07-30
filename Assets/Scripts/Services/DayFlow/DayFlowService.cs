@@ -112,6 +112,9 @@ public class DayFlowService : IDayFlowService
 
     private void ExitToLobby()
     {
+        _dayProgressService.CompleteRun();
+        _customerService.Dispose();
+
         SceneManager.UnloadSceneAsync("GameplayScene");
         SceneManager.LoadSceneAsync("LobbyScene", LoadSceneMode.Additive);
     }

@@ -40,6 +40,8 @@ public class DayProgressService : IDayProgressService, IUpdatable
 
     public async UniTask Initialize()
     {
+        _paymentSubscription?.Dispose();
+
         _currentRun = 1;
         _currentDaysData = _gameDataService.Days;
         _updateService.RegisterUpdatable(this);

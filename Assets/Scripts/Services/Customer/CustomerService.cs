@@ -45,6 +45,8 @@ public class CustomerService : ICustomerService
 
     public void Initialize()
     {
+        _disposables.Clear();
+
         var currentDay = _dayProgressService.CurrentDayContext;
         var daysData = _dayProgressService.CurrentDaysData;
 

@@ -55,8 +55,8 @@ public class GameDataService : IGameDataService
         return defaultRecipeIDs;
     }
 
-    public CardData GetCardByID(int cardID) => Cards.Cards.Find(c => c.CardID == cardID);
+    public CardData GetCardByID(int cardID) => Cards?.Cards?.Find(c => c.CardID == cardID);
 
-    public List<CardData> GetAllCards() => Cards.Cards;
+    public List<CardData> GetAllCards() => Cards?.Cards ?? new List<CardData>();
 
 }

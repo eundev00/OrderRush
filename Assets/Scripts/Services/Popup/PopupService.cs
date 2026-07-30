@@ -3,23 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 using VContainer;
 
 public class PopupService : IPopupService, IDisposable
 {
-    private const int PopupSortingOrder = 1000; // HUD 등 위에 표시
-    private static readonly Color DimColor = new Color(0f, 0f, 0f, 0.6f);
-
     private readonly IResourcesLoaderService _loader;
 
-    // 키 → 그 팝업 Presenter 가 태어날 부모 스코프.
     private readonly Dictionary<string, IObjectResolver> _catalog = new();
     private readonly List<PopupEntry> _stack = new();
 
     private RectTransform _canvasRoot;
-    private GameObject _host;
-    private GameObject _dim;
     private bool _initialized;
 
     public bool HasOpenPopup => _stack.Count > 0;
@@ -46,18 +39,7 @@ public class PopupService : IPopupService, IDisposable
             return;
         }
 
-        // 기존 자체 생성 Canvas가 있으면 파괴
-        if (_host != null)
-        {
-            UnityEngine.Object.Destroy(_host);
-            _host = null;
-            _dim = null;
-        }
-
         _canvasRoot = canvasRoot;
-
-        if (_dim == null)
-            CreateDim();
     }
 
     public void RegisterPopup(string popupKey, IObjectResolver parent)
@@ -117,13 +99,15 @@ public class PopupService : IPopupService, IDisposable
         }
 
         if (_canvasRoot == null)
-            CreateCanvas();
+        {
+            Debug.LogError("[PopupService] _canvasRoot is null. SetCanvasRoot must be called before Open.");
+            return default;
+        }
 
         var entry = await CreateEntry<TPresenter>(popupKey);
         if (entry == null)
             return default;
 
-        UpdateDim();
         try
         {
             return await show((TPresenter)entry.Presenter);
@@ -131,7 +115,6 @@ public class PopupService : IPopupService, IDisposable
         finally
         {
             CloseEntry(entry);
-            UpdateDim();
         }
     }
 
@@ -203,71 +186,11 @@ public class PopupService : IPopupService, IDisposable
             UnityEngine.Object.Destroy(entry.Go);
     }
 
-    private void UpdateDim()
-    {
-        if (_dim == null)
-            return;
-
-        if (_stack.Count == 0)
-        {
-            _dim.SetActive(false);
-            return;
-        }
-
-        _dim.SetActive(true);
-        _dim.transform.SetAsLastSibling();
-        _stack[_stack.Count - 1].Go.transform.SetAsLastSibling();
-    }
-
-    private void CreateCanvas()
-    {
-        _host = new GameObject("[PopupCanvas]");
-        UnityEngine.Object.DontDestroyOnLoad(_host);
-
-        var canvas = _host.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = PopupSortingOrder;
-
-        // TODO: referenceResolution 은 프로젝트 UI 캔버스 설정에 맞춰 조정.
-        var scaler = _host.AddComponent<CanvasScaler>();
-        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-        scaler.referenceResolution = new Vector2(1920f, 1080f);
-        scaler.matchWidthOrHeight = 0.5f;
-
-        _host.AddComponent<GraphicRaycaster>();
-        _canvasRoot = (RectTransform)_host.transform;
-
-        CreateDim();
-    }
-
-    private void CreateDim()
-    {
-        _dim = new GameObject("Dim", typeof(RectTransform), typeof(Image));
-        var rect = (RectTransform)_dim.transform;
-        rect.SetParent(_canvasRoot, false);
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;
-
-        var img = _dim.GetComponent<Image>();
-        img.color = DimColor;
-        img.raycastTarget = true;
-
-        _dim.SetActive(false);
-    }
-
     public void Dispose()
     {
         CloseAll();
         _stack.Clear();
         _catalog.Clear();
-
-        if (_host != null)
-        {
-            UnityEngine.Object.Destroy(_host);
-            _host = null;
-        }
     }
 
     private sealed class PopupEntry

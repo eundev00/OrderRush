@@ -53,7 +53,7 @@ public class GameLifetimeScope : LifetimeScope
             PrefabKeys.PopupStory
         ));
         builder.RegisterEntryPoint<ScenePopupRegistrar>();
-        builder.RegisterEntryPoint<GameUIContextPresenter>();
+        builder.Register<GameUIContextPresenter>(Lifetime.Scoped);
 
         // Initiators — ScenePopupRegistrar 이후에 등록 (팝업 등록 완료 후 게임 시작)
         builder.RegisterEntryPoint<GameInitiator>();

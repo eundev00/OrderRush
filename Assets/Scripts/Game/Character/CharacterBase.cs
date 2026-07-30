@@ -43,7 +43,7 @@ public abstract class CharacterBase : MonoBehaviour
 
     protected virtual void OnGameCleanup()
     {
-        _currentCarriable.DestroyObject();
+        _currentCarriable?.DestroyObject();
         _currentCarriable = null;
     }
 
