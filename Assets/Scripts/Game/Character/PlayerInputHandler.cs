@@ -84,7 +84,7 @@ public class PlayerInputHandler : ITickable, IDisposable
 
         var ray = _mainCamera.ScreenPointToRay(mouse.position.ReadValue());
 
-        if (Physics.Raycast(ray, out var hit, 100f, RaycastMask))
+        if (Physics.Raycast(ray, out var hit, 100f, RaycastMask, QueryTriggerInteraction.Ignore))
         {
             var interactable = hit.collider.GetComponentInParent<IInteractable>();
             if (interactable != null)
@@ -94,7 +94,7 @@ public class PlayerInputHandler : ITickable, IDisposable
             }
         }
 
-        if (Physics.Raycast(ray, out var groundHit, 100f, _groundLayer))
+        if (Physics.Raycast(ray, out var groundHit, 100f, _groundLayer, QueryTriggerInteraction.Ignore))
         {
             if (NavMesh.SamplePosition(groundHit.point, out var navHit, 1f, NavMesh.AllAreas))
                 _movePublisher.Publish(new MoveEvent(navHit.position));
@@ -111,7 +111,7 @@ public class PlayerInputHandler : ITickable, IDisposable
 
         var ray = _mainCamera.ScreenPointToRay(touch.position.ReadValue());
 
-        if (Physics.Raycast(ray, out var hit, 100f, RaycastMask))
+        if (Physics.Raycast(ray, out var hit, 100f, RaycastMask, QueryTriggerInteraction.Ignore))
         {
             var interactable = hit.collider.GetComponentInParent<IInteractable>();
             if (interactable != null)
@@ -121,7 +121,7 @@ public class PlayerInputHandler : ITickable, IDisposable
             }
         }
 
-        if (Physics.Raycast(ray, out var groundHit, 100f, _groundLayer))
+        if (Physics.Raycast(ray, out var groundHit, 100f, _groundLayer, QueryTriggerInteraction.Ignore))
         {
             if (NavMesh.SamplePosition(groundHit.point, out var navHit, 1f, NavMesh.AllAreas))
                 _movePublisher.Publish(new MoveEvent(navHit.position));
