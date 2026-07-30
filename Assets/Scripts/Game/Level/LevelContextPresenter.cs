@@ -56,7 +56,7 @@ public class LevelContextPresenter : ILevelContextPresenter, IDisposable
             return;
         }
 
-        var table = await _spawnFactory.CreatePersistent<DiningTable>(
+        var table = await _spawnFactory.Create<DiningTable>(
             effect.TablePrefabName,
             spawnPoint.position,
             spawnPoint);

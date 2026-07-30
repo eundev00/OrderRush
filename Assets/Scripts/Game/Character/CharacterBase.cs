@@ -24,6 +24,11 @@ public abstract class CharacterBase : MonoBehaviour
     public Transform ItemSlot => _itemSlot;
     public bool IsExecuting => _actionExecutor.IsExecuting();
 
+    protected virtual void Awake()
+    {
+        _actionExecutor.StartLoop();
+    }
+
     [Inject]
     public void Construct(ISubscriber<DayEndedEvent> dayEndedSubscriber, ISubscriber<GameCleanupEvent> gameCleanupSubscriber)
     {
@@ -38,11 +43,13 @@ public abstract class CharacterBase : MonoBehaviour
 
     protected virtual void OnGameCleanup()
     {
+        _currentCarriable.DestroyObject();
         _currentCarriable = null;
     }
 
     protected virtual void OnDestroy()
     {
+        _actionExecutor.StopLoop();
         _dayEndedSubscription?.Dispose();
         _gameCleanupSubscription?.Dispose();
     }

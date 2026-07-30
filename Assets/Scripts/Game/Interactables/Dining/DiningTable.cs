@@ -68,8 +68,7 @@ public class DiningTable : InteractableBase
         ICustomerService customerService,
         IPublisher<OrderNeededEvent> orderNeededPublisher,
         IPublisher<DirtyPlateEvent> dirtyPlatePublisher,
-        ISubscriber<DayEndedEvent> dayEndedSubscriber,
-        ISubscriber<GameCleanupEvent> gameCleanupSubscriber)
+        ISubscriber<DayEndedEvent> dayEndedSubscriber)
     {
         _dayProgressService = dayProgressService;
         _customerService = customerService;
@@ -78,10 +77,6 @@ public class DiningTable : InteractableBase
 
         dayEndedSubscriber
             .Subscribe(_ => OnDayEnded())
-            .AddTo(_disposables);
-
-        gameCleanupSubscriber
-            .Subscribe(_ => OnGameCleanup())
             .AddTo(_disposables);
     }
 
@@ -102,7 +97,7 @@ public class DiningTable : InteractableBase
         _tableGauge.StopGauge();
     }
 
-    private void OnGameCleanup()
+    protected override void OnGameCleanup()
     {
         _tableGauge.StopGauge();
         _seatedCount = 0;
@@ -111,6 +106,8 @@ public class DiningTable : InteractableBase
 
         for (int i = 0; i < _currentPlates.Count; i++)
         {
+            if (_currentPlates[i] != null)
+                Destroy(_currentPlates[i].gameObject);
             _currentPlates[i] = null;
         }
 

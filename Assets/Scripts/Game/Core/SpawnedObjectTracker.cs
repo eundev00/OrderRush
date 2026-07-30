@@ -13,7 +13,7 @@ public class SpawnedObjectTracker : MonoBehaviour
     {
         if (_factory != null)
         {
-            _factory.OnObjectDestroyed(gameObject);
+            //     _factory.OnObjectDestroyed(gameObject);
         }
     }
 }

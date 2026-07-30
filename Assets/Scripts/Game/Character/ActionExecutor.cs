@@ -9,18 +9,26 @@ public class ActionExecutor : MonoBehaviour
     private readonly Queue<IGameAction> _actionQueue = new();
     public IGameAction CurrentAction { get; private set; }
     private CancellationTokenSource _executionCts;
+    private CancellationTokenSource _loopCts;
     private bool _isExecuting;
 
     public event Action ExecutionCompleted;
 
-    void OnEnable()
+    public void StartLoop()
     {
-        StartExecutionLoop().Forget();
+        if (_loopCts != null) return;
+
+        _loopCts = new CancellationTokenSource();
+        ExecutionLoop(_loopCts.Token).Forget();
     }
 
-    void OnDisable()
+    public void StopLoop()
     {
         Clear();
+
+        _loopCts?.Cancel();
+        _loopCts?.Dispose();
+        _loopCts = null;
     }
 
     public void Enqueue(IGameAction action)
@@ -47,9 +55,9 @@ public class ActionExecutor : MonoBehaviour
         _actionQueue.Clear();
     }
 
-    private async UniTask StartExecutionLoop()
+    private async UniTask ExecutionLoop(CancellationToken loopCt)
     {
-        while (Application.isPlaying)
+        while (!loopCt.IsCancellationRequested)
         {
             if (_actionQueue.Count > 0)
             {
@@ -81,7 +89,7 @@ public class ActionExecutor : MonoBehaviour
                 }
             }
 
-            await UniTask.Yield();
+            await UniTask.Yield(PlayerLoopTiming.Update, loopCt);
         }
     }
 

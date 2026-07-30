@@ -23,6 +23,15 @@ public class DishSink : InteractableBase
         _cookingGauge.Hide();
     }
 
+    protected override void OnGameCleanup()
+    {
+        _cookingGauge.Hide();
+
+        if (_currentPlate != null)
+            Destroy(_currentPlate.gameObject);
+        _currentPlate = null;
+    }
+
 
     public override async UniTask InteractAsync(CharacterBase character, CancellationToken ct)
     {

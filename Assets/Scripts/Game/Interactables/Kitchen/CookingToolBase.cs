@@ -16,18 +16,16 @@ public abstract class CookingToolBase : InteractableBase
     public bool IsCooking { get; protected set; }
     private SpawnFactory _factory;
     protected IGameDataService _gameDataService;
-    private IDisposable _gameCleanupSubscription;
     private IDisposable _dayEndedSubscription;
 
     public IngredientData CurrentIngredientData => CurrentIngredientObject != null ? CurrentIngredientObject.Data : null;
     public bool HasIngredient => CurrentIngredientObject != null;
 
     [Inject]
-    public void Construct(SpawnFactory factory, IGameDataService gameDataService, ISubscriber<GameCleanupEvent> gameCleanupSubscriber, ISubscriber<DayEndedEvent> dayEndedSubscriber)
+    public void Construct(SpawnFactory factory, IGameDataService gameDataService, ISubscriber<DayEndedEvent> dayEndedSubscriber)
     {
         _factory = factory;
         _gameDataService = gameDataService;
-        _gameCleanupSubscription = gameCleanupSubscriber.Subscribe(_ => OnGameCleanup());
         _dayEndedSubscription = dayEndedSubscriber.Subscribe(_ => OnDayEnded());
     }
 
@@ -39,7 +37,6 @@ public abstract class CookingToolBase : InteractableBase
     protected virtual void OnDestroy()
     {
         RemoveIngredient();
-        _gameCleanupSubscription?.Dispose();
         _dayEndedSubscription?.Dispose();
     }
 
@@ -48,9 +45,12 @@ public abstract class CookingToolBase : InteractableBase
         StopCooking();
     }
 
-    protected virtual void OnGameCleanup()
+    protected override void OnGameCleanup()
     {
         StopCooking();
+
+        if (CurrentIngredientObject != null)
+            Destroy(CurrentIngredientObject.gameObject);
         CurrentIngredientObject = null;
     }
 

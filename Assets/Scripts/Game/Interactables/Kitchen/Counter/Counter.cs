@@ -14,6 +14,12 @@ public class Counter : InteractableBase
     public bool HasItem => _placedCarriable != null;
     public ICarriable CurrentItem => _placedCarriable;
 
+    protected override void OnGameCleanup()
+    {
+        _placedCarriable.DestroyObject();
+        _placedCarriable = null;
+    }
+
     public override async UniTask InteractAsync(CharacterBase character, CancellationToken ct)
     {
         if (character == null) return;
