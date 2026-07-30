@@ -5,7 +5,7 @@ using VContainer.Unity;
 public class GameLifetimeScope : LifetimeScope
 {
     [NotNull][SerializeField] Transform _root;
-    [NotNull][SerializeField] RectTransform _gaugeContainer;
+    [NotNull][SerializeField] Transform _worldUIContainer;
     [NotNull][SerializeField] Light _outdoorLight;
     [NotNull][SerializeField] Light _indoorLight;
 
@@ -30,7 +30,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<SpawnFactory>(Lifetime.Singleton);
 
         // UI Factories
-        builder.Register<WorldUIFactory>(Lifetime.Singleton).WithParameter(_gaugeContainer);
+        builder.Register<WorldUIFactory>(Lifetime.Singleton).WithParameter(_worldUIContainer);
 
         // TargetIndicator
         builder.RegisterComponentInHierarchy<TargetIndicator>()

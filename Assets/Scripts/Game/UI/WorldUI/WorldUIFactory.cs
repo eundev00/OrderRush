@@ -7,17 +7,15 @@ using VContainer.Unity;
 
 public class WorldUIFactory
 {
-    private readonly RectTransform _canvasRectTransform;
+    private readonly Transform _worldUIRoot;
     private readonly IObjectResolver _container;
     private readonly Dictionary<string, ObjectPool<GameObject>> _pools = new();
     private readonly Dictionary<string, GameObject> _loadedPrefabs = new();
     private const int MaxPoolSize = 20;
 
-    public RectTransform CanvasRectTransform => _canvasRectTransform;
-
-    public WorldUIFactory(RectTransform canvasRectTransform, IObjectResolver container)
+    public WorldUIFactory(Transform worldUIRoot, IObjectResolver container)
     {
-        _canvasRectTransform = canvasRectTransform;
+        _worldUIRoot = worldUIRoot;
         _container = container;
     }
 
@@ -66,7 +64,7 @@ public class WorldUIFactory
 
     private GameObject CreateObject(GameObject prefab)
     {
-        var obj = Object.Instantiate(prefab, _canvasRectTransform);
+        var obj = Object.Instantiate(prefab, _worldUIRoot);
         _container.InjectGameObject(obj);
         return obj;
     }

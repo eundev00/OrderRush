@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,18 +12,21 @@ public class HudPresenter : IStartable, IDisposable
     readonly IAccountService _accountService;
     readonly ISoundService _soundService;
     readonly HudView _hudView;
+    readonly WorldUIFactory _worldUIFactory;
     readonly CompositeDisposable _disposable = new();
 
     public HudPresenter(
         IDayProgressService dayProgressService,
         IAccountService accountService,
         ISoundService soundService,
-        HudView hudView)
+        HudView hudView,
+        WorldUIFactory worldUIFactory)
     {
         _dayProgressService = dayProgressService;
         _accountService = accountService;
         _soundService = soundService;
         _hudView = hudView;
+        _worldUIFactory = worldUIFactory;
     }
 
     public void Start()
@@ -64,9 +69,26 @@ public class HudPresenter : IStartable, IDisposable
 
     private void OnHomeButtonClicked()
     {
-        _soundService.PlaySfx(AudioKeys.commonbutton);
-        SceneManager.UnloadSceneAsync("GameplayScene");
-        SceneManager.LoadSceneAsync("LobbyScene", LoadSceneMode.Additive);
+        // TODO: 테스트 코드 — 확인 후 제거
+        var player = UnityEngine.Object.FindAnyObjectByType<PlayerCharacter>();
+        if (player != null)
+        {
+            TestCoinFX(player).Forget();
+        }
+
+        // _soundService.PlaySfx(AudioKeys.commonbutton);
+        // SceneManager.UnloadSceneAsync("GameplayScene");
+        // SceneManager.LoadSceneAsync("LobbyScene", LoadSceneMode.Additive);
+    }
+
+    private async UniTaskVoid TestCoinFX(PlayerCharacter player)
+    {
+        var headPos = player.transform.position + Vector3.up * 3f;
+        var coinObj = _worldUIFactory.Create(PrefabKeys.FloatingCoinFX);
+        coinObj.transform.position = headPos;
+        var coinFX = coinObj.GetComponent<FloatingCoinFX>();
+        await coinFX.PlayAnimation(CancellationToken.None);
+        _worldUIFactory.Release(PrefabKeys.FloatingCoinFX, coinObj);
     }
 
     public void Dispose()
