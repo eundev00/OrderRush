@@ -5,16 +5,16 @@ using UniRx;
 public class DayEventService : IDayEventService, IDisposable
 {
     private readonly IDayProgressService _dayProgressService;
-    private readonly ILevelContextPresenter _levelPresenter;
+    private readonly IPublisher<RainEvent> _rainPublisher;
     private readonly CompositeDisposable _disposable = new();
 
     public DayEventService(
         IDayProgressService dayProgressService,
-        ILevelContextPresenter levelPresenter,
+        IPublisher<RainEvent> rainPublisher,
         ISubscriber<GameCleanupEvent> cleanup)
     {
         _dayProgressService = dayProgressService;
-        _levelPresenter = levelPresenter;
+        _rainPublisher = rainPublisher;
 
         cleanup.Subscribe(_ => Apply(_dayProgressService.CurrentDayContext.DayNumber.Value))
             .AddTo(_disposable);
@@ -28,7 +28,7 @@ public class DayEventService : IDayEventService, IDisposable
     private void Apply(int dayNumber)
     {
         var evt = _dayProgressService.CurrentDaysData?.GetStoryForDay(dayNumber)?.Event;
-        _levelPresenter.SetRain(evt != null && evt.IsRainy);
+        _rainPublisher.Publish(new RainEvent(evt != null && evt.IsRainy));
     }
 
     public void Dispose()

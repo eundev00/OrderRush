@@ -61,13 +61,11 @@ public abstract class CharacterBase : MonoBehaviour
         try
         {
             float length = _animator.GetPickUpLength();
-
-            await UniTask.Delay(TimeSpan.FromSeconds(length * 0.5f));
             _animator.TriggerPickUp();
             CurrentCarriable = item;
             CurrentCarriable.AttachToSlot(ItemSlot);
 
-            await UniTask.Delay(TimeSpan.FromSeconds(length * 0.5f));
+            await UniTask.Delay(TimeSpan.FromSeconds(length));
         }
         catch (OperationCanceledException)
         {
@@ -85,10 +83,9 @@ public abstract class CharacterBase : MonoBehaviour
         try
         {
             float length = _animator.GetPickUpLength();
-            await UniTask.Delay(TimeSpan.FromSeconds(length * 0.5f));
             _animator.TriggerPutDown();
             CurrentCarriable = null;
-            await UniTask.Delay(TimeSpan.FromSeconds(length * 0.5f));
+            await UniTask.Delay(TimeSpan.FromSeconds(length));
         }
         catch (OperationCanceledException)
         {
@@ -109,6 +106,7 @@ public abstract class CharacterBase : MonoBehaviour
         {
             var carriedItem = CurrentCarriable;
             float length = _animator.GetPickUpLength();
+            Debug.Log($"[PutDownAt] animLength={length}, delay={length}s");
             _animator.TriggerPutDown();
             CurrentCarriable.AttachToSlot(attachSlot);
             CurrentCarriable = null;

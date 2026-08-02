@@ -68,11 +68,6 @@ public class LevelContextPresenter : ILevelContextPresenter, IDisposable
         }
     }
 
-    public void SetRain(bool on)
-    {
-        _view?.SetRain(on);
-    }
-
     public void Dispose()
     {
         if (_view != null)

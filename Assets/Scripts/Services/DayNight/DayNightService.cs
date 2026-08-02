@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using MessagePipe;
 using OrderRush.Models;
 using UniRx;
 using UnityEngine;
@@ -8,20 +9,24 @@ public class DayNightService : IDayNightService
 {
     private readonly IGameDataService _gameDataService;
     private readonly IDayProgressService _dayProgressService;
+    private readonly IPublisher<NightLightEvent> _nightLightPublisher;
     private readonly Light _outdoorLight;
     private readonly Light _indoorLight;
 
     private DayNightSettings _settings;
     private IDisposable _timeBarSubscription;
+    private bool _isNight;
 
     public DayNightService(
         IGameDataService gameDataService,
         IDayProgressService dayProgressService,
+        IPublisher<NightLightEvent> nightLightPublisher,
         Light outdoorLight,
         Light indoorLight)
     {
         _gameDataService = gameDataService;
         _dayProgressService = dayProgressService;
+        _nightLightPublisher = nightLightPublisher;
         _outdoorLight = outdoorLight;
         _indoorLight = indoorLight;
     }
@@ -91,6 +96,13 @@ public class DayNightService : IDayNightService
         {
             _indoorLight.color = Color.Lerp(_settings.indoorDay.color, _settings.indoorNight.color, t);
             _indoorLight.intensity = Mathf.Lerp(_settings.indoorDay.intensity, _settings.indoorNight.intensity, t);
+        }
+
+        bool isNight = t >= 1f;
+        if (isNight != _isNight)
+        {
+            _isNight = isNight;
+            _nightLightPublisher.Publish(new NightLightEvent(isNight));
         }
     }
 

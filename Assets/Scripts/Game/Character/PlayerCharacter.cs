@@ -6,6 +6,15 @@ using System;
 public class PlayerCharacter : CharacterBase
 {
     IDisposable _subscription;
+    private Vector3 _initialPosition;
+    private Quaternion _initialRotation;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _initialPosition = transform.position;
+        _initialRotation = transform.rotation;
+    }
 
     [Inject]
     public void Construct(
@@ -16,6 +25,14 @@ public class PlayerCharacter : CharacterBase
         moveSubscriber.Subscribe(OnMoveEvent).AddTo(bag);
         interactSubscriber.Subscribe(OnInteractEvent).AddTo(bag);
         _subscription = bag.Build();
+    }
+
+    protected override void OnGameCleanup()
+    {
+        base.OnGameCleanup();
+        ClearActions();
+        WarpTo(_initialPosition);
+        transform.rotation = _initialRotation;
     }
 
     protected override void OnDestroy()

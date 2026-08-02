@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using MessagePipe;
 using UnityEngine;
+using VContainer;
 
 public class LevelContext : MonoBehaviour
 {
@@ -10,6 +13,10 @@ public class LevelContext : MonoBehaviour
     [NotNull][SerializeField] Transform _waitingPoint;
     [NotNull][SerializeField] Transform[] _staffIdlePoints;
     [SerializeField] private GameObject _rainRoot;
+    [SerializeField] private GameObject _nightLightRoot;
+
+    private IDisposable _rainSubscription;
+    private IDisposable _nightLightSubscription;
 
     public List<DiningTable> DiningTables { get; private set; }
     public ServingCounter[] ServingCounters { get; private set; }
@@ -18,8 +25,17 @@ public class LevelContext : MonoBehaviour
     public Transform WaitingPoint => _waitingPoint;
     public Transform[] StaffIdlePoints => _staffIdlePoints;
 
+    [Inject]
+    public void Construct(ISubscriber<RainEvent> rainSubscriber, ISubscriber<NightLightEvent> nightLightSubscriber)
+    {
+        _rainSubscription = rainSubscriber.Subscribe(e => SetRain(e.IsRainy));
+        _nightLightSubscription = nightLightSubscriber.Subscribe(e => SetNightLight(e.IsNight));
+    }
+
     void Awake()
     {
+        SetNightLight(false);
+
         DiningTables = new List<DiningTable>(_interactablesRoot.GetComponentsInChildren<DiningTable>());
 
         ServingCounters = _interactablesRoot.GetComponentsInChildren<ServingCounter>();
@@ -43,9 +59,21 @@ public class LevelContext : MonoBehaviour
         DiningTables.Add(table);
     }
 
-    public void SetRain(bool on)
+    private void SetRain(bool on)
     {
         if (_rainRoot != null)
             _rainRoot.SetActive(on);
+    }
+
+    private void SetNightLight(bool on)
+    {
+        if (_nightLightRoot != null)
+            _nightLightRoot.SetActive(on);
+    }
+
+    void OnDestroy()
+    {
+        _rainSubscription?.Dispose();
+        _nightLightSubscription?.Dispose();
     }
 }

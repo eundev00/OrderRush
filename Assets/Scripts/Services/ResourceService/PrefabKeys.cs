@@ -12,6 +12,7 @@ using System.Collections.Generic;
     public const string DiningChair = "DiningChair";
     public const string DiningTable2 = "DiningTable2";
     public const string GameObject = "GameObject";
+    public const string BurntSteak = "BurntSteak";
     public const string Steak = "Steak";
     public const string SteakMeat = "SteakMeat";
     public const string Plate = "Plate";
@@ -26,20 +27,18 @@ using System.Collections.Generic;
     public const string Stove = "Stove";
     public const string TrashCan = "TrashCan";
     public const string LevelMap1 = "LevelMap1";
+    public const string Rain = "Rain";
     public const string StreetLight = "StreetLight";
-    public const string Card1 = "Card1";
-    public const string Card2 = "Card2";
-    public const string Card3 = "Card3";
+    public const string HUD = "HUD";
+    public const string Card = "Card";
     public const string PopupCardShop = "PopupCardShop";
     public const string PopupCompleted = "PopupCompleted";
     public const string PopupFailed = "PopupFailed";
     public const string PopupMessage = "PopupMessage";
     public const string PopupStory = "PopupStory";
     public const string CharacterEmoteIcon = "CharacterEmoteIcon";
-    public const string OrderBubble = "OrderBubble";
+    public const string CharacterOrderIcon = "CharacterOrderIcon";
     public const string FloatingCoinFX = "FloatingCoinFX";
-    public const string KitchenGauge = "KitchenGauge";
-    public const string TableGauge = "TableGauge";
 
     public static Dictionary<string, string> PrefabPaths = new Dictionary<string, string>()
     {
@@ -53,8 +52,9 @@ using System.Collections.Generic;
         { DiningChair, "Assets/Prefabs/Game/Dining/DiningChair.prefab" },
         { DiningTable2, "Assets/Prefabs/Game/Dining/DiningTable2.prefab" },
         { GameObject, "Assets/Prefabs/Game/GameObject.prefab" },
-        { Steak, "Assets/Prefabs/Game/Ingredients/Steak.prefab" },
-        { SteakMeat, "Assets/Prefabs/Game/Ingredients/SteakMeat.prefab" },
+        { BurntSteak, "Assets/Prefabs/Game/Ingredients/Steak/BurntSteak.prefab" },
+        { Steak, "Assets/Prefabs/Game/Ingredients/Steak/Steak.prefab" },
+        { SteakMeat, "Assets/Prefabs/Game/Ingredients/Steak/SteakMeat.prefab" },
         { Plate, "Assets/Prefabs/Game/Kitchen/Plate/Plate.prefab" },
         { PlateRack, "Assets/Prefabs/Game/Kitchen/Plate/PlateRack.prefab" },
         { FoodStorage, "Assets/Prefabs/Game/Kitchen/Storage/FoodStorage.prefab" },
@@ -67,20 +67,18 @@ using System.Collections.Generic;
         { Stove, "Assets/Prefabs/Game/Kitchen/Tools/Stove.prefab" },
         { TrashCan, "Assets/Prefabs/Game/Kitchen/Tools/TrashCan.prefab" },
         { LevelMap1, "Assets/Prefabs/Game/Level/LevelMap1.prefab" },
+        { Rain, "Assets/Prefabs/Game/Level/Rain.prefab" },
         { StreetLight, "Assets/Prefabs/Game/Street/StreetLight.prefab" },
-        { Card1, "Assets/Prefabs/Game/UI/PopupCardShop/Card1.prefab" },
-        { Card2, "Assets/Prefabs/Game/UI/PopupCardShop/Card2.prefab" },
-        { Card3, "Assets/Prefabs/Game/UI/PopupCardShop/Card3.prefab" },
+        { HUD, "Assets/Prefabs/Game/UI/HUD.prefab" },
+        { Card, "Assets/Prefabs/Game/UI/PopupCardShop/Card.prefab" },
         { PopupCardShop, "Assets/Prefabs/Game/UI/PopupCardShop/PopupCardShop.prefab" },
         { PopupCompleted, "Assets/Prefabs/Game/UI/PopupCompleted.prefab" },
         { PopupFailed, "Assets/Prefabs/Game/UI/PopupFailed.prefab" },
         { PopupMessage, "Assets/Prefabs/Game/UI/PopupMessage.prefab" },
         { PopupStory, "Assets/Prefabs/Game/UI/PopupStory.prefab" },
         { CharacterEmoteIcon, "Assets/Prefabs/Game/UI/WorldSpace/CharacterEmoteIcon.prefab" },
-        { OrderBubble, "Assets/Prefabs/Game/UI/WorldSpace/OrderBubble.prefab" },
+        { CharacterOrderIcon, "Assets/Prefabs/Game/UI/WorldSpace/CharacterOrderIcon.prefab" },
         { FloatingCoinFX, "Assets/Prefabs/Game/UI/WorldSpace/FloatingCoinFX.prefab" },
-        { KitchenGauge, "Assets/Prefabs/Game/UI/WorldSpace/KitchenGauge.prefab" },
-        { TableGauge, "Assets/Prefabs/Game/UI/WorldSpace/TableGauge.prefab" },
     };
 
     public static string GetPrefabPath(string tag)

@@ -27,7 +27,8 @@ public class EmoteAction : IGameAction
         }
         finally
         {
-            _character.EmoteIcon.Hide();
+            if (_character != null && _character.gameObject != null)
+                _character.EmoteIcon.Hide();
         }
     }
 }

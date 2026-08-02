@@ -60,28 +60,34 @@ public class CameraDirector : MonoBehaviour, ICameraDirector
 
     UniTask PlayAsync(Vector3 targetPosition, float targetFov, float duration, Ease ease)
     {
-        _sequence?.Kill();
-
-        // tcs 는 반드시 로컬 캡처. 필드로 두면 다음 호출의 Kill 이 이전 OnKill 을 발화시켜 새 await 가 즉시 풀린다.
-        var tcs = new UniTaskCompletionSource();
-
-        _sequence = DOTween.Sequence()
-            .Join(_cameraTransform.DOMove(targetPosition, duration).SetEase(ease));
-
-        if (!Mathf.Approximately(_camera.fieldOfView, targetFov))
+        try
         {
-            float fromFov = _camera.fieldOfView;
-            _sequence.Join(DOVirtual
-                .Float(fromFov, targetFov, duration, v => _camera.fieldOfView = v)
-                .SetEase(ease));
+            _sequence?.Kill();
+
+            var tcs = new UniTaskCompletionSource();
+
+            _sequence = DOTween.Sequence()
+                .Join(_cameraTransform.DOMove(targetPosition, duration).SetEase(ease));
+
+            if (!Mathf.Approximately(_camera.fieldOfView, targetFov))
+            {
+                float fromFov = _camera.fieldOfView;
+                _sequence.Join(DOVirtual
+                    .Float(fromFov, targetFov, duration, v => _camera.fieldOfView = v)
+                    .SetEase(ease));
+            }
+
+            _sequence
+                .SetLink(gameObject, LinkBehaviour.KillOnDestroy)
+                .SetUpdate(true)
+                .OnComplete(() => tcs.TrySetResult())
+                .OnKill(() => tcs.TrySetCanceled());
+
+            return tcs.Task;
         }
-
-        _sequence
-            .SetLink(gameObject, LinkBehaviour.KillOnDestroy)
-            .SetUpdate(true)
-            .OnComplete(() => tcs.TrySetResult())
-            .OnKill(() => tcs.TrySetCanceled());
-
-        return tcs.Task;
+        catch (MissingReferenceException)
+        {
+            return UniTask.CompletedTask;
+        }
     }
 }

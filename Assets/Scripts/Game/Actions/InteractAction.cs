@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -53,11 +54,15 @@ public class InteractAction : IGameAction
 
             _character.transform.rotation = validPoint.rotation;
 
+            _target.SetHighlight(false);
             await _target.InteractAsync(_character, ct);
         }
-        finally
+        catch (OperationCanceledException)
         {
-            _target.SetHighlight(false);
+            if (_target is UnityEngine.Object obj && obj != null)
+                _target.SetHighlight(false);
+            if (_animator != null)
+                _animator.SetSpeed(0f);
         }
     }
 }

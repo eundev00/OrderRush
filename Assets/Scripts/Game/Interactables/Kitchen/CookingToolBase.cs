@@ -89,7 +89,8 @@ public abstract class CookingToolBase : InteractableBase
 
     protected virtual void StopCooking()
     {
-        _cookingGauge.Hide();
+        if (_cookingGauge != null)
+            _cookingGauge.Hide();
         IsCooking = false;
     }
 

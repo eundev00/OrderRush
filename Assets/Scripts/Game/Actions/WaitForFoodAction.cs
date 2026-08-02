@@ -32,7 +32,8 @@ public class WaitForFoodAction : IGameAction
         }
         finally
         {
-            _character.OrderBubble.Hide();
+            if (_character != null && _character.gameObject != null)
+                _character.OrderBubble.Hide();
         }
     }
 }

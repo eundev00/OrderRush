@@ -74,7 +74,9 @@ public class Stove : CookingToolBase
                 await UniTask.Yield(PlayerLoopTiming.Update, _cookingCts.Token);
             }
 
-            CurrentIngredientObject.SetRuined();
+            var overcookTransition = CurrentIngredientData.Transitions.Find(t => t.Type == TransitionType.Cook);
+            if (overcookTransition != null)
+                await CompleteTransition(overcookTransition);
 
         }
         catch (OperationCanceledException)
