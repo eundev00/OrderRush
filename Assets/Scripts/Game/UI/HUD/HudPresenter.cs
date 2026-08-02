@@ -3,7 +3,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using VContainer.Unity;
 
 public class HudPresenter : IStartable, IDisposable

@@ -1,5 +1,4 @@
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 using VContainer.Unity;
 
 public class GameInitiator : IStartable

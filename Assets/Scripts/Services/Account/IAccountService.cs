@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using OrderRush.Data;
 using OrderRush.Models;
 
 public interface IAccountService
