@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d35b21276d824300b0bb4ed62c0e15e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StorageBase
-  _highlight: {fileID: 0}
+  _highlight: {fileID: 4196690574692444612}
   _interactPoints:
   - {fileID: 8594179412903879439}
   _ingredient: {fileID: 11400000, guid: b1bf2f926ba43426089a081eb8198d59, type: 2}

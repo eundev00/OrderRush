@@ -63,6 +63,10 @@ public class Plate : MonoBehaviour, ICarriable
 
     public void SetClean()
     {
+        foreach (var ingredient in _placedIngredients)
+            Destroy(ingredient.gameObject);
+        _placedIngredients.Clear();
+
         IsDirty = false;
         MatchedRecipeID = -1;
         _dirty.SetActive(false);
