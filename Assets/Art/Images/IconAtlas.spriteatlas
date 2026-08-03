@@ -40,6 +40,7 @@ SpriteAtlas:
     - 4aab79c093ace49eaa009bfce1066319: 21300000
     - d4a13c31a1665423790f8149989cf6d8: 21300000
     - 0be3c4f16f9de416495f6311f2852afd: 21300000
+    - 6468eb952ac23475f97890ce7009afdf: 21300000
     - 6e27bcc5d207040f380cd932b1446ee1: 21300000
     - 0b0f4eb6832ea4c01abb23c79d9a3713: 21300000
     - 6fa2b8083e3104bf2860cfe72ea914fc: 21300000
@@ -53,6 +54,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 4aab79c093ace49eaa009bfce1066319, type: 3}
   - {fileID: 21300000, guid: d4a13c31a1665423790f8149989cf6d8, type: 3}
   - {fileID: 21300000, guid: 0be3c4f16f9de416495f6311f2852afd, type: 3}
+  - {fileID: 21300000, guid: 6468eb952ac23475f97890ce7009afdf, type: 3}
   - {fileID: 21300000, guid: 6e27bcc5d207040f380cd932b1446ee1, type: 3}
   - {fileID: 21300000, guid: 0b0f4eb6832ea4c01abb23c79d9a3713, type: 3}
   - {fileID: 21300000, guid: 6fa2b8083e3104bf2860cfe72ea914fc, type: 3}
@@ -64,6 +66,7 @@ SpriteAtlas:
   m_PackedSpriteNamesToIndex:
   - CoffeeIcon
   - SpeedUpIcon
+  - SteakIcon_old
   - SteakIcon
   - Beef_Meat_01_Patty_Ready_256
   - SlowBurnIcon

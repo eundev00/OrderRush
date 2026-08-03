@@ -47,8 +47,7 @@ public class InteractableHighlight : MonoBehaviour
         {
             if (selected)
             {
-                Color yellow = new Color(1f, 0.95f, 0.6f);
-                Color tint = Color.Lerp(Color.white, yellow, _tintStrength);
+                Color tint = Color.Lerp(Color.white, Color.softYellow, _tintStrength);
                 t.Body.SetColor("_BaseColor", t.OriginalBaseColor * tint);
 
                 t.Body.EnableKeyword("_EMISSION");
