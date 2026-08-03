@@ -21,24 +21,30 @@ public class InteractAction : IGameAction
 
     public async UniTask ExecuteAsync(CancellationToken ct)
     {
-        var sortedPoints = _target.GetInteractPointsSortedByDistance(_character.transform.position);
+        var points = _target.GetInteractPointsSortedByDistance(_character.transform.position);
 
         Transform validPoint = null;
         NavMeshHit navHit = default;
+        float shortestPathDistance = float.MaxValue;
 
-        foreach (var point in sortedPoints)
+        foreach (var point in points)
         {
-            if (!NavMesh.SamplePosition(point.position, out navHit, 2.0f, NavMesh.AllAreas))
+            if (!NavMesh.SamplePosition(point.position, out var hit, 2.0f, NavMesh.AllAreas))
                 continue;
 
-            NavMeshPath path = new NavMeshPath();
-            if (NavMesh.CalculatePath(_character.transform.position, navHit.position, NavMesh.AllAreas, path))
+            var path = new NavMeshPath();
+            if (!NavMesh.CalculatePath(_character.transform.position, hit.position, NavMesh.AllAreas, path))
+                continue;
+
+            if (path.status != NavMeshPathStatus.PathComplete)
+                continue;
+
+            float distance = CalculatePathDistance(path);
+            if (distance < shortestPathDistance)
             {
-                if (path.status == NavMeshPathStatus.PathComplete)
-                {
-                    validPoint = point;
-                    break;
-                }
+                shortestPathDistance = distance;
+                validPoint = point;
+                navHit = hit;
             }
         }
 
@@ -64,5 +70,14 @@ public class InteractAction : IGameAction
             if (_animator != null)
                 _animator.SetSpeed(0f);
         }
+    }
+
+    private static float CalculatePathDistance(NavMeshPath path)
+    {
+        var corners = path.corners;
+        float distance = 0f;
+        for (int i = 1; i < corners.Length; i++)
+            distance += Vector3.Distance(corners[i - 1], corners[i]);
+        return distance;
     }
 }

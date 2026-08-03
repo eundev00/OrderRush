@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 175946669683874316}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 2.05, z: 0}
+  m_LocalPosition: {x: 0, y: 2.91, z: -0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -309,6 +309,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: 351bc33280ba6437e9c95c01682c2f88, type: 2}
+    - target: {fileID: -5831600064496238428, guid: 02a7a581363d8a6498206a9c1649f75a, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -5831600064496238428, guid: 02a7a581363d8a6498206a9c1649f75a, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 351bc33280ba6437e9c95c01682c2f88, type: 2}
     - target: {fileID: 919132149155446097, guid: 02a7a581363d8a6498206a9c1649f75a, type: 3}
       propertyPath: m_Name
       value: Refrigerator_01_C04
@@ -317,6 +325,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6439853549817168083, guid: 02a7a581363d8a6498206a9c1649f75a, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439853549817168083, guid: 02a7a581363d8a6498206a9c1649f75a, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 351bc33280ba6437e9c95c01682c2f88, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -333,6 +349,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 02a7a581363d8a6498206a9c1649f75a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8598021984821838743}
+    - targetCorrespondingSourceObject: {fileID: 7381700597388884476, guid: 02a7a581363d8a6498206a9c1649f75a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3049551834497938152}
+    - targetCorrespondingSourceObject: {fileID: 8766580139074804588, guid: 02a7a581363d8a6498206a9c1649f75a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 170098365808997167}
   m_SourcePrefab: {fileID: 100100000, guid: 02a7a581363d8a6498206a9c1649f75a, type: 3}
 --- !u!4 &2586469386572967614 stripped
 Transform:
@@ -411,3 +433,37 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.84300005, z: 0}
   m_TimeToStationary: 0.5
+--- !u!1 &5310173392590352485 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8766580139074804588, guid: 02a7a581363d8a6498206a9c1649f75a, type: 3}
+  m_PrefabInstance: {fileID: 3465696524558166793}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &170098365808997167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5310173392590352485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0feb85ec530d4169815d4a47b0ce33d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
+--- !u!1 &6226702804702941941 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7381700597388884476, guid: 02a7a581363d8a6498206a9c1649f75a, type: 3}
+  m_PrefabInstance: {fileID: 3465696524558166793}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3049551834497938152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6226702804702941941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0feb85ec530d4169815d4a47b0ce33d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor

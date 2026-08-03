@@ -196,6 +196,12 @@ public class DiningTable : InteractableBase
         plate.transform.position = _plateSlots[seatIndex].position;
     }
 
+    public void RemovePlateFood(int seatIndex)
+    {
+        if (_currentPlates[seatIndex] != null)
+            _currentPlates[seatIndex].RemoveEatenFood();
+    }
+
     public void CustomerLeaving(int seatIndex)
     {
         var seat = _seats[seatIndex];
@@ -203,11 +209,6 @@ public class DiningTable : InteractableBase
         {
             seat.Clear();
             _seatedCount--;
-
-            if (_currentPlates[seatIndex] != null)
-            {
-                _currentPlates[seatIndex].RemoveEatenFood();
-            }
 
             if (IsEmptyTable())
             {
