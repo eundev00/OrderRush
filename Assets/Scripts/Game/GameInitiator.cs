@@ -12,6 +12,7 @@ public class GameInitiator : IStartable
     private readonly IDayEventService _dayEventService;
     private readonly IDayFlowService _dayFlowService;
     private readonly GameUIContextPresenter _uiContextPresenter;
+    private readonly ISceneTransitionService _sceneTransition;
 
     public GameInitiator(
         ILevelContextPresenter levelPresenter,
@@ -22,7 +23,8 @@ public class GameInitiator : IStartable
         CardEffectApplier cardEffectApplier,
         IDayEventService dayEventService,
         IDayFlowService dayFlowService,
-        GameUIContextPresenter uiContextPresenter)
+        GameUIContextPresenter uiContextPresenter,
+        ISceneTransitionService sceneTransition)
     {
         _levelPresenter = levelPresenter;
         _dayProgressService = dayProgressService;
@@ -33,6 +35,7 @@ public class GameInitiator : IStartable
         _dayEventService = dayEventService;
         _dayFlowService = dayFlowService;
         _uiContextPresenter = uiContextPresenter;
+        _sceneTransition = sceneTransition;
     }
 
     public async void Start()
@@ -49,6 +52,8 @@ public class GameInitiator : IStartable
         await _cardEffectApplier.ApplyAllPurchasedCards();
 
         _dayEventService.Initialize(currentDay);
+
+        _sceneTransition.NotifySceneReady();
 
         await _dayFlowService.RunFirstDayAsync(currentDay);
     }

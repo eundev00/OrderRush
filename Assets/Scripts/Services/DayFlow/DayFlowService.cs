@@ -1,6 +1,5 @@
 using System;
 using Cysharp.Threading.Tasks;
-using UnityEngine.SceneManagement;
 
 public class DayFlowService : IDayFlowService
 {
@@ -10,6 +9,7 @@ public class DayFlowService : IDayFlowService
     private readonly ICameraDirector _cameraDirector;
     private readonly ICustomerService _customerService;
     private readonly StaffManager _staffManager;
+    private readonly ISceneTransitionService _sceneTransition;
 
     public DayFlowService(
         IDayProgressService dayProgressService,
@@ -17,7 +17,8 @@ public class DayFlowService : IDayFlowService
         IStoryFlowService storyFlowService,
         ICameraDirector cameraDirector,
         ICustomerService customerService,
-        StaffManager staffManager)
+        StaffManager staffManager,
+        ISceneTransitionService sceneTransition)
     {
         _dayProgressService = dayProgressService;
         _popupService = popupService;
@@ -25,6 +26,7 @@ public class DayFlowService : IDayFlowService
         _cameraDirector = cameraDirector;
         _customerService = customerService;
         _staffManager = staffManager;
+        _sceneTransition = sceneTransition;
     }
 
     public async UniTask RunFirstDayAsync(int dayNumber)
@@ -59,7 +61,6 @@ public class DayFlowService : IDayFlowService
         }
         catch (OperationCanceledException)
         {
-            // 씬 언로드로 카메라 연출 취소됨
         }
     }
 
@@ -115,7 +116,6 @@ public class DayFlowService : IDayFlowService
         _dayProgressService.CompleteRun();
         _customerService.Dispose();
 
-        SceneManager.UnloadSceneAsync("GameplayScene");
-        SceneManager.LoadSceneAsync("LobbyScene", LoadSceneMode.Additive);
+        _sceneTransition.TransitionAsync("GameplayScene", "LobbyScene").Forget();
     }
 }

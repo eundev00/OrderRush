@@ -1,32 +1,32 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UniRx;
-using UnityEngine.SceneManagement;
 using VContainer.Unity;
 
 public class LobbyPresenter : IStartable, IDisposable
 {
     private readonly LobbyView _view;
-    private readonly IResourcesLoaderService _resourcesLoaderService;
     private readonly IAccountService _accountService;
     private readonly ISoundService _soundService;
+    private readonly ISceneTransitionService _sceneTransition;
     private readonly CompositeDisposable _disposable = new();
 
     public LobbyPresenter(
         LobbyView view,
-        IResourcesLoaderService resourcesLoaderService,
         IAccountService accountService,
-        ISoundService soundService)
+        ISoundService soundService,
+        ISceneTransitionService sceneTransition)
     {
         _view = view;
-        _resourcesLoaderService = resourcesLoaderService;
         _accountService = accountService;
         _soundService = soundService;
+        _sceneTransition = sceneTransition;
     }
-
 
     public void Start()
     {
         _soundService.PlayBgm(AudioKeys.Bgm1);
+        _sceneTransition.NotifySceneReady();
 
         _view.SetDay(_accountService.Account.CurrentDay);
 
@@ -56,14 +56,12 @@ public class LobbyPresenter : IStartable, IDisposable
     {
         _accountService.ResetAll();
         _view.SetDay(_accountService.Account.CurrentDay);
-        SceneManager.UnloadSceneAsync("LobbyScene");
-        SceneManager.LoadSceneAsync("GameplayScene", LoadSceneMode.Additive);
+        _sceneTransition.TransitionAsync("LobbyScene", "GameplayScene").Forget();
     }
 
     private void OnContinueButtonClicked()
     {
-        SceneManager.UnloadSceneAsync("LobbyScene");
-        SceneManager.LoadSceneAsync("GameplayScene", LoadSceneMode.Additive);
+        _sceneTransition.TransitionAsync("LobbyScene", "GameplayScene").Forget();
     }
 
     public void Dispose() => _disposable.Dispose();

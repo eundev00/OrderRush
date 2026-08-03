@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
@@ -10,22 +9,22 @@ public class HudPresenter : IStartable, IDisposable
     readonly IDayProgressService _dayProgressService;
     readonly IAccountService _accountService;
     readonly ISoundService _soundService;
+    readonly ISceneTransitionService _sceneTransition;
     readonly HudView _hudView;
-    readonly WorldUIFactory _worldUIFactory;
     readonly CompositeDisposable _disposable = new();
 
     public HudPresenter(
         IDayProgressService dayProgressService,
         IAccountService accountService,
         ISoundService soundService,
-        HudView hudView,
-        WorldUIFactory worldUIFactory)
+        ISceneTransitionService sceneTransition,
+        HudView hudView)
     {
         _dayProgressService = dayProgressService;
         _accountService = accountService;
         _soundService = soundService;
+        _sceneTransition = sceneTransition;
         _hudView = hudView;
-        _worldUIFactory = worldUIFactory;
     }
 
     public void Start()
@@ -68,31 +67,12 @@ public class HudPresenter : IStartable, IDisposable
 
     private void OnHomeButtonClicked()
     {
-        // TODO: 테스트 코드 — 확인 후 제거
-        var player = UnityEngine.Object.FindAnyObjectByType<PlayerCharacter>();
-        if (player != null)
-        {
-            TestCoinFX(player).Forget();
-        }
-
-        // _soundService.PlaySfx(AudioKeys.commonbutton);
-        // SceneManager.UnloadSceneAsync("GameplayScene");
-        // SceneManager.LoadSceneAsync("LobbyScene", LoadSceneMode.Additive);
-    }
-
-    private async UniTaskVoid TestCoinFX(PlayerCharacter player)
-    {
-        var headPos = player.transform.position + Vector3.up * 3f;
-        var coinObj = _worldUIFactory.Create(PrefabKeys.FloatingCoinFX);
-        coinObj.transform.position = headPos;
-        var coinFX = coinObj.GetComponent<FloatingCoinFX>();
-        await coinFX.PlayAnimation(CancellationToken.None);
-        _worldUIFactory.Release(PrefabKeys.FloatingCoinFX, coinObj);
+        _soundService.PlaySfx(AudioKeys.commonbutton);
+        _sceneTransition.TransitionAsync("GameplayScene", "LobbyScene").Forget();
     }
 
     public void Dispose()
     {
         _disposable.Dispose();
     }
-
 }
