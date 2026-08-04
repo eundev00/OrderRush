@@ -32,37 +32,26 @@
 
 ## 1. 기술 스택
 
-| 역할      | 사용 기술                                         |
-| --------- | ------------------------------------------------- |
-| 엔진      | Unity 6000.3.6f1 (URP 17.3)                       |
-| DI        | VContainer 1.17.0                                 |
-| UI 패턴   | MVP (Model = Service, View, Presenter)            |
-| 이벤트    | MessagePipe (+ VContainer Integration)            |
-| 비동기    | UniTask 2.1.0                                     |
-| Reactive  | UniRx (`ReactiveProperty`, `CompositeDisposable`) |
-| 애셋 로딩 | Addressables 2.9.1                                |
-| 이동      | AI Navigation 2.0 (NavMesh)                       |
-| 입력      | Input System 1.19 (에디터는 마우스, 빌드는 터치)  |
-| 트위닝    | DOTween                                           |
-
+| 역할     | 사용 기술                                         |
+| -------- | ------------------------------------------------- |
+| 엔진     | Unity 6000.3.6f1 (URP 17.3)                       |
+| DI       | VContainer 1.17.0                                 |
+| UI 패턴  | MVP (Model = Service, View, Presenter)            |
+| 이벤트   | MessagePipe (+ VContainer Integration)            |
+| 비동기   | UniTask 2.1.0                                     |
+| Reactive | UniRx (`ReactiveProperty`, `CompositeDisposable`) |
+| 트위닝   | DOTween                                           |
 ---
 
 ## 2. 아키텍처 개요
 
 ### 3계층 구조
 
-```
-┌─────────────────────────────────────────────────────┐
-│  View          MonoBehaviour. 표시와 입력 수신만.   │
-│                게임 로직·서비스를 전혀 모른다.       │
-├─────────────────────────────────────────────────────┤
-│  Presenter     Model ↔ View 중재. 구독 정리 책임.   │
-│                VContainer 가 생성/소멸 관리.         │
-├─────────────────────────────────────────────────────┤
-│  Model         Service 레이어. 상태와 규칙 소유.     │
-│  (Service)     변경 사실을 이벤트로 발행한다.        │
-└─────────────────────────────────────────────────────┘
-```
+| 계층 | 설명 |
+|---|---|
+| **View** | MonoBehaviour. 표시와 입력 수신만. 게임 로직·서비스를 전혀 모른다. |
+| **Presenter** | Model ↔ View 중재. 구독 정리 책임. VContainer 가 생성/소멸 관리. |
+| **Model (Service)** | Service 레이어. 상태와 규칙 소유. 변경 사실을 이벤트로 발행한다. |
 
 ### 세 가지 결합 해소 장치
 

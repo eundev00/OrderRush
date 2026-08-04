@@ -18,7 +18,7 @@ MonoBehaviour:
   _timeBarDurationIncrease: 25
   _baseCustomers: 1
   _customerIncrease: 1
-  _daysInterval: 2
+  _daysInterval: 1
   _storyDays:
   - _dayNumber: 1
     _storyText: Fresh out of culinary school, \nI sank every last coin into a small

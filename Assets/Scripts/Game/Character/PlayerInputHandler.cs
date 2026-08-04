@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
@@ -80,7 +81,7 @@ public class PlayerInputHandler : ITickable, IDisposable
         var mouse = Mouse.current;
         if (mouse == null) return;
         if (!mouse.leftButton.wasPressedThisFrame) return;
-        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+        if (IsPointerOverUI(mouse.position.ReadValue())) return;
 
         var ray = _mainCamera.ScreenPointToRay(mouse.position.ReadValue());
 
@@ -101,6 +102,18 @@ public class PlayerInputHandler : ITickable, IDisposable
         }
     }
 
+    private static readonly List<RaycastResult> _raycastResults = new();
+
+    bool IsPointerOverUI(Vector2 screenPosition)
+    {
+        if (EventSystem.current == null) return false;
+
+        var eventData = new PointerEventData(EventSystem.current) { position = screenPosition };
+        _raycastResults.Clear();
+        EventSystem.current.RaycastAll(eventData, _raycastResults);
+        return _raycastResults.Count > 0;
+    }
+
     void HandleTouchInput()
     {
         var touchscreen = Touchscreen.current;
@@ -108,6 +121,7 @@ public class PlayerInputHandler : ITickable, IDisposable
 
         var touch = touchscreen.primaryTouch;
         if (!touch.press.wasPressedThisFrame) return;
+        if (IsPointerOverUI(touch.position.ReadValue())) return;
 
         var ray = _mainCamera.ScreenPointToRay(touch.position.ReadValue());
 
