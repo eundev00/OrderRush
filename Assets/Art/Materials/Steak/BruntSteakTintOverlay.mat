@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SteakTintOverlay_Lit
+  m_Name: BruntSteakTintOverlay
   m_Shader: {fileID: -6465566751694194690, guid: ba8898cc064da465f9d6487e0c853ba5, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -58,6 +58,6 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _TintColor: {r: 0.9137256, g: 0.5882353, b: 0.4784314, a: 1}
+    - _TintColor: {r: 0.3301887, g: 0.2150425, b: 0.16042188, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

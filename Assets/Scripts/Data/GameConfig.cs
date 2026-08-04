@@ -17,8 +17,7 @@ namespace OrderRush.Data
 
         [Header("Spawn Settings")]
         [SerializeField] private float _spawnBufferDuration = 10f;
-        [Range(0f, 1f)]
-        [SerializeField] private float _defaultSpawnClusterStrength = 1f;
+        [SerializeField] private float _spawnIntervalDuration = 10f;
 
         [Header("Tool Settings")]
         [SerializeField] private float _toolProcessSeconds = 5f;
@@ -30,7 +29,7 @@ namespace OrderRush.Data
         public float TipRatio => _tipRatio;
         public float EatDuration => _eatDuration;
         public float SpawnBufferDuration => _spawnBufferDuration;
-        public float DefaultSpawnClusterStrength => _defaultSpawnClusterStrength;
+        public float SpawnIntervalDuration => _spawnIntervalDuration;
         public float ToolProcessSeconds => _toolProcessSeconds;
     }
 }
