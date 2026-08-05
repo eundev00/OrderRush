@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
 using MessagePipe;
@@ -9,6 +10,9 @@ public class PlayerCharacter : CharacterBase
     private Vector3 _initialPosition;
     private Quaternion _initialRotation;
 
+    private SpawnFactory _spawnFactory;
+    private IResourcesLoaderService _resourceLoader;
+
     protected override void Awake()
     {
         base.Awake();
@@ -19,11 +23,18 @@ public class PlayerCharacter : CharacterBase
     [Inject]
     public void Construct(
         ISubscriber<MoveEvent> moveSubscriber,
-        ISubscriber<InteractEvent> interactSubscriber)
+        ISubscriber<InteractEvent> interactSubscriber,
+        ISubscriber<SpawnTestItemEvent> spawnTestItemSubscriber,
+        SpawnFactory spawnFactory,
+        IResourcesLoaderService resourceLoader)
     {
+        _spawnFactory = spawnFactory;
+        _resourceLoader = resourceLoader;
+
         var bag = DisposableBag.CreateBuilder();
         moveSubscriber.Subscribe(OnMoveEvent).AddTo(bag);
         interactSubscriber.Subscribe(OnInteractEvent).AddTo(bag);
+        spawnTestItemSubscriber.Subscribe(_ => OnSpawnTestItem()).AddTo(bag);
         _subscription = bag.Build();
     }
 
@@ -51,5 +62,19 @@ public class PlayerCharacter : CharacterBase
     {
         _actionExecutor.Clear();
         _actionExecutor.Enqueue(new InteractAction(_mover, e.Target, this, _animator));
+    }
+
+    async void OnSpawnTestItem()
+    {
+        if (IsHolding) return;
+
+        var plate = await _spawnFactory.Create<Plate>(PrefabKeys.GetPrefabPath(PrefabKeys.Plate));
+
+        var ingredientData = await _resourceLoader.LoadAsync<IngredientData>(DataKeys.GetDataPath(DataKeys.Steak));
+        var ingredient = await _spawnFactory.Create<IngredientObject>(PrefabKeys.GetPrefabPath(PrefabKeys.Steak));
+        ingredient.SetData(ingredientData);
+
+        plate.TryPlaceOntoOther(ingredient);
+        await PickUp(plate);
     }
 }

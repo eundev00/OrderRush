@@ -205,7 +205,7 @@ public class SoundService : ISoundService, IDisposable
     // ---------------------------------------------------------------
     //  SFX
     // ---------------------------------------------------------------
-    public AudioSource PlaySfx(string audioKey, bool isLoop = false)
+    public AudioSource PlaySfx(string audioKey, bool isLoop = false, float volume = 1f)
     {
         if (!TryGetSfxClip(audioKey, out var clip))
             return null;
@@ -213,6 +213,7 @@ public class SoundService : ISoundService, IDisposable
         var src = NextSfxSource();
         src.transform.localPosition = Vector3.zero;
         src.spatialBlend = 0f;
+        src.volume = volume;
 
         if (isLoop)
         {

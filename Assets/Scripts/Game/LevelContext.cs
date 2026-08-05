@@ -15,6 +15,7 @@ public class LevelContext : MonoBehaviour
     [SerializeField] private GameObject _rainRoot;
     [SerializeField] private GameObject _nightLightRoot;
 
+    private ISoundService _soundService;
     private IDisposable _rainSubscription;
     private IDisposable _nightLightSubscription;
 
@@ -26,8 +27,9 @@ public class LevelContext : MonoBehaviour
     public Transform[] StaffIdlePoints => _staffIdlePoints;
 
     [Inject]
-    public void Construct(ISubscriber<RainEvent> rainSubscriber, ISubscriber<NightLightEvent> nightLightSubscriber)
+    public void Construct(ISubscriber<RainEvent> rainSubscriber, ISubscriber<NightLightEvent> nightLightSubscriber, ISoundService soundService)
     {
+        _soundService = soundService;
         _rainSubscription = rainSubscriber.Subscribe(e => SetRain(e.IsRainy));
         _nightLightSubscription = nightLightSubscriber.Subscribe(e => SetNightLight(e.IsNight));
     }
@@ -63,6 +65,11 @@ public class LevelContext : MonoBehaviour
     {
         if (_rainRoot != null)
             _rainRoot.SetActive(on);
+
+        if (on)
+            _soundService.PlaySfx(AudioKeys.rain_light, isLoop: true, volume: 0.15f);
+        else
+            _soundService.StopSfx(AudioKeys.rain_light);
     }
 
     private void SetNightLight(bool on)

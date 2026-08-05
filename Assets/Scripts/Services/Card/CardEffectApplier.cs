@@ -50,7 +50,8 @@ public class CardEffectApplier
         switch (effect.EffectType)
         {
             case EffectType.Table:
-                await _levelPresenter.AddTableFromEffect((TableAdditionEffect)effect);
+                for (int i = 0; i < tier; i++)
+                    await _levelPresenter.AddTableFromEffect((TableAdditionEffect)effect);
                 break;
             case EffectType.Menu:
                 ApplyMenuUnlock((MenuEffect)effect);

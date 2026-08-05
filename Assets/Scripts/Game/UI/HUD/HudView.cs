@@ -9,6 +9,7 @@ public class HudView : MonoBehaviour
     [NotNull][SerializeField] private TMP_Text _maxText;
     [NotNull][SerializeField] private Image _timerFill;
     [NotNull][SerializeField] private Button _homeButton;
+    [NotNull][SerializeField] private Button _testButton;
 
     public void SetCoin(int value)
     {
@@ -36,4 +37,9 @@ public class HudView : MonoBehaviour
         _homeButton.onClick.AddListener(() => onClickAction?.Invoke());
     }
 
+    public void SetTestButtonListener(System.Action onClickAction)
+    {
+        _testButton.onClick.RemoveAllListeners();
+        _testButton.onClick.AddListener(() => onClickAction?.Invoke());
+    }
 }

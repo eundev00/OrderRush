@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using MessagePipe;
 using UniRx;
 using UnityEngine;
 using VContainer.Unity;
@@ -10,6 +11,7 @@ public class HudPresenter : IStartable, IDisposable
     readonly IAccountService _accountService;
     readonly ISoundService _soundService;
     readonly ISceneTransitionService _sceneTransition;
+    readonly IPublisher<SpawnTestItemEvent> _spawnTestItemPublisher;
     readonly HudView _hudView;
     readonly CompositeDisposable _disposable = new();
 
@@ -18,12 +20,14 @@ public class HudPresenter : IStartable, IDisposable
         IAccountService accountService,
         ISoundService soundService,
         ISceneTransitionService sceneTransition,
+        IPublisher<SpawnTestItemEvent> spawnTestItemPublisher,
         HudView hudView)
     {
         _dayProgressService = dayProgressService;
         _accountService = accountService;
         _soundService = soundService;
         _sceneTransition = sceneTransition;
+        _spawnTestItemPublisher = spawnTestItemPublisher;
         _hudView = hudView;
     }
 
@@ -63,6 +67,12 @@ public class HudPresenter : IStartable, IDisposable
             .AddTo(_disposable);
 
         _hudView.SetHomeButtonListener(OnHomeButtonClicked);
+        _hudView.SetTestButtonListener(OnTestButtonClicked);
+    }
+
+    private void OnTestButtonClicked()
+    {
+        _spawnTestItemPublisher.Publish(new SpawnTestItemEvent());
     }
 
     private void OnHomeButtonClicked()

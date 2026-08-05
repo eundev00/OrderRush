@@ -113,7 +113,7 @@ public class CustomerService : ICustomerService
             int groupSize = Mathf.Min(
                 UnityEngine.Random.Range(1, _maxGroupSize + 1),
                 _maxCustomers - _customersSpawned);
-            groupSize = 2;
+
             _customersSpawned += groupSize;
             await TrySpawn(groupSize);
         }

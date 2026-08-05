@@ -1,0 +1,1 @@
+public readonly struct SpawnTestItemEvent { }
