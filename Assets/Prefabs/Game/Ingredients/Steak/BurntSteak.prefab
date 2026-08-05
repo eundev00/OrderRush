@@ -54,13 +54,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 500851814402243641}
     m_Modifications:
     - target: {fileID: 4814542364930381103, guid: 1d7618b00db0f7d438e9732c9245c79e, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4814542364930381103, guid: 1d7618b00db0f7d438e9732c9245c79e, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4814542364930381103, guid: 1d7618b00db0f7d438e9732c9245c79e, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: b4a0e82e0e6194ab0b122557bd72ef38, type: 2}
+      objectReference: {fileID: 2100000, guid: aac888415dd494a9b87cc93bdde7853d, type: 2}
     - target: {fileID: 5952522964051258944, guid: 1d7618b00db0f7d438e9732c9245c79e, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5

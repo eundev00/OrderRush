@@ -67,7 +67,7 @@ public class LevelContext : MonoBehaviour
             _rainRoot.SetActive(on);
 
         if (on)
-            _soundService.PlaySfx(AudioKeys.rain_light, isLoop: true, volume: 0.15f);
+            _soundService.PlaySfx(AudioKeys.rain_light, isLoop: true, volume: 1f);
         else
             _soundService.StopSfx(AudioKeys.rain_light);
     }
