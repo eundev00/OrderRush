@@ -32,8 +32,8 @@ MonoBehaviour:
     _event:
       _isRainy: 0
   - _dayNumber: 3
-    _storyText: Word is it'll rain today. \nRain always seems to make customers a
-      little more impatient.
+    _storyText: Word is it'll rain today. \nRain always seems to make \ncustomers
+      a little more impatient.
     _event:
       _isRainy: 1
   - _dayNumber: 4

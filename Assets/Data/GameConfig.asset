@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: Assembly-CSharp::OrderRush.Data.GameConfig
   _enterWaitDuration: 30
-  _orderWaitDuration: 20
-  _foodWaitDuration: 60
+  _orderWaitDuration: 30
+  _foodWaitDuration: 30
   _patienceRecoveryAmount: 0.3
   _tipRatio: 0.1
-  _eatDuration: 3
+  _eatDuration: 5
   _spawnBufferDuration: 10
-  _defaultSpawnClusterStrength: 1
+  _spawnIntervalDuration: 10
   _toolProcessSeconds: 3
