@@ -21,7 +21,26 @@ public class NavMeshMover : MonoBehaviour
     public async UniTask MoveToAsync(Vector3 destination, CancellationToken ct)
     {
         _agent.SetDestination(destination);
-        await UniTask.WaitUntil(() => IsArrived(), cancellationToken: ct);
+
+        float stuckTime = 0f;
+        const float stuckThreshold = 1f;
+
+        await UniTask.WaitUntil(() =>
+        {
+            if (IsArrived()) return true;
+
+            if (!_agent.pathPending && _agent.velocity.sqrMagnitude < 0.01f)
+            {
+                stuckTime += Time.deltaTime;
+                if (stuckTime >= stuckThreshold) return true;
+            }
+            else
+            {
+                stuckTime = 0f;
+            }
+
+            return false;
+        }, cancellationToken: ct);
     }
 
     public void MoveDirect(Vector3 destination)

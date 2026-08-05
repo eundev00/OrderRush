@@ -106,7 +106,6 @@ public abstract class CharacterBase : MonoBehaviour
         {
             var carriedItem = CurrentCarriable;
             float length = _animator.GetPickUpLength();
-            Debug.Log($"[PutDownAt] animLength={length}, delay={length}s");
             _animator.TriggerPutDown();
             CurrentCarriable.AttachToSlot(attachSlot);
             CurrentCarriable = null;

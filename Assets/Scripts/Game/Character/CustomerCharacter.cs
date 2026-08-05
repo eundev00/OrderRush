@@ -44,7 +44,7 @@ public class CustomerCharacter : CharacterBase
         EnqueueLeave();
     }
 
-    public void StopAllActions()
+public void StopAllActions()
     {
         ClearActions();
     }
