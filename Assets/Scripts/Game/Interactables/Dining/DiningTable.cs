@@ -264,7 +264,6 @@ public class DiningTable : InteractableBase
                 }
             }
 
-            // 빈 테이블에서는 주문/서빙으로 진행하지 않음
             return;
         }
 
@@ -280,11 +279,7 @@ public class DiningTable : InteractableBase
         }
         else
         {
-            // 주문 대기 중 - 빈 손으로만 주문 받기
-            if (!character.IsHolding)
-            {
-                TakeOrders();
-            }
+            TakeOrders();
         }
     }
 
@@ -330,7 +325,7 @@ public class DiningTable : InteractableBase
             return;
 
         var targetCustomer = targetSeat.CurrentCustomer;
-        targetCustomer.IsServed = true;
+        targetCustomer.MarkServed();
         ExtendGaugeTime();
         ProcessServingComplete();
 

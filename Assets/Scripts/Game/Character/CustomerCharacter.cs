@@ -44,7 +44,7 @@ public class CustomerCharacter : CharacterBase
         EnqueueLeave();
     }
 
-public void StopAllActions()
+    public void StopAllActions()
     {
         ClearActions();
     }
@@ -81,6 +81,12 @@ public void StopAllActions()
     public void OnWaitTimeout()
     {
         EnqueueLeaveAngry();
+    }
+
+    public void MarkServed()
+    {
+        IsServed = true;
+        _orderBubble.Hide();
     }
 
     public void EnqueueEatAndLeave()
