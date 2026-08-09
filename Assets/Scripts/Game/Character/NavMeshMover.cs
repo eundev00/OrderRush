@@ -6,8 +6,8 @@ using System.Threading;
 public class NavMeshMover : MonoBehaviour
 {
     [NotNull][SerializeField] NavMeshAgent _agent;
-    [SerializeField] float _normalSpeed = 3.5f;
-    [SerializeField] float _slowSpeed = 1.5f;
+    [SerializeField] float _normalSpeed = 4.0f;
+    [SerializeField] float _slowSpeed = 3.0f;
 
     public void SetSlowSpeed() => _agent.speed = _slowSpeed;
     public void SetNormalSpeed() => _agent.speed = _normalSpeed;

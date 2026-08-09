@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5feb0c6bd3b804770996eb9e75e0498f, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: Assembly-CSharp::OrderRush.Data.GameConfig
-  _enterWaitDuration: 30
-  _orderWaitDuration: 30
-  _foodWaitDuration: 30
-  _patienceRecoveryAmount: 0.3
+  _enterWaitDuration: 60
+  _orderWaitDuration: 60
+  _foodWaitDuration: 60
+  _patienceRecoveryAmount: 0.5
   _tipRatio: 0.1
   _eatDuration: 5
   _spawnBufferDuration: 10
