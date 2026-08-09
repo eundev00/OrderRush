@@ -13,6 +13,7 @@ public class CustomerService : ICustomerService
     private readonly IGameDataService _gameDataService;
     private readonly ISubscriber<GameCleanupEvent> _gameCleanupSubscriber;
     private readonly ISubscriber<CustomerRemovedEvent> _customerServedSubscriber;
+    private readonly ISubscriber<DayEndedEvent> _dayEndedSubscriber;
     private int _customersSpawned;
     private int _maxCustomers;
     private int _maxGroupSize;
@@ -30,7 +31,8 @@ public class CustomerService : ICustomerService
         IDayProgressService dayProgressService,
         IGameDataService gameDataService,
         ISubscriber<GameCleanupEvent> gameCleanupSubscriber,
-        ISubscriber<CustomerRemovedEvent> customerServedSubscriber)
+        ISubscriber<CustomerRemovedEvent> customerServedSubscriber,
+        ISubscriber<DayEndedEvent> dayEndedSubscriber)
     {
         _levelPresenter = levelPresenter;
         _spawnFactory = spawnFactory;
@@ -38,6 +40,7 @@ public class CustomerService : ICustomerService
         _gameDataService = gameDataService;
         _gameCleanupSubscriber = gameCleanupSubscriber;
         _customerServedSubscriber = customerServedSubscriber;
+        _dayEndedSubscriber = dayEndedSubscriber;
     }
 
     public void Initialize()
@@ -63,9 +66,18 @@ public class CustomerService : ICustomerService
             .Subscribe(_ => OnGameCleanup())
             .AddTo(_disposables);
 
+        _dayEndedSubscriber
+            .Subscribe(_ => OnDayEnded())
+            .AddTo(_disposables);
+
         _customerServedSubscriber
             .Subscribe(OnCustomerRemoved)
             .AddTo(_disposables);
+    }
+
+    private void OnDayEnded()
+    {
+        _waitingList.Clear();
     }
 
     private void OnCustomerRemoved(CustomerRemovedEvent evt)
