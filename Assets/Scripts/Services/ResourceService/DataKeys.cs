@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 public static class DataKeys
@@ -29,6 +30,7 @@ public static class DataKeys
     public const string RecipesData = "RecipesData";
     public const string Run1_Days = "Run1_Days";
     public const string RunsData = "RunsData";
+    public const string StreetTrafficData = "StreetTrafficData";
 
     public static Dictionary<string, string> DataPaths = new Dictionary<string, string>()
     {
@@ -59,6 +61,7 @@ public static class DataKeys
         { RecipesData, "Assets/Data/Recipe/RecipesData.asset" },
         { Run1_Days, "Assets/Data/Run1_Days.asset" },
         { RunsData, "Assets/Data/RunsData.asset" },
+        { StreetTrafficData, "Assets/Data/StreetTrafficData.asset" },
     };
 
     public static string GetDataPath(string tag)

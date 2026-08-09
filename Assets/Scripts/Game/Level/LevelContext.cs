@@ -25,7 +25,6 @@ public class LevelContext : MonoBehaviour
     public Transform SpawnPoint => _spawnPoint;
     public Transform WaitingPoint => _waitingPoint;
     public Transform[] StaffIdlePoints => _staffIdlePoints;
-
     [Inject]
     public void Construct(ISubscriber<RainEvent> rainSubscriber, ISubscriber<NightLightEvent> nightLightSubscriber, ISoundService soundService)
     {

@@ -1,0 +1,343 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &689359056736620586
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2087894119811048748}
+  - component: {fileID: 5342947434951295564}
+  - component: {fileID: 1762771662926108379}
+  m_Layer: 0
+  m_Name: WalkerNpc1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2087894119811048748
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689359056736620586}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -12.52, y: 0.35916, z: 1.29908}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7392969591681381023}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!195 &5342947434951295564
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689359056736620586}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 16
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &1762771662926108379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689359056736620586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73854ca32aea04670bf48857dcc335cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrafficNavMeshMover
+  _agent: {fileID: 5342947434951295564}
+--- !u!1001 &4364592204174924635
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2087894119811048748}
+    m_Modifications:
+    - target: {fileID: 2022518237417560195, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2022518237417560195, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8cf5c9a9a1f0d4293b9ab2699094c32b, type: 2}
+    - target: {fileID: 5188581516326419016, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5188581516326419016, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8cf5c9a9a1f0d4293b9ab2699094c32b, type: 2}
+    - target: {fileID: 5234806497624312845, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5234806497624312845, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8cf5c9a9a1f0d4293b9ab2699094c32b, type: 2}
+    - target: {fileID: 5854942832486757246, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_Name
+      value: Hungry_Customer_04
+      objectReference: {fileID: 0}
+    - target: {fileID: 6103597056148615802, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6103597056148615802, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8cf5c9a9a1f0d4293b9ab2699094c32b, type: 2}
+    - target: {fileID: 6325023725159815830, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325023725159815830, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8cf5c9a9a1f0d4293b9ab2699094c32b, type: 2}
+    - target: {fileID: 6488349853497158084, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488349853497158084, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488349853497158084, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488349853497158084, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488349853497158084, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488349853497158084, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488349853497158084, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488349853497158084, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488349853497158084, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488349853497158084, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488349853497158084, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488349853497158084, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488349853497158084, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7549446432046963366, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7549446432046963366, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8cf5c9a9a1f0d4293b9ab2699094c32b, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5854942832486757246, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4661426842944726692}
+    - targetCorrespondingSourceObject: {fileID: 6027286030781148632, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2632699526185210660}
+    - targetCorrespondingSourceObject: {fileID: 5743401650718249903, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2803259249047916444}
+    - targetCorrespondingSourceObject: {fileID: 509348689419598166, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5107045891552792006}
+    - targetCorrespondingSourceObject: {fileID: 5981192717276060573, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7488747158648652217}
+    - targetCorrespondingSourceObject: {fileID: 8342348729232161651, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4423122270920394580}
+    - targetCorrespondingSourceObject: {fileID: 5532113458125749059, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6135902638765648194}
+  m_SourcePrefab: {fileID: 100100000, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+--- !u!1 &4288469814124700173 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 509348689419598166, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+  m_PrefabInstance: {fileID: 4364592204174924635}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5107045891552792006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4288469814124700173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0feb85ec530d4169815d4a47b0ce33d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
+--- !u!1 &5717280711885021224 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8342348729232161651, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+  m_PrefabInstance: {fileID: 4364592204174924635}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4423122270920394580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5717280711885021224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0feb85ec530d4169815d4a47b0ce33d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
+--- !u!4 &7392969591681381023 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6488349853497158084, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+  m_PrefabInstance: {fileID: 4364592204174924635}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7913609596891998245 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5854942832486757246, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+  m_PrefabInstance: {fileID: 4364592204174924635}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4661426842944726692
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7913609596891998245}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a6495ae376666446b937060d5e0317c4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &8013906816006846083 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6027286030781148632, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+  m_PrefabInstance: {fileID: 4364592204174924635}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2632699526185210660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8013906816006846083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0feb85ec530d4169815d4a47b0ce33d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
+--- !u!1 &8039860375026237638 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5981192717276060573, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+  m_PrefabInstance: {fileID: 4364592204174924635}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7488747158648652217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8039860375026237638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0feb85ec530d4169815d4a47b0ce33d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
+--- !u!1 &8094136886445416472 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5532113458125749059, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+  m_PrefabInstance: {fileID: 4364592204174924635}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6135902638765648194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8094136886445416472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0feb85ec530d4169815d4a47b0ce33d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
+--- !u!1 &8297473446338431220 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5743401650718249903, guid: a450abe03f515c44ea2e59159d9c2336, type: 3}
+  m_PrefabInstance: {fileID: 4364592204174924635}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2803259249047916444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8297473446338431220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0feb85ec530d4169815d4a47b0ce33d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor

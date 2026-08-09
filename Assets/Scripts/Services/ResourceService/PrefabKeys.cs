@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
    public static class PrefabKeys
    {
@@ -27,7 +28,13 @@ using System.Collections.Generic;
     public const string TrashCan = "TrashCan";
     public const string LevelMap1 = "LevelMap1";
     public const string Rain = "Rain";
+    public const string Car1 = "Car1";
+    public const string Car2 = "Car2";
+    public const string Car3 = "Car3";
     public const string StreetLight = "StreetLight";
+    public const string WalkerNpc1 = "WalkerNpc1";
+    public const string WalkerNpc2 = "WalkerNpc2";
+    public const string WalkerNpc3 = "WalkerNpc3";
     public const string HUD = "HUD";
     public const string Card = "Card";
     public const string PopupCardShop = "PopupCardShop";
@@ -67,7 +74,13 @@ using System.Collections.Generic;
         { TrashCan, "Assets/Prefabs/Game/Kitchen/Tools/TrashCan.prefab" },
         { LevelMap1, "Assets/Prefabs/Game/Level/LevelMap1.prefab" },
         { Rain, "Assets/Prefabs/Game/Level/Rain.prefab" },
+        { Car1, "Assets/Prefabs/Game/Street/Car1.prefab" },
+        { Car2, "Assets/Prefabs/Game/Street/Car2.prefab" },
+        { Car3, "Assets/Prefabs/Game/Street/Car3.prefab" },
         { StreetLight, "Assets/Prefabs/Game/Street/StreetLight.prefab" },
+        { WalkerNpc1, "Assets/Prefabs/Game/Street/WalkerNpc1.prefab" },
+        { WalkerNpc2, "Assets/Prefabs/Game/Street/WalkerNpc2.prefab" },
+        { WalkerNpc3, "Assets/Prefabs/Game/Street/WalkerNpc3.prefab" },
         { HUD, "Assets/Prefabs/Game/UI/HUD.prefab" },
         { Card, "Assets/Prefabs/Game/UI/PopupCardShop/Card.prefab" },
         { PopupCardShop, "Assets/Prefabs/Game/UI/PopupCardShop/PopupCardShop.prefab" },

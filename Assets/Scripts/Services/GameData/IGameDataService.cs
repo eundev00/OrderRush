@@ -7,6 +7,7 @@ public interface IGameDataService
     GameConfig Config { get; }
     DaysData Days { get; }
     DayNightSettings DayNightSettings { get; }
+    StreetTrafficData StreetTrafficData { get; }
 
     RecipeData GetRecipeByID(int recipeID);
     int GetMatchedRecipeID(List<IngredientData> ingredients);

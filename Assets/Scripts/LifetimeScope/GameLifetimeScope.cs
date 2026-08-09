@@ -25,6 +25,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<IStoryFlowService, StoryFlowService>(Lifetime.Scoped);
         builder.Register<IDayFlowService, DayFlowService>(Lifetime.Scoped);
         builder.Register<DayEventService>(Lifetime.Singleton).AsImplementedInterfaces();
+        builder.Register<StreetTrafficService>(Lifetime.Singleton);
 
         // Factories
         builder.Register<SpawnFactory>(Lifetime.Singleton);

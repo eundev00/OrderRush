@@ -11,6 +11,7 @@ public class GameDataService : IGameDataService
     public CardsData Cards { get; private set; }
     public DaysData Days { get; private set; }
     public DayNightSettings DayNightSettings { get; private set; }
+    public StreetTrafficData StreetTrafficData { get; private set; }
 
     public GameDataService(IResourcesLoaderService resourcesLoader)
     {
@@ -24,6 +25,7 @@ public class GameDataService : IGameDataService
         Cards = await _resourcesLoader.LoadAsync<CardsData>(DataKeys.GetDataPath(DataKeys.CardsData));
         Days = await _resourcesLoader.LoadAsync<DaysData>(DataKeys.GetDataPath(DataKeys.Run1_Days));
         DayNightSettings = await _resourcesLoader.LoadAsync<DayNightSettings>(DataKeys.GetDataPath(DataKeys.DayNightSettings));
+        StreetTrafficData = await _resourcesLoader.LoadAsync<StreetTrafficData>(DataKeys.GetDataPath(DataKeys.StreetTrafficData));
     }
 
     public RecipeData GetRecipeByID(int recipeID)
