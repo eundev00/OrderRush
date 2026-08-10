@@ -51,8 +51,7 @@ public class CardEffectApplier
         switch (effect.EffectType)
         {
             case EffectType.Table:
-                for (int i = 0; i < tier; i++)
-                    await ApplyTableAddition((TableAdditionEffect)effect);
+                await ApplyTableAddition((TableAdditionEffect)effect, tier);
                 break;
             case EffectType.Menu:
                 ApplyMenuUnlock((MenuEffect)effect);
@@ -69,26 +68,30 @@ public class CardEffectApplier
         }
     }
 
-    private async UniTask ApplyTableAddition(TableAdditionEffect effect)
+    private async UniTask ApplyTableAddition(TableAdditionEffect effect, int targetCount)
     {
         var context = _levelService.Context;
+        int currentCount = context.DiningTables.Count;
 
-        Transform spawnPoint = context.GetNextTableSpawnPoint();
-        if (spawnPoint == null)
+        for (int i = currentCount; i < targetCount; i++)
         {
-            Debug.LogWarning("No more table spawn points available");
-            return;
-        }
+            Transform spawnPoint = context.GetNextTableSpawnPoint();
+            if (spawnPoint == null)
+            {
+                Debug.LogWarning("No more table spawn points available");
+                return;
+            }
 
-        var table = await _spawnFactory.Create<DiningTable>(
-            effect.TablePrefabName,
-            spawnPoint.position,
-            spawnPoint);
+            var table = await _spawnFactory.Create<DiningTable>(
+                effect.TablePrefabName,
+                spawnPoint.position,
+                spawnPoint);
 
-        if (table != null)
-        {
-            table.transform.rotation = Quaternion.Euler(0f, spawnPoint.eulerAngles.y, 0f);
-            context.AddDiningTable(table);
+            if (table != null)
+            {
+                table.transform.rotation = Quaternion.Euler(0f, spawnPoint.eulerAngles.y, 0f);
+                context.AddDiningTable(table);
+            }
         }
     }
 
