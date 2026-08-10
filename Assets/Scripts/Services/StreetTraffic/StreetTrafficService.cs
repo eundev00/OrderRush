@@ -9,7 +9,7 @@ public class StreetTrafficService : IUpdatable, IDisposable
 {
     private readonly IUpdateSubscriptionService _updateService;
     private readonly SpawnFactory _spawnFactory;
-    private readonly ILevelContextPresenter _levelPresenter;
+    private readonly ILevelService _levelService;
     private readonly IGameDataService _gameDataService;
 
     private IDisposable _dayEndedSubscription;
@@ -17,7 +17,7 @@ public class StreetTrafficService : IUpdatable, IDisposable
 
     private readonly List<GameObject> _activeMovers = new();
     private StreetTrafficData _data;
-    private TrafficContext _trafficContext;
+    private LevelContext _levelContext;
     private bool _isActive;
     private bool _isInitialized;
 
@@ -29,14 +29,14 @@ public class StreetTrafficService : IUpdatable, IDisposable
     public StreetTrafficService(
         IUpdateSubscriptionService updateService,
         SpawnFactory spawnFactory,
-        ILevelContextPresenter levelPresenter,
+        ILevelService levelService,
         IGameDataService gameDataService,
         ISubscriber<DayEndedEvent> dayEndedSubscriber,
         ISubscriber<GameCleanupEvent> gameCleanupSubscriber)
     {
         _updateService = updateService;
         _spawnFactory = spawnFactory;
-        _levelPresenter = levelPresenter;
+        _levelService = levelService;
         _gameDataService = gameDataService;
 
         _dayEndedSubscription = dayEndedSubscriber.Subscribe(OnDayEnded);
@@ -49,12 +49,8 @@ public class StreetTrafficService : IUpdatable, IDisposable
         if (_data == null)
             return;
 
-        var levelTransform = _levelPresenter.LevelTransform;
-        if (levelTransform == null)
-            return;
-
-        _trafficContext = levelTransform.GetComponentInChildren<TrafficContext>();
-        if (_trafficContext == null)
+        _levelContext = _levelService.Context;
+        if (_levelContext == null || _levelContext.TrafficContext == null)
             return;
 
         _updateService.RegisterUpdatable(this);
@@ -89,7 +85,7 @@ public class StreetTrafficService : IUpdatable, IDisposable
 
     private async UniTaskVoid SpawnVehicle()
     {
-        var roadPaths = _trafficContext.RoadPaths;
+        var roadPaths = _levelContext.TrafficContext.RoadPaths;
         if (roadPaths == null || roadPaths.Length == 0)
             return;
 
@@ -106,7 +102,7 @@ public class StreetTrafficService : IUpdatable, IDisposable
         float speed = UnityEngine.Random.Range(_data.VehicleSpeedMin, _data.VehicleSpeedMax);
 
         var mover = await _spawnFactory.Create<TrafficWaypointMover>(
-            PrefabKeys.GetPrefabPath(prefabKey), positions[0], _levelPresenter.LevelTransform);
+            PrefabKeys.GetPrefabPath(prefabKey), positions[0], _levelContext.transform);
 
         if (mover == null)
             return;
@@ -118,7 +114,7 @@ public class StreetTrafficService : IUpdatable, IDisposable
 
     private async UniTaskVoid SpawnWalker()
     {
-        var boundaryPoints = _trafficContext.WalkerBoundaryPoints;
+        var boundaryPoints = _levelContext.TrafficContext.WalkerBoundaryPoints;
         if (boundaryPoints == null || boundaryPoints.Length < 2)
             return;
 
@@ -138,7 +134,7 @@ public class StreetTrafficService : IUpdatable, IDisposable
         float speed = UnityEngine.Random.Range(_data.WalkerSpeedMin, _data.WalkerSpeedMax);
 
         var mover = await _spawnFactory.Create<TrafficNavMeshMover>(
-            PrefabKeys.GetPrefabPath(prefabKey), spawnPosition, _levelPresenter.LevelTransform);
+            PrefabKeys.GetPrefabPath(prefabKey), spawnPosition, _levelContext.transform);
 
         if (mover == null)
             return;

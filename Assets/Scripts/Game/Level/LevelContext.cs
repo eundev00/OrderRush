@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using MessagePipe;
 using UnityEngine;
-using VContainer;
 
 public class LevelContext : MonoBehaviour
 {
@@ -15,28 +12,18 @@ public class LevelContext : MonoBehaviour
     [SerializeField] private GameObject _rainRoot;
     [SerializeField] private GameObject _nightLightRoot;
 
-    private ISoundService _soundService;
-    private IDisposable _rainSubscription;
-    private IDisposable _nightLightSubscription;
-
     public List<DiningTable> DiningTables { get; private set; }
     public ServingCounter[] ServingCounters { get; private set; }
     public Counter[] KitchenCounters { get; private set; }
+    public TrafficContext TrafficContext { get; private set; }
     public Transform SpawnPoint => _spawnPoint;
     public Transform WaitingPoint => _waitingPoint;
     public Transform[] StaffIdlePoints => _staffIdlePoints;
-    [Inject]
-    public void Construct(ISubscriber<RainEvent> rainSubscriber, ISubscriber<NightLightEvent> nightLightSubscriber, ISoundService soundService)
-    {
-        _soundService = soundService;
-        _rainSubscription = rainSubscriber.Subscribe(e => SetRain(e.IsRainy));
-        _nightLightSubscription = nightLightSubscriber.Subscribe(e => SetNightLight(e.IsNight));
-    }
+    public GameObject RainRoot => _rainRoot;
+    public GameObject NightLightRoot => _nightLightRoot;
 
     void Awake()
     {
-        SetNightLight(false);
-
         DiningTables = new List<DiningTable>(_interactablesRoot.GetComponentsInChildren<DiningTable>());
 
         ServingCounters = _interactablesRoot.GetComponentsInChildren<ServingCounter>();
@@ -44,6 +31,8 @@ public class LevelContext : MonoBehaviour
         KitchenCounters = _interactablesRoot.GetComponentsInChildren<Counter>()
             .Where(c => c is not ServingCounter)
             .ToArray();
+
+        TrafficContext = GetComponentInChildren<TrafficContext>();
     }
 
     public Transform GetNextTableSpawnPoint()
@@ -58,28 +47,5 @@ public class LevelContext : MonoBehaviour
     public void AddDiningTable(DiningTable table)
     {
         DiningTables.Add(table);
-    }
-
-    private void SetRain(bool on)
-    {
-        if (_rainRoot != null)
-            _rainRoot.SetActive(on);
-
-        if (on)
-            _soundService.PlaySfx(AudioKeys.rain_light, isLoop: true, volume: 1f);
-        else
-            _soundService.StopSfx(AudioKeys.rain_light);
-    }
-
-    private void SetNightLight(bool on)
-    {
-        if (_nightLightRoot != null)
-            _nightLightRoot.SetActive(on);
-    }
-
-    void OnDestroy()
-    {
-        _rainSubscription?.Dispose();
-        _nightLightSubscription?.Dispose();
     }
 }

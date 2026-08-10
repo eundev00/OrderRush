@@ -3,7 +3,7 @@ using VContainer.Unity;
 
 public class GameInitiator : IStartable
 {
-    private readonly ILevelContextPresenter _levelPresenter;
+    private readonly ILevelService _levelService;
     private readonly IDayProgressService _dayProgressService;
     private readonly IDayNightService _dayNightService;
     private readonly IAccountService _accountService;
@@ -11,12 +11,13 @@ public class GameInitiator : IStartable
     private readonly CardEffectApplier _cardEffectApplier;
     private readonly IDayEventService _dayEventService;
     private readonly IDayFlowService _dayFlowService;
-    private readonly GameUIContextPresenter _uiContextPresenter;
+    private readonly GameUIContext _gameUIContext;
+    private readonly IPopupService _popupService;
     private readonly ISceneTransitionService _sceneTransition;
     private readonly StreetTrafficService _streetTrafficService;
 
     public GameInitiator(
-        ILevelContextPresenter levelPresenter,
+        ILevelService levelService,
         IDayProgressService dayProgressService,
         IDayNightService dayNightService,
         IAccountService accountService,
@@ -24,11 +25,12 @@ public class GameInitiator : IStartable
         CardEffectApplier cardEffectApplier,
         IDayEventService dayEventService,
         IDayFlowService dayFlowService,
-        GameUIContextPresenter uiContextPresenter,
+        GameUIContext gameUIContext,
+        IPopupService popupService,
         ISceneTransitionService sceneTransition,
         StreetTrafficService streetTrafficService)
     {
-        _levelPresenter = levelPresenter;
+        _levelService = levelService;
         _dayProgressService = dayProgressService;
         _dayNightService = dayNightService;
         _accountService = accountService;
@@ -36,7 +38,8 @@ public class GameInitiator : IStartable
         _cardEffectApplier = cardEffectApplier;
         _dayEventService = dayEventService;
         _dayFlowService = dayFlowService;
-        _uiContextPresenter = uiContextPresenter;
+        _gameUIContext = gameUIContext;
+        _popupService = popupService;
         _sceneTransition = sceneTransition;
         _streetTrafficService = streetTrafficService;
     }
@@ -50,8 +53,8 @@ public class GameInitiator : IStartable
 
         int currentDay = _accountService.Account.CurrentDay;
 
-        await _levelPresenter.LoadLevelContext(1);
-        _uiContextPresenter.Initialize();
+        await _levelService.LoadLevelAsync(1);
+        _popupService.SetCanvasRoot(_gameUIContext.PopupRoot);
         await _cardEffectApplier.ApplyAllPurchasedCards();
 
         _streetTrafficService.Initialize();

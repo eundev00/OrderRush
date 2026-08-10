@@ -3,20 +3,20 @@ using VContainer;
 public abstract class StaffCharacter : CharacterBase
 {
     private StaffManager _staffManager;
-    private ILevelContextPresenter _levelContext;
+    private ILevelService _levelService;
     private bool _isLeaving;
     private bool _workInProgress;
 
     public NavMeshMover Mover => _mover;
     public CharacterAnimator Animator => _animator;
-    protected ServingCounter[] ServingCounters => _levelContext?.ServingCounters;
-    protected Counter[] KitchenCounters => _levelContext?.KitchenCounters;
+    protected ServingCounter[] ServingCounters => _levelService.Context.ServingCounters;
+    protected Counter[] KitchenCounters => _levelService.Context.KitchenCounters;
 
     [Inject]
-    public void Construct(StaffManager staffManager, ILevelContextPresenter levelContext)
+    public void Construct(StaffManager staffManager, ILevelService levelService)
     {
         _staffManager = staffManager;
-        _levelContext = levelContext;
+        _levelService = levelService;
     }
 
     protected void Start()
@@ -36,7 +36,7 @@ public abstract class StaffCharacter : CharacterBase
         else
         {
             _workInProgress = false;
-            EnqueueAction(new StaffIdleAction(_mover, _levelContext.StaffIdlePoints));
+            EnqueueAction(new StaffIdleAction(_mover, _levelService.Context.StaffIdlePoints));
             _staffManager.WorkAdded += OnWorkAdded;
         }
     }
@@ -76,7 +76,7 @@ public abstract class StaffCharacter : CharacterBase
     private void EnqueueExit()
     {
         _actionExecutor.ExecutionCompleted -= OnActionCompleted;
-        EnqueueAction(new StaffLeaveAction(this, _levelContext.SpawnPosition, _mover, _animator));
+        EnqueueAction(new StaffLeaveAction(this, _levelService.Context.SpawnPoint.position, _mover, _animator));
     }
 
     protected abstract bool CanHandle(WorkType type);

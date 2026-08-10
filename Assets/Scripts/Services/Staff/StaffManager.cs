@@ -8,7 +8,7 @@ public class StaffManager
     private readonly ISubscriber<PlateOnCounterEvent> _plateOnCounterSubscriber;
     private readonly ISubscriber<DirtyPlateEvent> _dirtyPlateSubscriber;
     private readonly ISubscriber<GameCleanupEvent> _gameCleanupSubscriber;
-    private readonly ILevelContextPresenter _levelContext;
+    private readonly ILevelService _levelService;
 
     private readonly List<WorkItem> _pending = new();
     private IDisposable _disposables;
@@ -20,13 +20,13 @@ public class StaffManager
         ISubscriber<PlateOnCounterEvent> plateOnCounterSubscriber,
         ISubscriber<DirtyPlateEvent> dirtyPlateSubscriber,
         ISubscriber<GameCleanupEvent> gameCleanupSubscriber,
-        ILevelContextPresenter levelContext)
+        ILevelService levelService)
     {
         _orderNeededSubscriber = orderNeededSubscriber;
         _plateOnCounterSubscriber = plateOnCounterSubscriber;
         _dirtyPlateSubscriber = dirtyPlateSubscriber;
         _gameCleanupSubscriber = gameCleanupSubscriber;
-        _levelContext = levelContext;
+        _levelService = levelService;
     }
 
     public void Initialize()
@@ -70,7 +70,7 @@ public class StaffManager
 
         DiningTable earliestTable = null;
         float earliestTime = float.MaxValue;
-        foreach (var table in _levelContext.DiningTables)
+        foreach (var table in _levelService.Context.DiningTables)
         {
             float orderTime = table.GetEarliestOrderTime(plate.MatchedRecipeID);
             if (orderTime < earliestTime)

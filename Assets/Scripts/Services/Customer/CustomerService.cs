@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class CustomerService : ICustomerService
 {
-    private readonly ILevelContextPresenter _levelPresenter;
+    private readonly ILevelService _levelService;
     private readonly SpawnFactory _spawnFactory;
     private readonly IDayProgressService _dayProgressService;
     private readonly IGameDataService _gameDataService;
@@ -23,10 +23,12 @@ public class CustomerService : ICustomerService
     private readonly List<CustomerGroup> _waitingList = new();
     private readonly CompositeDisposable _disposables = new();
 
+    private LevelContext _levelContext;
+
 
 
     public CustomerService(
-        ILevelContextPresenter levelPresenter,
+        ILevelService levelService,
         SpawnFactory spawnFactory,
         IDayProgressService dayProgressService,
         IGameDataService gameDataService,
@@ -34,7 +36,7 @@ public class CustomerService : ICustomerService
         ISubscriber<CustomerRemovedEvent> customerServedSubscriber,
         ISubscriber<DayEndedEvent> dayEndedSubscriber)
     {
-        _levelPresenter = levelPresenter;
+        _levelService = levelService;
         _spawnFactory = spawnFactory;
         _dayProgressService = dayProgressService;
         _gameDataService = gameDataService;
@@ -46,6 +48,8 @@ public class CustomerService : ICustomerService
     public void Initialize()
     {
         _disposables.Clear();
+
+        _levelContext = _levelService.Context;
 
         var currentDay = _dayProgressService.CurrentDayContext;
         var daysData = _dayProgressService.CurrentDaysData;
@@ -159,7 +163,7 @@ public class CustomerService : ICustomerService
 
     private DiningTable FindAvailableTable(int groupSize)
     {
-        return _levelPresenter.DiningTables
+        return _levelContext.DiningTables
             .FirstOrDefault(t => t.IsEmptyTable() && t.MaxSeats >= groupSize);
     }
 
@@ -192,14 +196,14 @@ public class CustomerService : ICustomerService
         {
             var customer = await _spawnFactory.Create<CustomerCharacter>(
                 PrefabKeys.GetPrefabPath(characterKeys[i]));
-            customer.transform.SetParent(_levelPresenter.LevelTransform);
-            customer.SetSpawnPosition(_levelPresenter.SpawnPosition);
-            customer.WarpTo(_levelPresenter.SpawnPosition);
+            customer.transform.SetParent(_levelContext.transform);
+            customer.SetSpawnPosition(_levelContext.SpawnPoint.position);
+            customer.WarpTo(_levelContext.SpawnPoint.position);
 
             group.AddMember(customer);
 
             Vector3 waitPosition = CalculateWaitingPosition(currentGroupIndex, i);
-            customer.EnqueueGoToWaitingPosition(waitPosition, _levelPresenter.WaitingRotation);
+            customer.EnqueueGoToWaitingPosition(waitPosition, _levelContext.WaitingPoint.rotation);
         }
 
         _waitingList.Add(group);
@@ -213,9 +217,9 @@ public class CustomerService : ICustomerService
         {
             var customer = await _spawnFactory.Create<CustomerCharacter>(
                 PrefabKeys.GetPrefabPath(characterKeys[i]));
-            customer.transform.SetParent(_levelPresenter.LevelTransform);
-            customer.SetSpawnPosition(_levelPresenter.SpawnPosition);
-            customer.WarpTo(_levelPresenter.SpawnPosition);
+            customer.transform.SetParent(_levelContext.transform);
+            customer.SetSpawnPosition(_levelContext.SpawnPoint.position);
+            customer.WarpTo(_levelContext.SpawnPoint.position);
 
             customer.EnqueueGoToSeat(table, i);
         }
@@ -223,7 +227,7 @@ public class CustomerService : ICustomerService
 
     private Vector3 CalculateWaitingPosition(int groupIndex, int memberIndex)
     {
-        Vector3 basePosition = _levelPresenter.WaitingPosition;
+        Vector3 basePosition = _levelContext.WaitingPoint.position;
         Vector3 forward = new Vector3(1, 0, 0);
 
         int totalPeopleAhead = 0;
@@ -267,7 +271,7 @@ public class CustomerService : ICustomerService
             {
                 var customer = group.Members[memberIndex];
                 Vector3 newPosition = CalculateWaitingPosition(groupIndex, memberIndex);
-                customer.EnqueueGoToWaitingPosition(newPosition, _levelPresenter.WaitingRotation);
+                customer.EnqueueGoToWaitingPosition(newPosition, _levelContext.WaitingPoint.rotation);
             }
         }
     }

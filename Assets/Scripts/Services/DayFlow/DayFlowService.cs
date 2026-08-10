@@ -1,7 +1,8 @@
 using System;
 using Cysharp.Threading.Tasks;
+using MessagePipe;
 
-public class DayFlowService : IDayFlowService
+public class DayFlowService : IDayFlowService, IDisposable
 {
     private readonly IDayProgressService _dayProgressService;
     private readonly IPopupService _popupService;
@@ -11,6 +12,8 @@ public class DayFlowService : IDayFlowService
     private readonly StaffManager _staffManager;
     private readonly ISceneTransitionService _sceneTransition;
 
+    private readonly IDisposable _dayEndedSubscription;
+
     public DayFlowService(
         IDayProgressService dayProgressService,
         IPopupService popupService,
@@ -18,7 +21,8 @@ public class DayFlowService : IDayFlowService
         ICameraDirector cameraDirector,
         ICustomerService customerService,
         StaffManager staffManager,
-        ISceneTransitionService sceneTransition)
+        ISceneTransitionService sceneTransition,
+        ISubscriber<DayEndedEvent> dayEndedSubscriber)
     {
         _dayProgressService = dayProgressService;
         _popupService = popupService;
@@ -27,6 +31,14 @@ public class DayFlowService : IDayFlowService
         _customerService = customerService;
         _staffManager = staffManager;
         _sceneTransition = sceneTransition;
+
+        _dayEndedSubscription = dayEndedSubscriber.Subscribe(
+            evt => HandleDayEndedAsync(evt).Forget());
+    }
+
+    public void Dispose()
+    {
+        _dayEndedSubscription?.Dispose();
     }
 
     public async UniTask RunFirstDayAsync(int dayNumber)
@@ -48,7 +60,7 @@ public class DayFlowService : IDayFlowService
         _dayProgressService.StartDayTimer();
     }
 
-    public async UniTask HandleDayEndedAsync(DayEndedEvent evt)
+    private async UniTask HandleDayEndedAsync(DayEndedEvent evt)
     {
         try
         {

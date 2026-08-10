@@ -1,22 +1,23 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 public class CardEffectApplier
 {
-    private readonly ILevelContextPresenter _levelPresenter;
+    private readonly ILevelService _levelService;
     private readonly SpawnFactory _spawnFactory;
     private readonly IAccountService _accountService;
     private readonly IKitchenStatService _kitchenStatService;
     private readonly IGameDataService _gameDataService;
 
     public CardEffectApplier(
-        ILevelContextPresenter levelPresenter,
+        ILevelService levelService,
         SpawnFactory spawnFactory,
         IAccountService accountService,
         IKitchenStatService kitchenStatService,
         IGameDataService gameDataService)
     {
-        _levelPresenter = levelPresenter;
+        _levelService = levelService;
         _spawnFactory = spawnFactory;
         _accountService = accountService;
         _kitchenStatService = kitchenStatService;
@@ -51,7 +52,7 @@ public class CardEffectApplier
         {
             case EffectType.Table:
                 for (int i = 0; i < tier; i++)
-                    await _levelPresenter.AddTableFromEffect((TableAdditionEffect)effect);
+                    await ApplyTableAddition((TableAdditionEffect)effect);
                 break;
             case EffectType.Menu:
                 ApplyMenuUnlock((MenuEffect)effect);
@@ -68,12 +69,35 @@ public class CardEffectApplier
         }
     }
 
+    private async UniTask ApplyTableAddition(TableAdditionEffect effect)
+    {
+        var context = _levelService.Context;
+
+        Transform spawnPoint = context.GetNextTableSpawnPoint();
+        if (spawnPoint == null)
+        {
+            Debug.LogWarning("No more table spawn points available");
+            return;
+        }
+
+        var table = await _spawnFactory.Create<DiningTable>(
+            effect.TablePrefabName,
+            spawnPoint.position,
+            spawnPoint);
+
+        if (table != null)
+        {
+            table.transform.rotation = Quaternion.Euler(0f, spawnPoint.eulerAngles.y, 0f);
+            context.AddDiningTable(table);
+        }
+    }
+
     private async UniTask ApplyStaffHire(StaffEffect effect)
     {
         var staff = await _spawnFactory.Create<StaffCharacter>(effect.StaffPrefabName);
         if (staff == null) return;
 
-        staff.WarpTo(_levelPresenter.SpawnPosition);
+        staff.WarpTo(_levelService.Context.SpawnPoint.position);
     }
 
     private void ApplyMenuUnlock(MenuEffect effect)

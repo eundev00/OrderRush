@@ -101,4 +101,8 @@ using System.Collections.Generic;
          }
          return string.Empty;
     }
+
+    private const string LevelPathFormat = "Assets/Prefabs/Game/Level/LevelMap{0}.prefab";
+
+    public static string GetLevelPath(int level) => string.Format(LevelPathFormat, level);
 }
