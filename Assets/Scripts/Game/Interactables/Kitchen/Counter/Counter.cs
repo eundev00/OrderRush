@@ -31,7 +31,7 @@ public class Counter : InteractableBase
                 var plate = character.CurrentCarriable as Plate;
                 if (plate.TryPlaceOntoOther(_placedCarriable))
                 {
-                    await character.PickUp(character.CurrentCarriable);
+                    await character.PickUp(character.CurrentCarriable, ct);
                     _placedCarriable = null;
                 }
             }
@@ -40,18 +40,18 @@ public class Counter : InteractableBase
                 var plate = _placedCarriable as Plate;
                 if (plate.TryPlaceOntoOther(character.CurrentCarriable))
                 {
-                    await character.PutDown();
+                    await character.PutDown(ct);
                 }
             }
         }
         else if (character.IsHolding && _placedCarriable == null)
         {
-            _placedCarriable = await character.PutDownAt(_slot);
+            _placedCarriable = await character.PutDownAt(_slot, ct);
             ItemPlaced?.Invoke(this);
         }
         else if (!character.IsHolding && _placedCarriable != null)
         {
-            await character.PickUp(_placedCarriable);
+            await character.PickUp(_placedCarriable, ct);
             _placedCarriable = null;
         }
     }

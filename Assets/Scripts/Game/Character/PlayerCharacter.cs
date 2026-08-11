@@ -75,6 +75,6 @@ public class PlayerCharacter : CharacterBase
         ingredient.SetData(ingredientData);
 
         plate.TryPlaceOntoOther(ingredient);
-        await PickUp(plate);
+        await PickUp(plate, this.GetCancellationTokenOnDestroy());
     }
 }

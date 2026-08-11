@@ -54,9 +54,10 @@ public class InteractAction : IGameAction
         try
         {
             _target.SetHighlight(true);
-            _animator.SetSpeed(1f);
+            _animator.Play(CharacterAnimState.Walking);
             await _mover.MoveToAsync(navHit.position, ct);
-            _animator.SetSpeed(0f);
+            _mover.Stop();
+            _animator.Play(CharacterAnimState.Idle);
 
             _character.transform.rotation = validPoint.rotation;
 
@@ -68,7 +69,7 @@ public class InteractAction : IGameAction
             if (_target is UnityEngine.Object obj && obj != null)
                 _target.SetHighlight(false);
             if (_animator != null)
-                _animator.SetSpeed(0f);
+                _animator.Play(CharacterAnimState.Idle);
         }
     }
 

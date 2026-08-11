@@ -18,7 +18,7 @@ public class MoveAction : IGameAction
     public async UniTask ExecuteAsync(CancellationToken ct)
     {
         _mover.EnableAgent();
-        _animator.SetSpeed(1f);
+        _animator.Play(CharacterAnimState.Walking);
 
         try
         {
@@ -26,7 +26,7 @@ public class MoveAction : IGameAction
         }
         finally
         {
-            _animator.SetSpeed(0f);
+            _animator.Play(CharacterAnimState.Idle);
         }
     }
 }

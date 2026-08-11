@@ -247,7 +247,7 @@ public class DiningTable : InteractableBase
                     var plate = _currentPlates[i];
                     if (plate != null && plate.IsDirty)
                     {
-                        await character.PickUp(plate);
+                        await character.PickUp(plate, ct);
                         _currentPlates[i] = null;
 
                         if (IsEmptyTable())
@@ -274,7 +274,7 @@ public class DiningTable : InteractableBase
             if (character.IsHolding &&
                 character.CurrentCarriable.GetCarriableType() == CarriableType.Plate)
             {
-                await ServeFood(character);
+                await ServeFood(character, ct);
             }
         }
         else
@@ -297,7 +297,7 @@ public class DiningTable : InteractableBase
         }
     }
 
-    private async UniTask ServeFood(CharacterBase character)
+    private async UniTask ServeFood(CharacterBase character, CancellationToken ct)
     {
         var plate = character.CurrentCarriable as Plate;
         if (plate == null)
@@ -329,7 +329,7 @@ public class DiningTable : InteractableBase
         ExtendGaugeTime();
         ProcessServingComplete();
 
-        await character.PutDown();
+        await character.PutDown(ct);
         PlacePlate(targetSeat.GetSeatIndex(), plate);
     }
 

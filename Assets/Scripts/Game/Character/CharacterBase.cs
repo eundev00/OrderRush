@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using MessagePipe;
@@ -54,82 +55,64 @@ public abstract class CharacterBase : MonoBehaviour
         _gameCleanupSubscription?.Dispose();
     }
 
-    public async UniTask PickUp(ICarriable item)
+    public async UniTask PickUp(ICarriable item, CancellationToken ct)
     {
         if (item is null) return;
 
-        try
-        {
-            float length = _animator.GetPickUpLength();
-            _animator.TriggerPickUp();
-            CurrentCarriable = item;
-            CurrentCarriable.AttachToSlot(ItemSlot);
+        _animator.Play(CharacterAnimState.PickUp);
+        CurrentCarriable = item;
+        CurrentCarriable.AttachToSlot(ItemSlot);
 
-            await UniTask.Delay(TimeSpan.FromSeconds(length));
-        }
-        catch (OperationCanceledException)
-        {
-        }
-        catch (System.Exception)
-        {
-        }
+        await DelayAnimation(_animator.GetPickUpDuration(), ct);
+        _animator.Play(CharacterAnimState.Idle);
     }
 
 
-    public async UniTask PutDown()
+    public async UniTask PutDown(CancellationToken ct)
     {
         if (CurrentCarriable == null) return;
 
-        try
-        {
-            float length = _animator.GetPickUpLength();
-            _animator.TriggerPutDown();
-            CurrentCarriable = null;
-            await UniTask.Delay(TimeSpan.FromSeconds(length));
-        }
-        catch (OperationCanceledException)
-        {
-        }
-        catch (System.Exception)
-        {
-        }
-
-        return;
+        CurrentCarriable = null;
+        _animator.Play(CharacterAnimState.PutDown);
+        await DelayAnimation(_animator.GetPutDownDuration(), ct);
+        _animator.Play(CharacterAnimState.Idle);
     }
 
 
-    public async UniTask<ICarriable> PutDownAt(Transform attachSlot)
+    public async UniTask<ICarriable> PutDownAt(Transform attachSlot, CancellationToken ct)
     {
         if (CurrentCarriable == null) return null;
 
+        var carriedItem = CurrentCarriable;
+        _animator.Play(CharacterAnimState.PutDown);
+        await DelayAnimation(_animator.GetPutDownDuration(), ct);
+
+        CurrentCarriable.AttachToSlot(attachSlot);
+        CurrentCarriable = null;
+        _animator.Play(CharacterAnimState.Idle);
+
+        return carriedItem;
+    }
+
+    private static async UniTask DelayAnimation(float duration, CancellationToken ct)
+    {
         try
         {
-            var carriedItem = CurrentCarriable;
-            float length = _animator.GetPickUpLength();
-            _animator.TriggerPutDown();
-            CurrentCarriable.AttachToSlot(attachSlot);
-            CurrentCarriable = null;
-            await UniTask.Delay(TimeSpan.FromSeconds(length));
-            return carriedItem;
+            await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: ct);
         }
         catch (OperationCanceledException)
         {
         }
-        catch (System.Exception)
-        {
-        }
-
-        return null;
     }
 
     public void StartWorking()
     {
-        _animator.SetWorking(true);
+        _animator.Play(CharacterAnimState.Working);
     }
 
     public void StopWorking()
     {
-        _animator.SetWorking(false);
+        _animator.Play(CharacterAnimState.Idle);
     }
 
     protected void EnqueueAction(IGameAction action)

@@ -115,7 +115,7 @@ public abstract class CookingToolBase : InteractableBase
                 var plate = character.CurrentCarriable as Plate;
                 if (plate.TryPlaceOntoOther(CurrentIngredientObject))
                 {
-                    await character.PickUp(character.CurrentCarriable);
+                    await character.PickUp(character.CurrentCarriable, ct);
                     RemoveIngredient();
                 }
             }
@@ -126,7 +126,7 @@ public abstract class CookingToolBase : InteractableBase
             var ingredientObj = character.CurrentCarriable as IngredientObject;
             if (ingredientObj && CanPlaceIngredient(ingredientObj.Data))
             {
-                await character.PutDownAt(_ingredientSlot);
+                await character.PutDownAt(_ingredientSlot, ct);
                 CurrentIngredientObject = ingredientObj;
                 PlaceIngredient(CurrentIngredientObject.Data, CurrentIngredientObject);
                 StartCooking();
@@ -140,7 +140,7 @@ public abstract class CookingToolBase : InteractableBase
         {
             StopCooking();
             await UniTask.Yield();
-            await character.PickUp(CurrentIngredientObject);
+            await character.PickUp(CurrentIngredientObject, ct);
             RemoveIngredient();
         }
 

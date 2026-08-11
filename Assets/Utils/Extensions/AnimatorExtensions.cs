@@ -52,10 +52,21 @@ namespace A1.Meta
             return stateInfo.IsName(stateName) && stateInfo.normalizedTime >= 1f && !animator.IsInTransition(0);
         }
 
-        public static float GetAnimationLength(this Animator animator, string stateName)
+        public static float GetAnimationLength(this Animator animator, string stateName, string speedParamName = null)
         {
             var clip = GetAnimationClipInfo(animator, stateName);
-            return clip != null ?  clip.length : 0f;
+            if (clip == null) return 0f;
+
+            float speed = 1f;
+            if (speedParamName != null)
+            {
+                float rawSpeed = animator.GetFloat(speedParamName);
+                speed = Mathf.Abs(rawSpeed);
+            }
+            if (speed <= 0f) speed = 1f;
+
+            float result = clip.length / speed;
+            return result;
         }
 
 

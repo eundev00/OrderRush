@@ -40,7 +40,7 @@ public class DishSink : InteractableBase
         // 1. 더러운 접시를 들고 있는 경우 → 싱크대에 내려놓고 설거지 시작
         if (character.IsHolding && character.CurrentCarriable is Plate plate && plate.IsDirty)
         {
-            await character.PutDownAt(_plateSlot);
+            await character.PutDownAt(_plateSlot, ct);
             _currentPlate = plate;
 
             try
@@ -48,7 +48,7 @@ public class DishSink : InteractableBase
                 await StartWashing(character, ct);
 
                 // 완료 후 자동으로 집기
-                await character.PickUp(_currentPlate);
+                await character.PickUp(_currentPlate, ct);
                 _currentPlate = null;
             }
             catch (OperationCanceledException)
@@ -67,7 +67,7 @@ public class DishSink : InteractableBase
                 await StartWashing(character, ct);
 
                 // 완료 후 자동으로 집기
-                await character.PickUp(_currentPlate);
+                await character.PickUp(_currentPlate, ct);
                 _currentPlate = null;
             }
             catch (OperationCanceledException)
@@ -81,7 +81,7 @@ public class DishSink : InteractableBase
         // 3. 빈 손 + 싱크대에 깨끗한 접시가 있음 → 집기
         if (!character.IsHolding && _currentPlate != null && !_currentPlate.IsDirty)
         {
-            await character.PickUp(_currentPlate);
+            await character.PickUp(_currentPlate, ct);
             _currentPlate = null;
             return;
         }

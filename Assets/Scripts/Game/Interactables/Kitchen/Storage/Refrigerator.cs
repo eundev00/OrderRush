@@ -51,7 +51,7 @@ public class Refrigerator : InteractableBase
             ingredientObject.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
 
             // 캐릭터에게 전달
-            await character.PickUp(ingredientObject);
+            await character.PickUp(ingredientObject, ct);
 
             // 수량 감소 (-1이면 무한)
             if (_quantity > 0)

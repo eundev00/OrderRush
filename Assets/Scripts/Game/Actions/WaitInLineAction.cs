@@ -19,7 +19,7 @@ public class WaitInLineAction : IGameAction
 
     public async UniTask ExecuteAsync(CancellationToken ct)
     {
-        _animator.SetSpeed(0f);
+        _animator.Play(CharacterAnimState.Idle);
         _mover.DisableAgent();
 
         Quaternion startRotation = _characterTransform.rotation;

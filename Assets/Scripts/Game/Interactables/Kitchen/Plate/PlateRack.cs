@@ -45,7 +45,7 @@ public class PlateRack : InteractableBase
         {
             if (_currentPlateIndex < _quantity)
             {
-                await character.PutDown();
+                await character.PutDown(ct);
                 Destroy(heldPlate.gameObject);
                 _currentPlateIndex++;
                 RestorePlateCount();
@@ -67,7 +67,7 @@ public class PlateRack : InteractableBase
                 var plate = await GetNewPlate();
                 if (plate.TryPlaceOntoOther(character.CurrentCarriable))
                 {
-                    await character.PickUp(plate);
+                    await character.PickUp(plate, ct);
                     _currentPlateIndex--;
                     UpdatePlateCount();
                 }
@@ -83,7 +83,7 @@ public class PlateRack : InteractableBase
             var plate = await GetNewPlate();
             if (plate != null)
             {
-                await character.PickUp(plate);
+                await character.PickUp(plate, ct);
                 _currentPlateIndex--;
                 UpdatePlateCount();
             }

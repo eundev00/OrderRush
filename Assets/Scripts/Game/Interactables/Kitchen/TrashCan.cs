@@ -9,7 +9,7 @@ public class TrashCan : InteractableBase
     {
         if (!character.IsHolding) return;
 
-        var carriable = await character.PutDownAt(_slot);
+        var carriable = await character.PutDownAt(_slot, ct);
         if (carriable != null)
         {
             var component = carriable as Component;
