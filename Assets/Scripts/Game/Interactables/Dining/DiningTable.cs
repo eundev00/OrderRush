@@ -17,6 +17,7 @@ public class DiningTable : InteractableBase
 
     private IDayProgressService _dayProgressService;
     private ICustomerService _customerService;
+    private ISoundService _soundService;
     private IPublisher<OrderNeededEvent> _orderNeededPublisher;
     private IPublisher<DirtyPlateEvent> _dirtyPlatePublisher;
 
@@ -65,12 +66,14 @@ public class DiningTable : InteractableBase
     public void Construct(
         IDayProgressService dayProgressService,
         ICustomerService customerService,
+        ISoundService soundService,
         IPublisher<OrderNeededEvent> orderNeededPublisher,
         IPublisher<DirtyPlateEvent> dirtyPlatePublisher,
         ISubscriber<DayEndedEvent> dayEndedSubscriber)
     {
         _dayProgressService = dayProgressService;
         _customerService = customerService;
+        _soundService = soundService;
         _orderNeededPublisher = orderNeededPublisher;
         _dirtyPlatePublisher = dirtyPlatePublisher;
 
@@ -177,6 +180,8 @@ public class DiningTable : InteractableBase
 
     private void OnWaitTimeout()
     {
+        _soundService.PlaySfx(AudioKeys.fail_mark);
+
         foreach (var seat in _seats)
         {
             if (seat.HasCustomer)
@@ -287,6 +292,7 @@ public class DiningTable : InteractableBase
     {
         _isWaitingFood = true;
         _tableGauge.SwitchToFoodWaiting();
+        _soundService.PlaySfx(AudioKeys.order);
 
         foreach (var seat in _seats)
         {
