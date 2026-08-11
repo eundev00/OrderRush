@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 public static class AudioKeys
@@ -15,10 +16,14 @@ public static class AudioKeys
     public const string commonbutton = "commonbutton";
     public const string cooking1 = "cooking1";
     public const string correct = "correct";
+    public const string dingdong = "dingdong";
+    public const string fail_mark = "fail_mark";
+    public const string order = "order";
     public const string rain_calming = "rain_calming";
     public const string rain_light = "rain_light";
     public const string refrigerator_close = "refrigerator_close";
     public const string refrigerator_open = "refrigerator_open";
+    public const string story1 = "story1";
     public const string success1 = "success1";
     public const string takeit = "takeit";
     public const string washing_dishes_1 = "washing_dishes_1";
@@ -39,10 +44,14 @@ public static class AudioKeys
         { commonbutton, "Assets/Audio/Sfx/commonbutton.mp3" },
         { cooking1, "Assets/Audio/Sfx/cooking1.mp3" },
         { correct, "Assets/Audio/Sfx/correct.mp3" },
+        { dingdong, "Assets/Audio/Sfx/dingdong.mp3" },
+        { fail_mark, "Assets/Audio/Sfx/fail_mark.mp3" },
+        { order, "Assets/Audio/Sfx/order.mp3" },
         { rain_calming, "Assets/Audio/Sfx/rain_calming.mp3" },
         { rain_light, "Assets/Audio/Sfx/rain_light.mp3" },
         { refrigerator_close, "Assets/Audio/Sfx/refrigerator_close.mp3" },
         { refrigerator_open, "Assets/Audio/Sfx/refrigerator_open.mp3" },
+        { story1, "Assets/Audio/Sfx/story1.mp3" },
         { success1, "Assets/Audio/Sfx/success1.mp3" },
         { takeit, "Assets/Audio/Sfx/takeit.mp3" },
         { washing_dishes_1, "Assets/Audio/Sfx/washing_dishes_1.mp3" },

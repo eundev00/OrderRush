@@ -36,6 +36,8 @@ public class CardEffectApplier
             tierCounts[id]++;
         }
 
+        LogAppliedCards(tierCounts);
+
         foreach (var kvp in tierCounts)
         {
             var card = _gameDataService.GetCardByID(kvp.Key);
@@ -73,7 +75,8 @@ public class CardEffectApplier
         var context = _levelService.Context;
         int currentCount = context.DiningTables.Count;
 
-        for (int i = currentCount; i < targetCount; i++)
+        int totalTarget = context.InitialTableCount + targetCount;
+        for (int i = currentCount; i < totalTarget; i++)
         {
             Transform spawnPoint = context.GetNextTableSpawnPoint();
             if (spawnPoint == null)
@@ -118,5 +121,26 @@ public class CardEffectApplier
     {
         float value = effect.BaseExtendPercent + (tier - 1) * effect.ExtendPercentPerTier;
         _kitchenStatService.AddSlowBurn(value);
+    }
+
+    private void LogAppliedCards(Dictionary<int, int> tierCounts)
+    {
+        foreach (var kvp in tierCounts)
+        {
+            var card = _gameDataService.GetCardByID(kvp.Key);
+            if (card == null) continue;
+
+            string detail = card.Effect switch
+            {
+                UpgradeEffect e => $"DurationReduce={e.BaseDurationReducePercent + (kvp.Value - 1) * e.DurationReducePercentPerTier}",
+                SlowBurnEffect e => $"ExtendPercent={e.BaseExtendPercent + (kvp.Value - 1) * e.ExtendPercentPerTier}",
+                TableAdditionEffect => $"Tables={kvp.Value}",
+                MenuEffect e => $"Recipe={e.Recipe.RecipeID}",
+                StaffEffect e => $"Staff={e.StaffPrefabName}",
+                _ => ""
+            };
+
+            Debug.Log($"[CardEffect] {card.Effect.EffectType} tier={kvp.Value} {detail}");
+        }
     }
 }

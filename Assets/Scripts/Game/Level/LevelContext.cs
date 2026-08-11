@@ -12,6 +12,7 @@ public class LevelContext : MonoBehaviour
     [SerializeField] private GameObject _rainRoot;
     [SerializeField] private GameObject _nightLightRoot;
 
+    public int InitialTableCount { get; private set; }
     public List<DiningTable> DiningTables { get; private set; }
     public ServingCounter[] ServingCounters { get; private set; }
     public Counter[] KitchenCounters { get; private set; }
@@ -25,6 +26,7 @@ public class LevelContext : MonoBehaviour
     void Awake()
     {
         DiningTables = new List<DiningTable>(_interactablesRoot.GetComponentsInChildren<DiningTable>());
+        InitialTableCount = DiningTables.Count;
 
         ServingCounters = _interactablesRoot.GetComponentsInChildren<ServingCounter>();
 
