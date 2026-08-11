@@ -109,6 +109,8 @@ public class DayProgressService : IDayProgressService, IUpdatable
             _currentDayContext.DayNumber.Value + 1,
             true,
             _currentDayContext.EarnedCoins.Value));
+
+        _currentDayContext.EarnedCoins.Value = 0;
     }
 
     public void FailDay()

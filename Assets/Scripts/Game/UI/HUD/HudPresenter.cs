@@ -48,8 +48,11 @@ public class HudPresenter : IStartable, IDisposable
             })
             .AddTo(_disposable);
 
-        _accountService.Account.Coins
-            .Subscribe(coins => _hudView.SetCoin(coins))
+        Observable.CombineLatest(
+                _accountService.Account.Coins,
+                dayContext.EarnedCoins,
+                (account, earned) => account + earned)
+            .Subscribe(total => _hudView.SetCoin(total))
             .AddTo(_disposable);
 
         dayContext.DayNumber
