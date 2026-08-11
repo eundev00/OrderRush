@@ -12,7 +12,7 @@
 
 ## Demo
 
-[![Demo](https://img.youtube.com/vi/OcNBU20rcVU/0.jpg?v=2)](https://youtu.be/OcNBU20rcVU)
+[![Demo](https://img.youtube.com/vi/OcNBU20rcVU/0.jpg)](https://youtu.be/OcNBU20rcVU)
 
 ## 목차
 
@@ -32,14 +32,14 @@
 
 ## 1. 기술 스택
 
-| 역할     | 사용 기술                                         |
-| -------- | ------------------------------------------------- |
-| 엔진     | Unity 6000.3.6f1 (URP 17.3)                       |
-| DI       | VContainer 1.17.0                                 |
-| UI 패턴  | MVP (Model = Service, View, Presenter)            |
-| 이벤트   | MessagePipe (+ VContainer Integration)            |
-| 비동기   | UniTask 2.1.0                                     |
-| Reactive | UniRx (`ReactiveProperty`, `CompositeDisposable`) |
+| 역할            | 사용 기술                                         |
+| --------------- | ------------------------------------------------- |
+| 엔진            | Unity 6000.3.6f1 (URP 17.3)                       |
+| DI              | VContainer 1.17.0                                 |
+| UI 패턴         | MVP (Model = Service, View, Presenter)            |
+| 이벤트          | MessagePipe (+ VContainer Integration)            |
+| 비동기          | UniTask 2.1.0                                     |
+| Reactive        | UniRx (`ReactiveProperty`, `CompositeDisposable`) |
 | 프레임 업데이트 | UpdateSubscriptionService (중앙 집중 Update 관리) |
 
 ## 2. 아키텍처 개요
@@ -453,10 +453,10 @@ Open<Presenter>(키)
 
 `StreetTrafficService` 가 두 종류의 트래픽을 관리한다.
 
-| 구분 | 이동 방식 | 프리팹 | 스폰 간격 |
-|------|-----------|--------|-----------|
-| 차량 | Waypoint 경로 추종 (`TrafficWaypointMover`) | Car 1–3 | 10–30 초 |
-| 보행자 | NavMesh AI (`TrafficNavMeshMover`) | WalkerNpc 1–3 | 10–20 초 |
+| 구분   | 이동 방식                                   | 프리팹        | 스폰 간격 |
+| ------ | ------------------------------------------- | ------------- | --------- |
+| 차량   | Waypoint 경로 추종 (`TrafficWaypointMover`) | Car 1–3       | 10–30 초  |
+| 보행자 | NavMesh AI (`TrafficNavMeshMover`)          | WalkerNpc 1–3 | 10–20 초  |
 
 레벨 프리팹에 부착된 `TrafficContext` 가 도로 경로(`TrafficPath`)와 보행자 출발·도착 지점을 정의한다. 차량은 경로의 웨이포인트를 순서대로 따라가고, 보행자는 NavMeshAgent 가 경로를 자동 탐색한다. 둘 다 목적지에 도달하면 자동 파괴되며, 속도와 프리팹은 스폰 시 랜덤 선택된다.
 
