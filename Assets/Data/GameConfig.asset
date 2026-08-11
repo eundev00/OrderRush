@@ -18,6 +18,6 @@ MonoBehaviour:
   _patienceRecoveryAmount: 0.5
   _tipRatio: 0.1
   _eatDuration: 5
-  _spawnBufferDuration: 10
+  _spawnBufferDuration: 3
   _spawnIntervalDuration: 10
   _toolProcessSeconds: 3

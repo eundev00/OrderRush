@@ -31,10 +31,10 @@ public static class AudioKeys
 
     public static Dictionary<string, string> AudioPaths = new Dictionary<string, string>()
     {
-        { Bgm1, "Assets/Audio/Bgm/Bgm1.mp3" },
-        { Bgm2, "Assets/Audio/Bgm/Bgm2.mp3" },
-        { Bgm3, "Assets/Audio/Bgm/Bgm3.mp3" },
-        { Bgm4, "Assets/Audio/Bgm/Bgm4.mp3" },
+        { Bgm1, "Assets/Audio/Bgm/Bgm1.ogg" },
+        { Bgm2, "Assets/Audio/Bgm/Bgm2.ogg" },
+        { Bgm3, "Assets/Audio/Bgm/Bgm3.ogg" },
+        { Bgm4, "Assets/Audio/Bgm/Bgm4.ogg" },
         { GameAudioMixer, "Assets/Audio/GameAudioMixer.mixer" },
         { bell1, "Assets/Audio/Sfx/bell1.mp3" },
         { bell2, "Assets/Audio/Sfx/bell2.mp3" },
